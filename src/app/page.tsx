@@ -1,3 +1,5 @@
+'use client';
+
 import Hero from '@/components/home/Hero';
 import CategoryExplorer from '@/components/home/CategoryExplorer';
 import FeaturedExporters from '@/components/home/FeaturedExporters';
