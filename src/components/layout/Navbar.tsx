@@ -17,7 +17,8 @@ import {
   LogIn, 
   Sparkles,
   ArrowRight,
-  ArrowLeft
+  ArrowLeft,
+  ShieldAlert
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -97,6 +98,14 @@ export default function Navbar() {
             >
               <CreditCard className="w-4 h-4 text-brand-gold" />
               <span>{t('navPricing')}</span>
+            </Link>
+
+            <Link 
+              href="/dashboard/admin" 
+              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-red-400 hover:bg-white/5 transition-colors flex items-center gap-1.5"
+            >
+              <ShieldAlert className="w-4 h-4 text-red-400" />
+              <span>{language === 'ar' ? 'الرقابة والإدارة' : 'Admin Audit'}</span>
             </Link>
           </nav>
 

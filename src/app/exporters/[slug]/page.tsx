@@ -22,6 +22,7 @@ import {
   ArrowRight,
   ArrowLeft
 } from 'lucide-react';
+import MaskedContact from '@/components/shared/MaskedContact';
 
 export default function ExporterShowroomPage() {
   const params = useParams();
@@ -100,17 +101,15 @@ export default function ExporterShowroomPage() {
             </div>
           </div>
 
-          {/* Direct WhatsApp Inquiry */}
+          {/* Masked Contact & Reveal Trigger */}
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <a
-              href={`https://wa.me/201008920110?text=${encodeURIComponent(`Inquiry for ${company.company_name_en} via OpenMarket365`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald flex items-center justify-center gap-2 transition-all"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>{t('directWhatsApp')}</span>
-            </a>
+            <MaskedContact
+              phone={company.company_phone}
+              whatsapp={company.company_phone}
+              email={company.company_email}
+              companyName={company.company_name_en}
+              variant="button"
+            />
           </div>
         </div>
       </div>
@@ -295,28 +294,14 @@ export default function ExporterShowroomPage() {
             </div>
           </div>
 
-          {/* Official Contact Card */}
-          <div className="glass-panel rounded-3xl p-6 space-y-3 text-xs">
-            <h4 className="text-sm font-bold text-white mb-2">
-              {language === 'ar' ? 'بيانات الاتصال المعتمدة' : 'Official Trade Contact'}
-            </h4>
-            <div className="flex items-center gap-2 text-brand-muted">
-              <Phone className="w-3.5 h-3.5 text-brand-gold" />
-              <span>{company.company_phone}</span>
-            </div>
-            <div className="flex items-center gap-2 text-brand-muted">
-              <Mail className="w-3.5 h-3.5 text-brand-cyan" />
-              <span>{company.company_email}</span>
-            </div>
-            {company.website && (
-              <div className="flex items-center gap-2 text-brand-muted">
-                <Globe className="w-3.5 h-3.5 text-brand-emeraldLight" />
-                <a href={company.website} target="_blank" rel="noopener noreferrer" className="hover:text-brand-gold underline">
-                  {company.website}
-                </a>
-              </div>
-            )}
-          </div>
+          {/* Official Masked Contact Card */}
+          <MaskedContact
+            phone={company.company_phone}
+            whatsapp={company.company_phone}
+            email={company.company_email}
+            companyName={company.company_name_en}
+            variant="card"
+          />
         </div>
       </div>
     </div>

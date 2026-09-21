@@ -115,14 +115,14 @@ export default function PricingPage() {
                   <li className="flex items-center gap-2.5">
                     <Check className="w-4 h-4 text-brand-emeraldLight flex-shrink-0" />
                     <span>
-                      <strong>{plan.max_products}</strong> {language === 'ar' ? 'منتجات في المعرض' : 'Published Products'}
+                      <strong>{plan.max_products && plan.max_products > 1000 ? 'Unlimited' : plan.max_products}</strong> {language === 'ar' ? 'منتجات في المعرض' : 'Published Products'}
                     </span>
                   </li>
 
                   <li className="flex items-center gap-2.5">
                     <Check className="w-4 h-4 text-brand-emeraldLight flex-shrink-0" />
                     <span>
-                      <strong>{plan.max_storage_mb} MB</strong> {language === 'ar' ? 'سعة تخزين السحابة' : 'Cloud Storage'}
+                      <strong>{plan.max_images && plan.max_images > 1000 ? 'Unlimited' : plan.max_images}</strong> {language === 'ar' ? 'صور عالية الدقة' : 'High-Res Photos'}
                     </span>
                   </li>
 
@@ -132,15 +132,18 @@ export default function PricingPage() {
                     ) : (
                       <X className="w-4 h-4 text-brand-dim flex-shrink-0" />
                     )}
-                    <span className={plan.video_allowed ? 'text-white' : 'text-brand-dim line-through'}>
-                      {language === 'ar' ? 'فيديو معرض المصنع بدقة 4K' : '4K Factory Video Tour'}
+                    <span className={plan.video_allowed ? 'text-white font-medium' : 'text-brand-dim line-through'}>
+                      {plan.subscription_code === 'ELT' 
+                        ? (language === 'ar' ? 'فيديوهات متعددة وتحديث شهري' : 'Multi-Video Embeds + 30-Day Refresh')
+                        : (language === 'ar' ? 'فيديو معرض المصنع بدقة 4K' : '1 Fixed 4K Video Embed')
+                      }
                     </span>
                   </li>
 
                   <li className="flex items-center gap-2.5">
                     <Check className="w-4 h-4 text-brand-emeraldLight flex-shrink-0" />
                     <span>
-                      {language === 'ar' ? 'التقديم على طلبات الشراء الدولية' : 'Submit Sealed Quotes on RFQs'}
+                      {language === 'ar' ? 'ظهور مباشر لبيانات الاتصال للمشترين' : 'Direct Contact Display to Buyers'}
                     </span>
                   </li>
 
@@ -151,7 +154,7 @@ export default function PricingPage() {
                       <X className="w-4 h-4 text-brand-dim flex-shrink-0" />
                     )}
                     <span className={plan.dynamic_refresh_allowed ? 'text-white font-medium' : 'text-brand-dim'}>
-                      {language === 'ar' ? 'تحديث وتصدير في صدارة البحث' : 'Priority Algorithmic Ranking'}
+                      {language === 'ar' ? 'تحديث المعرض والصور كل 30 يوماً' : 'Dynamic Media Refresh (Every 30 Days)'}
                     </span>
                   </li>
                 </ul>

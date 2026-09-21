@@ -17,6 +17,7 @@ import {
   ArrowRight,
   ArrowLeft
 } from 'lucide-react';
+import MaskedContact from '@/components/shared/MaskedContact';
 
 export default function MarketBoardPage() {
   const { language, direction, t } = useLanguage();
@@ -161,15 +162,13 @@ export default function MarketBoardPage() {
                     </div>
                   </div>
 
-                  <a
-                    href={`https://wa.me/201008920110?text=${encodeURIComponent(`Inquiry for ${deal.title} via OpenMarket365`)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald flex items-center gap-2 transition-all hover:scale-102"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>{t('directWhatsApp')}</span>
-                  </a>
+                  <MaskedContact
+                    phone={deal.seller_contact_phone}
+                    whatsapp={deal.seller_contact_phone}
+                    email={deal.seller_contact_email}
+                    companyName={deal.title}
+                    variant="button"
+                  />
                 </div>
               </div>
             </div>
