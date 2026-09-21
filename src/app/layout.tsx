@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { LanguageProvider } from '@/lib/context/LanguageContext';
+import { AuthProvider } from '@/lib/context/AuthContext';
 import LiveTradeTicker from '@/components/layout/LiveTradeTicker';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -20,14 +21,16 @@ export default function RootLayout({
     <html lang="en" dir="ltr" className="dark">
       <body className="bg-brand-dark min-h-screen text-slate-100 antialiased selection:bg-brand-gold selection:text-brand-dark">
         <LanguageProvider>
-          <div className="flex flex-col min-h-screen">
-            <LiveTradeTicker />
-            <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <AuthProvider>
+            <div className="flex flex-col min-h-screen">
+              <LiveTradeTicker />
+              <Navbar />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </AuthProvider>
         </LanguageProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
+import { useAuth } from '@/lib/context/AuthContext';
 import { Lock, Unlock, Phone, MessageSquare, Mail, ShieldCheck, X, UserPlus, LogIn, Copy, Check } from 'lucide-react';
 
 interface MaskedContactProps {
@@ -21,8 +22,10 @@ export default function MaskedContact({
   variant = 'card',
 }: MaskedContactProps) {
   const { language, t } = useLanguage();
+  const { currentUser } = useAuth();
   // Simulates authenticated state; users can toggle for testing
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isUnlocked = isAuthenticated || currentUser.isLoggedIn;
   const [modalOpen, setModalOpen] = useState(false);
   const [copiedType, setCopiedType] = useState<string | null>(null);
 
@@ -43,7 +46,7 @@ export default function MaskedContact({
   };
 
   if (variant === 'button') {
-    if (isAuthenticated) {
+    if (isUnlocked) {
       return (
         <div className="flex items-center gap-2">
           <a
@@ -143,7 +146,7 @@ export default function MaskedContact({
     <div className="glass-panel rounded-2xl p-5 border border-brand-border/80 space-y-4">
       <div className="flex items-center justify-between pb-3 border-b border-brand-border/60">
         <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-          {isAuthenticated ? (
+          {isUnlocked ? (
             <>
               <Unlock className="w-3.5 h-3.5 text-brand-emeraldLight" />
               <span className="text-brand-emeraldLight">{language === 'ar' ? 'بيانات التواصل المباشرة (معتمدة)' : 'Verified Direct Contacts'}</span>
@@ -157,15 +160,15 @@ export default function MaskedContact({
         </span>
 
         <button
-          onClick={() => setIsAuthenticated(!isAuthenticated)}
+          onClick={() => setIsAuthenticated(!isUnlocked)}
           className="text-[10px] text-brand-dim hover:text-brand-gold flex items-center gap-1 transition-colors"
           title="Toggle between Visitor Masked and Buyer Unmasked mode"
         >
-          {isAuthenticated ? '[Lock View]' : '[Demo Unlock]'}
+          {isUnlocked ? '[Lock View]' : '[Demo Unlock]'}
         </button>
       </div>
 
-      {isAuthenticated ? (
+      {isUnlocked ? (
         <div className="space-y-2.5 text-xs">
           {/* Phone */}
           <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-brand-border">

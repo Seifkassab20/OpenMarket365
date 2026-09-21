@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
+import { useAuth } from '@/lib/context/AuthContext';
 import { 
   Building2, 
   Package, 
@@ -15,14 +16,19 @@ import {
   X, 
   PlusCircle, 
   LogIn, 
+  LogOut,
   Sparkles,
   ArrowRight,
   ArrowLeft,
-  ShieldAlert
+  ShieldAlert,
+  UserCheck,
+  Eye,
+  Ship
 } from 'lucide-react';
 
 export default function Navbar() {
   const { language, direction, toggleLanguage, t } = useLanguage();
+  const { currentUser, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
@@ -38,17 +44,16 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                <span>OpenMarket</span>
-                <span className="text-brand-gold">365</span>
+                OpenMarket<span className="text-brand-gold">365</span>
               </span>
-              <span className="text-[10px] text-brand-muted tracking-wider uppercase font-medium">
-                {t('brandTagline')}
+              <span className="text-[10px] uppercase font-mono tracking-widest text-brand-emeraldLight font-semibold">
+                Egypt Trade Desk
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden lg:flex items-center gap-1">
             <Link 
               href="/exporters" 
               className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
@@ -71,16 +76,13 @@ export default function Navbar() {
             >
               <FileSpreadsheet className="w-4 h-4 text-brand-emeraldLight" />
               <span>{t('navRfqs')}</span>
-              <span className="ml-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-brand-emeraldDark/60 text-brand-emeraldLight border border-brand-emeraldLight/30">
-                LIVE
-              </span>
             </Link>
 
             <Link 
               href="/market" 
               className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
             >
-              <Flame className="w-4 h-4 text-brand-amber animate-pulse" />
+              <Flame className="w-4 h-4 text-orange-400" />
               <span>{t('navMarket')}</span>
             </Link>
 
@@ -100,13 +102,32 @@ export default function Navbar() {
               <span>{t('navPricing')}</span>
             </Link>
 
-            <Link 
-              href="/dashboard/admin" 
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-red-400 hover:bg-white/5 transition-colors flex items-center gap-1.5"
-            >
-              <ShieldAlert className="w-4 h-4 text-red-400" />
-              <span>{language === 'ar' ? 'الرقابة والإدارة' : 'Admin Audit'}</span>
-            </Link>
+            {/* Role-Adaptive Workspace Link */}
+            {currentUser.role === 'ADMIN' ? (
+              <Link 
+                href="/dashboard/admin" 
+                className="px-3 py-2 rounded-lg text-sm font-medium text-purple-300 hover:bg-purple-950/40 transition-colors flex items-center gap-1.5 border border-purple-500/30"
+              >
+                <ShieldAlert className="w-4 h-4 text-purple-400" />
+                <span>{language === 'ar' ? 'الرقابة والإدارة' : 'Admin Audit'}</span>
+              </Link>
+            ) : currentUser.role === 'EXPORTER' ? (
+              <Link 
+                href="/dashboard/exporter" 
+                className="px-3 py-2 rounded-lg text-sm font-medium text-brand-gold hover:bg-brand-gold/10 transition-colors flex items-center gap-1.5 border border-brand-goldBorder"
+              >
+                <Building2 className="w-4 h-4 text-brand-gold" />
+                <span>{language === 'ar' ? 'لوحة المصدر' : 'Exporter Desk'}</span>
+              </Link>
+            ) : (
+              <Link 
+                href="/dashboard" 
+                className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              >
+                <UserCheck className="w-4 h-4 text-brand-cyan" />
+                <span>{language === 'ar' ? 'البوابات' : 'Portals'}</span>
+              </Link>
+            )}
           </nav>
 
           {/* Right Action CTAs */}
@@ -130,14 +151,56 @@ export default function Navbar() {
               <span>{t('navPostRfq')}</span>
             </Link>
 
-            {/* Sign In CTA */}
-            <Link
-              href="/auth/login"
-              className="px-4 py-2 rounded-xl text-xs font-bold border border-brand-goldBorder bg-brand-gold/10 text-brand-gold hover:bg-brand-gold hover:text-brand-dark transition-all flex items-center gap-1.5 hover:scale-102 active:scale-98"
-            >
-              <LogIn className="w-3.5 h-3.5" />
-              <span>{t('navSignIn')}</span>
-            </Link>
+            {/* User Account / Sign In State */}
+            {currentUser.isLoggedIn ? (
+              <div className="flex items-center gap-2 pl-2 border-l border-brand-border/60">
+                <Link
+                  href={
+                    currentUser.role === 'ADMIN'
+                      ? '/dashboard/admin'
+                      : currentUser.role === 'EXPORTER'
+                      ? '/dashboard/exporter'
+                      : '/rfqs'
+                  }
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-brand-border transition-all"
+                >
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                    currentUser.role === 'ADMIN'
+                      ? 'bg-purple-950 text-purple-300 border border-purple-500/30'
+                      : currentUser.role === 'EXPORTER'
+                      ? 'bg-brand-gold/10 text-brand-gold border border-brand-goldBorder'
+                      : 'bg-brand-emeraldDark text-brand-emeraldLight border border-brand-emeraldLight/30'
+                  }`}>
+                    {currentUser.role}
+                  </span>
+                  <span className="text-xs font-bold text-white max-w-[120px] truncate">
+                    {currentUser.name}
+                  </span>
+                </Link>
+
+                <button
+                  onClick={logout}
+                  title={language === 'ar' ? 'تسجيل الخروج أو تبديل الحساب' : 'Switch Role or Sign Out'}
+                  className="p-2 rounded-xl text-brand-dim hover:text-red-400 hover:bg-white/5 transition-all"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span className="hidden xl:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 text-[11px] font-semibold border border-blue-500/20">
+                  <Eye className="w-3 h-3" />
+                  <span>Visitor Mode</span>
+                </span>
+                <Link
+                  href="/auth/login"
+                  className="px-4 py-2 rounded-xl text-xs font-bold border border-brand-goldBorder bg-brand-gold/10 text-brand-gold hover:bg-brand-gold hover:text-brand-dark transition-all flex items-center gap-1.5 hover:scale-102 active:scale-98 shadow-gold"
+                >
+                  <LogIn className="w-3.5 h-3.5" />
+                  <span>{t('navSignIn')}</span>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
