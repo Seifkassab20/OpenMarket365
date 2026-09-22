@@ -96,7 +96,7 @@ export default function DashboardPortalPage() {
 
         {/* Admin Governance & Compliance Console */}
         <Link
-          href="/dashboard/admin"
+          href="/admin"
           className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-8 hover:border-[#202522] transition-all duration-300 group flex flex-col justify-between shadow-sm"
         >
           <div className="space-y-5">

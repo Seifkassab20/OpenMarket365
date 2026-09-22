@@ -61,6 +61,7 @@ export const DEMO_ACCOUNTS: Record<UserRoleType, UserAccount> = {
 interface AuthContextType {
   currentUser: UserAccount;
   loginAs: (role: UserRoleType, customEmail?: string) => void;
+  switchAccount: (role: UserRoleType) => void;
   logout: () => void;
 }
 
@@ -93,6 +94,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const switchAccount = (role: UserRoleType) => {
+    loginAs(role);
+  };
+
   const logout = () => {
     setCurrentUser(DEMO_ACCOUNTS.VISITOR);
     try {
@@ -103,7 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, loginAs, logout }}>
+    <AuthContext.Provider value={{ currentUser, loginAs, switchAccount, logout }}>
       {children}
     </AuthContext.Provider>
   );

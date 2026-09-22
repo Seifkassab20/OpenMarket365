@@ -285,7 +285,7 @@ export default function BrandIntroPages({
                 </div>
 
                 <button
-                  onClick={() => handleSelectRole('ADMIN', '/dashboard/admin')}
+                  onClick={() => handleSelectRole('ADMIN', '/admin')}
                   className="w-full mt-6 py-3 bg-[#202522] hover:bg-[#323934] text-[#eee8dc] rounded text-xs font-mono font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
                 >
                   <span>{language === 'ar' ? 'دخول كمسؤول رقابة' : 'ENTER AS ADMIN'}</span>
