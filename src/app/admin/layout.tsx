@@ -8,6 +8,7 @@ import AdminTopbar from '@/components/admin/AdminTopbar';
 import AccessDenied from '@/components/admin/AccessDenied';
 import { DashboardSkeleton } from '@/components/admin/LoadingSkeleton';
 import { useAdminAuth } from '@/lib/hooks/useAdminAuth';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 export default function AdminRootLayout({
   children,
@@ -20,12 +21,19 @@ export default function AdminRootLayout({
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { language, direction } = useLanguage();
+  const isRtl = direction === 'rtl';
 
   // If on login page, render clean auth canvas with webapp colors
   if (isLoginPage) {
     return (
       <ToastProvider>
-        <div className="min-h-screen bg-[#eee8dc] text-[#202522] selection:bg-[#9b452f] selection:text-white">
+        <div
+          dir={direction}
+          className={`min-h-screen bg-[#eee8dc] text-[#202522] selection:bg-[#9b452f] selection:text-white ${
+            language === 'ar' ? 'font-arabic' : 'font-sans'
+          }`}
+        >
           {children}
         </div>
       </ToastProvider>
@@ -35,7 +43,12 @@ export default function AdminRootLayout({
   // Loading state
   if (isChecking) {
     return (
-      <div className="min-h-screen bg-[#eee8dc] p-8 text-[#202522]">
+      <div
+        dir={direction}
+        className={`min-h-screen bg-[#eee8dc] p-8 text-[#202522] ${
+          language === 'ar' ? 'font-arabic' : 'font-sans'
+        }`}
+      >
         <DashboardSkeleton />
       </div>
     );
@@ -44,7 +57,12 @@ export default function AdminRootLayout({
   // Not authorized state
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#eee8dc] flex items-center justify-center p-6 text-[#202522]">
+      <div
+        dir={direction}
+        className={`min-h-screen bg-[#eee8dc] flex items-center justify-center p-6 text-[#202522] ${
+          language === 'ar' ? 'font-arabic' : 'font-sans'
+        }`}
+      >
         <AccessDenied />
       </div>
     );
@@ -53,7 +71,12 @@ export default function AdminRootLayout({
   // Authorized Admin View matching webapp colors
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-[#eee8dc] text-[#202522] selection:bg-[#9b452f] selection:text-white antialiased">
+      <div
+        dir={direction}
+        className={`min-h-screen bg-[#eee8dc] text-[#202522] selection:bg-[#9b452f] selection:text-white antialiased ${
+          language === 'ar' ? 'font-arabic' : 'font-sans'
+        }`}
+      >
         {/* Persistent Sidebar */}
         <AdminSidebar
           isMobileOpen={isMobileOpen}
@@ -65,7 +88,13 @@ export default function AdminRootLayout({
         {/* Main Content Area */}
         <div
           className={`flex min-h-screen flex-col transition-all duration-300 ${
-            isCollapsed ? 'lg:pl-20' : 'lg:pl-64'
+            isRtl
+              ? isCollapsed
+                ? 'lg:pr-20 lg:pl-0'
+                : 'lg:pr-64 lg:pl-0'
+              : isCollapsed
+              ? 'lg:pl-20 lg:pr-0'
+              : 'lg:pl-64 lg:pr-0'
           }`}
         >
           {/* Persistent Topbar */}

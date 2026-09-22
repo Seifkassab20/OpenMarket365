@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/lib/context/LanguageContext';
 
 interface AdminSidebarProps {
   isMobileOpen: boolean;
@@ -19,14 +20,16 @@ interface AdminSidebarProps {
 }
 
 interface NavItem {
-  label: string;
+  labelEn: string;
+  labelAr: string;
   href: string;
   badge?: number;
   icon: React.ReactNode;
 }
 
 interface NavSection {
-  title: string;
+  titleEn: string;
+  titleAr: string;
   items: NavItem[];
 }
 
@@ -44,13 +47,17 @@ export default function AdminSidebar({
   },
 }: AdminSidebarProps) {
   const pathname = usePathname();
+  const { language, direction } = useLanguage();
+  const isRtl = direction === 'rtl';
 
   const navSections: NavSection[] = [
     {
-      title: 'DASHBOARD & INTELLIGENCE',
+      titleEn: 'DASHBOARD & INTELLIGENCE',
+      titleAr: 'لوحة التحكم والذكاء',
       items: [
         {
-          label: 'Overview',
+          labelEn: 'Overview',
+          labelAr: 'نظرة عامة',
           href: '/admin',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,7 +66,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Analytics Desk',
+          labelEn: 'Analytics Desk',
+          labelAr: 'منصة التحليلات',
           href: '/admin/analytics',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +76,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'AI & Telemetry',
+          labelEn: 'AI & Telemetry',
+          labelAr: 'الذكاء الاصطناعي والمؤشرات',
           href: '/admin/ai',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,10 +88,12 @@ export default function AdminSidebar({
       ],
     },
     {
-      title: 'MEMBERS & ROLES',
+      titleEn: 'MEMBERS & ROLES',
+      titleAr: 'الأعضاء والأدوار',
       items: [
         {
-          label: 'User Roster',
+          labelEn: 'User Roster',
+          labelAr: 'حسابات المستخدمين',
           href: '/admin/users',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +102,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Roles & Permissions',
+          labelEn: 'Roles & Permissions',
+          labelAr: 'الأدوار والصلاحيات',
           href: '/admin/roles',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +112,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Exporter Facilities',
+          labelEn: 'Exporter Facilities',
+          labelAr: 'محطات وشركات التصدير',
           href: '/admin/companies',
           badge: pendingCounts.companies,
           icon: (
@@ -112,10 +125,12 @@ export default function AdminSidebar({
       ],
     },
     {
-      title: 'TRADE & COMPLIANCE',
+      titleEn: 'TRADE & COMPLIANCE',
+      titleAr: 'التجارة والامتثال',
       items: [
         {
-          label: 'Commodity Catalog',
+          labelEn: 'Commodity Catalog',
+          labelAr: 'دليل السلع والمنتجات',
           href: '/admin/products',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +139,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Bank Wires & Plans',
+          labelEn: 'Bank Wires & Plans',
+          labelAr: 'الحوالات البنكية والاشتراكات',
           href: '/admin/subscriptions',
           badge: pendingCounts.subscriptions,
           icon: (
@@ -134,7 +150,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Compliance Vault',
+          labelEn: 'Compliance Vault',
+          labelAr: 'خزينة شهادات الجودة',
           href: '/admin/certificates',
           badge: pendingCounts.certificates,
           icon: (
@@ -144,7 +161,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Tender RFQs',
+          labelEn: 'Tender RFQs',
+          labelAr: 'مناقصات وطلبات التوريد',
           href: '/admin/rfqs',
           badge: pendingCounts.rfqs,
           icon: (
@@ -154,7 +172,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Distressed Cargo',
+          labelEn: 'Distressed Cargo',
+          labelAr: 'بضائع الموانئ العاجلة',
           href: '/admin/market-listings',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,10 +184,12 @@ export default function AdminSidebar({
       ],
     },
     {
-      title: 'SECURITY & SYSTEM',
+      titleEn: 'SECURITY & SYSTEM',
+      titleAr: 'الأمان والنظام',
       items: [
         {
-          label: 'Notifications',
+          labelEn: 'Notifications',
+          labelAr: 'الإشعارات والتنبيهات',
           href: '/admin/notifications',
           badge: pendingCounts.notifications,
           icon: (
@@ -178,7 +199,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Audit Trail Logs',
+          labelEn: 'Audit Trail Logs',
+          labelAr: 'سجل التدقيق والعمليات',
           href: '/admin/audit-logs',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -187,7 +209,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Platform Settings',
+          labelEn: 'Platform Settings',
+          labelAr: 'إعدادات المنصة',
           href: '/admin/settings',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -197,7 +220,8 @@ export default function AdminSidebar({
           ),
         },
         {
-          label: 'Admin Profile',
+          labelEn: 'Admin Profile',
+          labelAr: 'الملف الشخصي للمسؤول',
           href: '/admin/profile',
           icon: (
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,10 +243,16 @@ export default function AdminSidebar({
         />
       )}
 
-      {/* Sidebar Container: WebApp Ink Theme */}
+      {/* Sidebar Container: WebApp Ink Theme with RTL positioning */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#202522] border-r border-[#363e39] text-[#eee8dc] transition-all duration-300 ease-in-out ${
-          isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        className={`fixed top-0 bottom-0 z-50 flex flex-col bg-[#202522] ${
+          isRtl ? 'right-0 border-l border-r-0' : 'left-0 border-r border-l-0'
+        } border-[#363e39] text-[#eee8dc] transition-all duration-300 ease-in-out ${
+          isMobileOpen
+            ? 'translate-x-0'
+            : isRtl
+            ? 'translate-x-full lg:translate-x-0'
+            : '-translate-x-full lg:translate-x-0'
         } ${isCollapsed ? 'w-20' : 'w-64'}`}
       >
         {/* Brand Header */}
@@ -238,10 +268,10 @@ export default function AdminSidebar({
             {!isCollapsed && (
               <div className="flex flex-col">
                 <span className="font-serif text-base font-semibold tracking-wide text-[#eee8dc]">
-                  Market 365
+                  {language === 'ar' ? 'سوق ٣٦٥' : 'Market 365'}
                 </span>
                 <span className="text-[10px] uppercase font-bold tracking-widest text-[#c38b40]">
-                  Admin Gateway
+                  {language === 'ar' ? 'بوابة الإدارة المركزية' : 'Admin Gateway'}
                 </span>
               </div>
             )}
@@ -251,11 +281,25 @@ export default function AdminSidebar({
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-[#b9aa95] hover:bg-[#2c332f] hover:text-[#eee8dc] transition-colors"
-            title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+            title={
+              isCollapsed
+                ? language === 'ar'
+                  ? 'توسيع القائمة'
+                  : 'Expand Sidebar'
+                : language === 'ar'
+                ? 'طي القائمة'
+                : 'Collapse Sidebar'
+            }
           >
             <svg
               className={`w-4 h-4 transition-transform duration-200 ${
-                isCollapsed ? 'rotate-180' : ''
+                isRtl
+                  ? isCollapsed
+                    ? ''
+                    : 'rotate-180'
+                  : isCollapsed
+                  ? 'rotate-180'
+                  : ''
               }`}
               fill="none"
               stroke="currentColor"
@@ -269,10 +313,10 @@ export default function AdminSidebar({
         {/* Navigation Stream */}
         <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6 scrollbar-thin scrollbar-thumb-[#363e39]">
           {navSections.map((section) => (
-            <div key={section.title} className="space-y-1">
+            <div key={section.titleEn} className="space-y-1">
               {!isCollapsed && (
                 <div className="px-3 text-[10px] font-bold tracking-wider text-[#b9aa95] uppercase">
-                  {section.title}
+                  {language === 'ar' ? section.titleAr : section.titleEn}
                 </div>
               )}
               {section.items.map((item) => {
@@ -280,13 +324,14 @@ export default function AdminSidebar({
                   item.href === '/admin'
                     ? pathname === '/admin'
                     : pathname.startsWith(item.href);
+                const currentLabel = language === 'ar' ? item.labelAr : item.labelEn;
 
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsMobileOpen(false)}
-                    title={isCollapsed ? item.label : undefined}
+                    title={isCollapsed ? currentLabel : undefined}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-all group ${
                       isActive
                         ? 'bg-[#eee8dc] text-[#9b452f] font-bold shadow-sm'
@@ -304,7 +349,7 @@ export default function AdminSidebar({
                     </span>
 
                     {!isCollapsed && (
-                      <span className="flex-1 truncate">{item.label}</span>
+                      <span className="flex-1 truncate">{currentLabel}</span>
                     )}
 
                     {!isCollapsed && Boolean(item.badge && item.badge > 0) && (
@@ -330,7 +375,9 @@ export default function AdminSidebar({
             <svg className="w-4 h-4 shrink-0 text-[#c38b40]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
-            {!isCollapsed && <span>Return to Portal</span>}
+            {!isCollapsed && (
+              <span>{language === 'ar' ? 'العودة للموقع الرئيسي' : 'Return to Portal'}</span>
+            )}
           </Link>
         </div>
       </aside>
