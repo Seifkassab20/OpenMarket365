@@ -114,6 +114,16 @@ export default function Navbar() {
 
           {/* Right Action CTAs */}
           <div className="hidden lg:flex items-center gap-4">
+            {/* Brand Intro Slideshow Trigger - Direct Page Link */}
+            <Link
+              href="/welcome"
+              className="px-2.5 py-1 text-[11px] font-mono font-bold tracking-wider text-[#9b452f] hover:text-[#202522] border border-[#b9aa95]/80 hover:border-[#202522] rounded transition-colors flex items-center gap-1.5 uppercase"
+              title="Open Brand Story Pages"
+            >
+              <span className="text-[#c38b40]">✦</span>
+              <span>{language === 'ar' ? 'قصة المنصة والأدوار' : 'STORY & ROLES'}</span>
+            </Link>
+
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
@@ -249,6 +259,13 @@ export default function Navbar() {
             PRICING & TIERS
           </Link>
           <div className="pt-3 border-t border-[#b9aa95] flex flex-col gap-2">
+            <Link
+              href="/welcome"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full text-center py-2 bg-[#e4dac9] border border-[#b9aa95] text-[#9b452f] text-xs font-mono font-bold uppercase tracking-[0.12em]"
+            >
+              ✦ {language === 'ar' ? 'قصة المنصة والأدوار' : 'STORY & ROLES'}
+            </Link>
             <Link
               href="/rfqs/create"
               onClick={() => setMobileMenuOpen(false)}
