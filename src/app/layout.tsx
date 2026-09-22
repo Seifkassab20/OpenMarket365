@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { LanguageProvider } from '@/lib/context/LanguageContext';
 import { AuthProvider } from '@/lib/context/AuthContext';
-import LiveTradeTicker from '@/components/layout/LiveTradeTicker';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
@@ -35,7 +34,6 @@ export default function RootLayout({
         <LanguageProvider>
           <AuthProvider>
             <div className="flex flex-col min-h-screen">
-              <LiveTradeTicker />
               <Navbar />
               <main className="flex-grow">
                 {children}
