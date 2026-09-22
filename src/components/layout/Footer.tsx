@@ -2,10 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/lib/context/LanguageContext';
 
 export default function Footer() {
+  const pathname = usePathname();
   const { language } = useLanguage();
+
+  // Exclude Footer from all admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-[#202522] text-[#eee8dc] text-sm pt-16 pb-12 border-t border-[#363e39]">

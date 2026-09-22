@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { LanguageProvider } from '@/lib/context/LanguageContext';
 import { AuthProvider } from '@/lib/context/AuthContext';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import LayoutShell from '@/components/layout/LayoutShell';
 
 export const metadata: Metadata = {
   title: 'Market 365 | Egypt export gateway',
@@ -33,13 +32,9 @@ export default function RootLayout({
       <body className="bg-[#eee8dc] text-[#202522] min-h-screen font-sans antialiased selection:bg-[#9b452f] selection:text-white grain">
         <LanguageProvider>
           <AuthProvider>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="flex-grow">
-                {children}
-              </main>
-              <Footer />
-            </div>
+            <LayoutShell>
+              {children}
+            </LayoutShell>
           </AuthProvider>
         </LanguageProvider>
       </body>

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { useAuth } from '@/lib/context/AuthContext';
 import { 
@@ -26,9 +27,15 @@ import {
 } from 'lucide-react';
 
 export default function Navbar() {
+  const pathname = usePathname();
   const { language, direction, toggleLanguage, t } = useLanguage();
   const { currentUser, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Exclude Navbar from all admin routes so the Admin Dashboard has its own dedicated shell
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
