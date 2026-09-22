@@ -69,6 +69,13 @@ export default function Navbar() {
               {language === 'ar' ? 'دليل المصدرين' : 'DIRECTORY'}
             </Link>
 
+            <Link
+              href="/importers"
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
+            >
+              {language === 'ar' ? 'دليل المستوردين' : 'IMPORTERS'}
+            </Link>
+
             <Link 
               href="/products" 
               className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
@@ -222,6 +229,13 @@ export default function Navbar() {
             className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
           >
             DIRECTORY
+          </Link>
+          <Link
+            href="/importers"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
+          >
+            IMPORTERS
           </Link>
           <Link
             href="/products"
