@@ -2,300 +2,211 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Globe,
+  LogOut,
+  Menu,
+  Sparkles,
+  X,
+} from 'lucide-react';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { useAuth } from '@/lib/context/AuthContext';
-import { 
-  Building2, 
-  Package, 
-  FileSpreadsheet, 
-  Flame, 
-  Tv, 
-  CreditCard, 
-  Globe, 
-  Menu, 
-  X, 
-  PlusCircle, 
-  LogIn, 
-  LogOut,
-  ArrowRight,
-  ArrowLeft,
-  ShieldAlert,
-  UserCheck,
-  Eye,
-  Ship
-} from 'lucide-react';
+
+const navigation = [
+  { href: '/', en: 'Home', ar: 'الرئيسية' },
+  { href: '/exporters', en: 'Directory', ar: 'دليل المصدرين' },
+  { href: '/importers', en: 'Importers', ar: 'دليل المستوردين' },
+  { href: '/products', en: 'Products', ar: 'المنتجات' },
+  { href: '/market', en: 'Market boards', ar: 'بورصة التوريدات' },
+  { href: '/rfqs', en: 'Importer desk', ar: 'مكتب المستورد' },
+  { href: '/dashboard/exporter', en: 'Exporter desk', ar: 'مكتب المصدر' },
+  { href: '/media', en: 'Media', ar: 'الإعلام' },
+  { href: '/dashboard/admin', en: 'Governance', ar: 'الرقابة' },
+];
+
+const focusStyle = 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b452f]';
 
 export default function Navbar() {
-  const { language, direction, toggleLanguage, t } = useLanguage();
+  const { language, direction, toggleLanguage } = useLanguage();
   const { currentUser, logout } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const pathname = usePathname() ?? '';
+  const [menuOpen, setMenuOpen] = useState(false);
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
+  const isArabic = language === 'ar';
+
+  const accountHref = currentUser.role === 'ADMIN'
+    ? '/dashboard/admin'
+    : currentUser.role === 'EXPORTER'
+      ? '/dashboard/exporter'
+      : '/rfqs';
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#eee8dc]/95 backdrop-blur-md border-b border-[#b9aa95] transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Brand Logo - Exact Replit Styling */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-[#9b452f] text-white flex items-center justify-center font-bold text-lg shadow-sm">
-              <span className="font-serif">٣٦٥</span>
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm font-bold tracking-[0.14em] text-[#202522] uppercase">
-                  MARKET <span className="text-[#9b452f]">365</span>
-                </span>
-              </div>
-              <span className="text-[9px] uppercase tracking-[0.22em] text-[#70695f] font-semibold">
+    <header dir={direction} className="sticky top-0 z-40 w-full border-b border-[#b9aa95] bg-[#eee8dc]/95 backdrop-blur-md">
+      <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 2xl:px-10">
+        <div className="flex h-20 items-center justify-between gap-5">
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className={`flex shrink-0 items-center gap-3 text-[#202522] ${focusStyle}`}
+            aria-label={isArabic ? 'ماركت 365 — الرئيسية' : 'Market 365 — home'}
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#9b452f] font-serif text-lg font-bold text-white" aria-hidden="true">
+              ٣٦٥
+            </span>
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span className="whitespace-nowrap text-sm font-bold uppercase tracking-[0.12em]">
+                MARKET <span className="text-[#9b452f]">365</span>
+              </span>
+              <span className="hidden whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.14em] text-[#70695f] sm:block">
                 EGYPT EXPORT GATEWAY
               </span>
-            </div>
+            </span>
           </Link>
 
-          {/* Desktop Navigation Links - Exact Replit Uppercase Tracking */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-            <Link 
-              href="/" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'الرئيسية' : 'HOME'}
-            </Link>
-
-            <Link 
-              href="/exporters" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'دليل المصدرين' : 'DIRECTORY'}
-            </Link>
-
-            <Link
-              href="/importers"
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'دليل المستوردين' : 'IMPORTERS'}
-            </Link>
-
-            <Link 
-              href="/products" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'المنتجات' : 'PRODUCTS'}
-            </Link>
-
-            <Link 
-              href="/market" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'بورصة التوريدات' : 'MARKET BOARDS'}
-            </Link>
-
-            <Link 
-              href="/rfqs" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'مكتب المستورد' : 'IMPORTER DESK'}
-            </Link>
-
-            <Link 
-              href="/dashboard/exporter" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'مكتب المصدر' : 'EXPORTER DESK'}
-            </Link>
-
-            <Link 
-              href="/media" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#70695f] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'الإعلام' : 'MEDIA'}
-            </Link>
-
-            <Link 
-              href="/dashboard/admin" 
-              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#70695f] hover:text-[#9b452f] transition-colors"
-            >
-              {language === 'ar' ? 'الرقابة' : 'GOVERNANCE'}
-            </Link>
+          <nav aria-label={isArabic ? 'التنقل الرئيسي' : 'Primary navigation'} className="hidden min-w-0 items-center gap-4 min-[1800px]:flex">
+            {navigation.map(({ href, en, ar }) => {
+              const active = href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={active ? 'page' : undefined}
+                  className={`whitespace-nowrap border-b-2 py-2 text-[11px] font-bold uppercase tracking-[0.1em] transition-colors ${focusStyle} ${
+                    active
+                      ? 'border-[#9b452f] text-[#9b452f]'
+                      : 'border-transparent text-[#202522] hover:text-[#9b452f]'
+                  }`}
+                >
+                  {isArabic ? ar : en}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* Right Action CTAs */}
-          <div className="hidden lg:flex items-center gap-4">
-            {/* Brand Intro Slideshow Trigger - Direct Page Link */}
+          <div className="hidden shrink-0 items-center gap-2 min-[1800px]:flex">
             <Link
               href="/welcome"
-              className="px-2.5 py-1 text-[11px] font-mono font-bold tracking-wider text-[#9b452f] hover:text-[#202522] border border-[#b9aa95]/80 hover:border-[#202522] rounded transition-colors flex items-center gap-1.5 uppercase"
-              title="Open Brand Story Pages"
+              className={`inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded border border-[#b9aa95] px-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9b452f] transition-colors hover:border-[#9b452f] ${focusStyle}`}
             >
-              <span className="text-[#c38b40]">✦</span>
-              <span>{language === 'ar' ? 'قصة المنصة والأدوار' : 'STORY & ROLES'}</span>
+              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+              {isArabic ? 'قصة المنصة والأدوار' : 'Story & roles'}
             </Link>
-
-            {/* Language Switcher */}
             <button
+              type="button"
               onClick={toggleLanguage}
-              className="px-2.5 py-1 text-xs font-semibold text-[#202522] hover:text-[#9b452f] transition-colors flex items-center gap-1"
-              title="Toggle Language"
+              className={`inline-flex h-10 items-center gap-1.5 whitespace-nowrap px-2 text-xs font-semibold text-[#202522] transition-colors hover:text-[#9b452f] ${focusStyle}`}
+              aria-label={isArabic ? 'Switch to English' : 'التبديل إلى العربية'}
             >
-              <Globe className="w-3.5 h-3.5 text-[#70695f]" />
-              <span>{language === 'en' ? 'عربي' : 'EN'}</span>
+              <Globe className="h-4 w-4" aria-hidden="true" />
+              {isArabic ? 'EN' : 'عربي'}
             </button>
-
-            {/* Post RFQ Button - Sharp Dark Replit Button */}
             <Link
               href="/rfqs/create"
-              className="px-5 py-2.5 bg-[#202522] hover:bg-[#9b452f] text-white text-xs font-bold tracking-[0.12em] uppercase transition-all flex items-center gap-2 shadow-sm"
+              className={`inline-flex h-10 items-center gap-2 whitespace-nowrap bg-[#202522] px-4 text-xs font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#9b452f] ${focusStyle}`}
             >
-              <span>{language === 'ar' ? 'طرح طلب توريد' : 'POST AN RFQ'}</span>
-              <ArrowIcon className="w-3.5 h-3.5" />
+              {isArabic ? 'طرح طلب توريد' : 'Post an RFQ'}
+              <ArrowIcon className="h-4 w-4" aria-hidden="true" />
             </Link>
-
-            {/* User Account State */}
             {currentUser.isLoggedIn ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-[#b9aa95]">
-                <Link
-                  href={
-                    currentUser.role === 'ADMIN'
-                      ? '/dashboard/admin'
-                      : currentUser.role === 'EXPORTER'
-                      ? '/dashboard/exporter'
-                      : '/rfqs'
-                  }
-                  className="flex items-center gap-1.5 px-2.5 py-1 bg-[#e4dac9] border border-[#b9aa95] text-[#202522] hover:border-[#9b452f] transition-all"
-                >
-                  <span className={`px-1.5 py-0.5 text-[9px] font-bold uppercase ${
-                    currentUser.role === 'ADMIN'
-                      ? 'bg-[#596348] text-[#f4efe5]'
-                      : currentUser.role === 'EXPORTER'
-                      ? 'bg-[#c38b40] text-[#202522]'
-                      : 'bg-[#9b452f] text-white'
-                  }`}>
-                    {currentUser.role}
-                  </span>
-                  <span className="text-xs font-semibold max-w-[100px] truncate">
-                    {currentUser.name}
-                  </span>
+              <div className="flex items-center gap-1 border-s border-[#b9aa95] ps-2">
+                <Link href={accountHref} className={`max-w-36 truncate whitespace-nowrap px-2 text-xs font-semibold text-[#202522] hover:text-[#9b452f] ${focusStyle}`}>
+                  {currentUser.name}
                 </Link>
-
-                <button
-                  onClick={logout}
-                  title={language === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}
-                  className="p-1.5 text-[#70695f] hover:text-[#9b452f] transition-all"
-                >
-                  <LogOut className="w-4 h-4" />
+                <button type="button" onClick={logout} aria-label={isArabic ? 'تسجيل الخروج' : 'Sign out'} className={`flex h-10 w-10 items-center justify-center text-[#70695f] hover:text-[#9b452f] ${focusStyle}`}>
+                  <LogOut className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             ) : (
-              <Link
-                href="/auth/login"
-                className="text-xs font-bold text-[#70695f] hover:text-[#9b452f] transition-colors uppercase tracking-[0.12em]"
-              >
-                {language === 'ar' ? 'دخول' : 'SIGN IN'}
+              <Link href="/auth/login" className={`whitespace-nowrap px-1 text-xs font-bold uppercase tracking-[0.08em] text-[#202522] hover:text-[#9b452f] ${focusStyle}`}>
+                {isArabic ? 'دخول' : 'Sign in'}
               </Link>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-3">
+          <div className="flex shrink-0 items-center gap-1 min-[1800px]:hidden">
             <button
+              type="button"
               onClick={toggleLanguage}
-              className="px-2 py-1 text-xs font-bold text-[#202522]"
+              className={`flex h-11 min-w-11 items-center justify-center px-2 text-xs font-bold text-[#202522] ${focusStyle}`}
+              aria-label={isArabic ? 'Switch to English' : 'التبديل إلى العربية'}
             >
-              {language === 'en' ? 'عربي' : 'EN'}
+              {isArabic ? 'EN' : 'عربي'}
             </button>
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-[#202522] hover:text-[#9b452f]"
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-controls="site-menu"
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? (isArabic ? 'إغلاق القائمة' : 'Close menu') : (isArabic ? 'فتح القائمة' : 'Open menu')}
+              className={`flex h-11 w-11 items-center justify-center text-[#202522] hover:text-[#9b452f] ${focusStyle}`}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {menuOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#b9aa95] bg-[#e4dac9] px-4 pt-4 pb-6 space-y-3">
-          <Link
-            href="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            HOME
-          </Link>
-          <Link
-            href="/exporters"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            DIRECTORY
-          </Link>
-          <Link
-            href="/importers"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            IMPORTERS
-          </Link>
-          <Link
-            href="/products"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            PRODUCTS
-          </Link>
-          <Link
-            href="/market"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            MARKET BOARDS
-          </Link>
-          <Link
-            href="/rfqs"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            IMPORTER DESK
-          </Link>
-          <Link
-            href="/dashboard/exporter"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            EXPORTER DESK
-          </Link>
-          <Link
-            href="/pricing"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
-          >
-            PRICING & TIERS
-          </Link>
-          <div className="pt-3 border-t border-[#b9aa95] flex flex-col gap-2">
+      {menuOpen && (
+        <nav
+          id="site-menu"
+          aria-label={isArabic ? 'قائمة التنقل' : 'Menu navigation'}
+          className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-[#b9aa95] bg-[#eee8dc] px-4 py-4 sm:px-6 min-[1800px]:hidden"
+        >
+          <div className="mx-auto grid max-w-[1600px] gap-1 sm:grid-cols-2 lg:grid-cols-3">
+            {navigation.map(({ href, en, ar }) => {
+              const active = href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={active ? 'page' : undefined}
+                  className={`flex min-h-11 items-center border-s-2 px-3 text-xs font-bold uppercase tracking-[0.08em] ${focusStyle} ${
+                    active
+                      ? 'border-[#9b452f] bg-[#e4dac9] text-[#9b452f]'
+                      : 'border-transparent text-[#202522] hover:bg-[#e4dac9]'
+                  }`}
+                >
+                  {isArabic ? ar : en}
+                </Link>
+              );
+            })}
             <Link
-              href="/welcome"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-2 bg-[#e4dac9] border border-[#b9aa95] text-[#9b452f] text-xs font-mono font-bold uppercase tracking-[0.12em]"
+              href="/pricing"
+              onClick={() => setMenuOpen(false)}
+              className={`flex min-h-11 items-center border-s-2 border-transparent px-3 text-xs font-bold uppercase tracking-[0.08em] text-[#202522] hover:bg-[#e4dac9] ${focusStyle}`}
             >
-              ✦ {language === 'ar' ? 'قصة المنصة والأدوار' : 'STORY & ROLES'}
-            </Link>
-            <Link
-              href="/rfqs/create"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-2.5 bg-[#202522] text-white text-xs font-bold uppercase tracking-[0.12em]"
-            >
-              POST AN RFQ
-            </Link>
-            <Link
-              href="/auth/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-2 border border-[#202522] text-[#202522] text-xs font-bold uppercase tracking-[0.12em]"
-            >
-              SIGN IN
+              {isArabic ? 'الأسعار والباقات' : 'Pricing & tiers'}
             </Link>
           </div>
-        </div>
+          <div className="mx-auto mt-4 flex max-w-[1600px] flex-wrap items-center gap-2 border-t border-[#b9aa95] pt-4">
+            <Link href="/welcome" onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center gap-2 border border-[#b9aa95] px-4 text-xs font-bold text-[#9b452f] ${focusStyle}`}>
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+              {isArabic ? 'قصة المنصة والأدوار' : 'Story & roles'}
+            </Link>
+            <Link href="/rfqs/create" onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center bg-[#202522] px-4 text-xs font-bold text-white ${focusStyle}`}>
+              {isArabic ? 'طرح طلب توريد' : 'Post an RFQ'}
+            </Link>
+            {currentUser.isLoggedIn ? (
+              <>
+                <Link href={accountHref} onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center px-3 text-xs font-bold text-[#202522] ${focusStyle}`}>
+                  {currentUser.name}
+                </Link>
+                <button type="button" onClick={() => { logout(); setMenuOpen(false); }} className={`inline-flex min-h-11 items-center gap-2 px-3 text-xs font-bold text-[#202522] ${focusStyle}`}>
+                  <LogOut className="h-4 w-4" aria-hidden="true" />
+                  {isArabic ? 'تسجيل الخروج' : 'Sign out'}
+                </button>
+              </>
+            ) : (
+              <Link href="/auth/login" onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center px-3 text-xs font-bold text-[#202522] ${focusStyle}`}>
+                {isArabic ? 'دخول' : 'Sign in'}
+              </Link>
+            )}
+          </div>
+        </nav>
       )}
     </header>
   );
