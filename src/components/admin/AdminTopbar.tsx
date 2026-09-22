@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth, UserAccount } from '@/lib/context/AuthContext';
+import { useLanguage } from '@/lib/context/LanguageContext';
 import { supabase } from '@/lib/supabase/client';
 
 interface AdminTopbarProps {
@@ -21,6 +22,9 @@ export default function AdminTopbar({
 }: AdminTopbarProps) {
   const router = useRouter();
   const { logout } = useAuth();
+  const { language, direction, toggleLanguage } = useLanguage();
+  const isRtl = direction === 'rtl';
+
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -63,7 +67,7 @@ export default function AdminTopbar({
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
           className="flex h-9 w-9 items-center justify-center rounded-lg text-[#202522] hover:bg-[#e4dac9] lg:hidden"
-          aria-label="Toggle Navigation"
+          aria-label={language === 'ar' ? 'تبديل القائمة' : 'Toggle Navigation'}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -74,7 +78,7 @@ export default function AdminTopbar({
         <form onSubmit={handleSearchSubmit} className="relative w-full hidden sm:block">
           <div className="relative flex items-center">
             <svg
-              className="absolute left-3.5 h-4 w-4 text-[#70695f]"
+              className={`absolute ${isRtl ? 'right-3.5' : 'left-3.5'} h-4 w-4 text-[#70695f] pointer-events-none`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -90,25 +94,42 @@ export default function AdminTopbar({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search users, companies, products, HS codes..."
-              className="h-9 w-full rounded-lg border border-[#b9aa95] bg-[#e4dac9] pl-10 pr-12 text-xs text-[#202522] placeholder-[#70695f] transition-colors focus:border-[#9b452f] focus:outline-none focus:ring-1 focus:ring-[#9b452f]"
+              placeholder={
+                language === 'ar'
+                  ? 'ابحث عن المستخدمين، الشركات، المنتجات، كود HS...'
+                  : 'Search users, companies, products, HS codes...'
+              }
+              className={`h-9 w-full rounded-lg border border-[#b9aa95] bg-[#e4dac9] ${
+                isRtl ? 'pr-10 pl-12 text-right' : 'pl-10 pr-12 text-left'
+              } text-xs text-[#202522] placeholder-[#70695f] transition-colors focus:border-[#9b452f] focus:outline-none focus:ring-1 focus:ring-[#9b452f]`}
             />
-            <kbd className="absolute right-3 hidden rounded border border-[#b9aa95] bg-[#eee8dc] px-1.5 py-0.5 text-[9px] font-semibold text-[#70695f] sm:inline-block">
+            <kbd className={`absolute ${isRtl ? 'left-3' : 'right-3'} hidden rounded border border-[#b9aa95] bg-[#eee8dc] px-1.5 py-0.5 text-[9px] font-semibold text-[#70695f] sm:inline-block`}>
               Ctrl+K
             </kbd>
           </div>
         </form>
       </div>
 
-      {/* Right Area: System Status, Notifications, Admin Profile */}
-      <div className="flex items-center gap-3">
+      {/* Right Area: Language Switcher, Notifications, Admin Profile */}
+      <div className="flex items-center gap-2.5 sm:gap-3">
+        {/* Language Switcher Button */}
+        <button
+          onClick={toggleLanguage}
+          className="flex h-9 items-center gap-1.5 px-2.5 sm:px-3 rounded-lg border border-[#b9aa95] bg-[#e4dac9] text-xs font-bold text-[#202522] hover:bg-[#d8cebe] transition-colors shadow-sm"
+          title={language === 'en' ? 'التحويل إلى اللغة العربية' : 'Switch to English'}
+        >
+          <svg className="w-3.5 h-3.5 text-[#9b452f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+          </svg>
+          <span>{language === 'en' ? 'عربي' : 'EN'}</span>
+        </button>
 
         {/* Notifications Dropdown */}
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => setNotificationsOpen(!notificationsOpen)}
             className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-[#b9aa95] bg-[#e4dac9] text-[#202522] hover:bg-[#d8cebe] transition-colors"
-            title="Notifications"
+            title={language === 'ar' ? 'التنبيهات' : 'Notifications'}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -127,34 +148,44 @@ export default function AdminTopbar({
 
           {/* Notifications Flyout */}
           {notificationsOpen && (
-            <div className="absolute right-0 mt-2 w-80 rounded-xl border border-[#b9aa95] bg-[#eee8dc] p-3 shadow-2xl z-50">
+            <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-80 rounded-xl border border-[#b9aa95] bg-[#eee8dc] p-3 shadow-2xl z-50`}>
               <div className="flex items-center justify-between pb-2 border-b border-[#b9aa95]">
-                <span className="text-xs font-semibold text-[#202522]">System Alerts</span>
+                <span className="text-xs font-semibold text-[#202522]">
+                  {language === 'ar' ? 'تنبيهات النظام' : 'System Alerts'}
+                </span>
                 <Link
                   href="/admin/notifications"
                   onClick={() => setNotificationsOpen(false)}
                   className="text-[11px] text-[#9b452f] font-semibold hover:underline"
                 >
-                  View all
+                  {language === 'ar' ? 'عرض الكل' : 'View all'}
                 </Link>
               </div>
               <div className="mt-2 space-y-2 max-h-64 overflow-y-auto">
                 <div className="rounded-lg bg-[#e4dac9] border border-[#b9aa95] p-2.5 text-xs">
                   <div className="flex items-center justify-between text-[10px] text-[#70695f]">
-                    <span className="font-semibold text-[#9b6820]">CR AUDIT PENDING</span>
+                    <span className="font-semibold text-[#9b6820]">
+                      {language === 'ar' ? 'مراجعة السجل التجاري' : 'CR AUDIT PENDING'}
+                    </span>
                     <span>10m ago</span>
                   </div>
                   <p className="mt-1 text-[#202522] font-medium text-[11px]">
-                    Nile Valley Agro uploaded Commercial Registry doc for verification.
+                    {language === 'ar'
+                      ? 'شركة وادي النيل للحاصلات قامت برفع مستند السجل التجاري للاعتماد.'
+                      : 'Nile Valley Agro uploaded Commercial Registry doc for verification.'}
                   </p>
                 </div>
                 <div className="rounded-lg bg-[#e4dac9] border border-[#b9aa95] p-2.5 text-xs">
                   <div className="flex items-center justify-between text-[10px] text-[#70695f]">
-                    <span className="font-semibold text-emerald-700">WIRE TRANSFER</span>
+                    <span className="font-semibold text-emerald-700">
+                      {language === 'ar' ? 'إشعار تحويل بنكي' : 'WIRE TRANSFER'}
+                    </span>
                     <span>1h ago</span>
                   </div>
                   <p className="mt-1 text-[#202522] font-medium text-[11px]">
-                    Fawry reference #FW-9821 submitted for Premium Exporter annual plan.
+                    {language === 'ar'
+                      ? 'تم تقديم رقم مرجع فوري FW-9821 للاشتراك السنوي في باقة المصدر المميز.'
+                      : 'Fawry reference #FW-9821 submitted for Premium Exporter annual plan.'}
                   </p>
                 </div>
               </div>
@@ -171,12 +202,12 @@ export default function AdminTopbar({
             <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#9b452f] text-xs font-bold text-white uppercase">
               {adminUser?.name ? adminUser.name.charAt(0) : 'A'}
             </div>
-            <div className="hidden sm:flex flex-col text-left">
+            <div className={`hidden sm:flex flex-col ${isRtl ? 'text-right' : 'text-left'}`}>
               <span className="text-xs font-semibold text-[#202522] leading-tight">
-                {adminUser?.name || 'Administrator'}
+                {adminUser?.name || (language === 'ar' ? 'مسؤول النظام' : 'Administrator')}
               </span>
               <span className="text-[10px] text-[#9b452f] font-mono leading-tight font-bold">
-                SUPER ADMIN
+                {language === 'ar' ? 'مسؤول عام' : 'SUPER ADMIN'}
               </span>
             </div>
             <svg
@@ -193,10 +224,10 @@ export default function AdminTopbar({
 
           {/* Profile Menu Flyout */}
           {profileDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-56 rounded-xl border border-[#b9aa95] bg-[#eee8dc] p-1.5 shadow-2xl z-50">
+            <div className={`absolute ${isRtl ? 'left-0' : 'right-0'} mt-2 w-56 rounded-xl border border-[#b9aa95] bg-[#eee8dc] p-1.5 shadow-2xl z-50`}>
               <div className="px-3 py-2 border-b border-[#b9aa95]">
                 <div className="text-xs font-semibold text-[#202522]">
-                  {adminUser?.name || 'System Administrator'}
+                  {adminUser?.name || (language === 'ar' ? 'مسؤول النظام الرئيسي' : 'System Administrator')}
                 </div>
                 <div className="text-[11px] text-[#70695f] truncate">
                   {adminUser?.email || 'admin@openmarket365.com'}
@@ -212,7 +243,7 @@ export default function AdminTopbar({
                   <svg className="w-4 h-4 text-[#70695f]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  Admin Profile
+                  {language === 'ar' ? 'الملف الشخصي للمسؤول' : 'Admin Profile'}
                 </Link>
 
                 <Link
@@ -224,19 +255,21 @@ export default function AdminTopbar({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  System Settings
+                  {language === 'ar' ? 'إعدادات المنصة' : 'System Settings'}
                 </Link>
               </div>
 
               <div className="pt-1 border-t border-[#b9aa95]">
                 <button
                   onClick={handleSignOut}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-rose-700 hover:bg-rose-500/10 transition-colors text-left"
+                  className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs text-rose-700 hover:bg-rose-500/10 transition-colors ${
+                    isRtl ? 'text-right' : 'text-left'
+                  }`}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
-                  Sign Out
+                  {language === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}
                 </button>
               </div>
             </div>
