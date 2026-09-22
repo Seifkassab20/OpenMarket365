@@ -2,25 +2,22 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { notFound, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { fallbackCompanies, fallbackProducts } from '@/lib/data/fallbackData';
 import { 
-  Building2, 
   ShieldCheck, 
   MapPin, 
   Award, 
   Video, 
-  Phone, 
-  Mail, 
-  Globe, 
-  Warehouse, 
-  Cpu, 
   Anchor, 
   Package, 
-  MessageSquare,
-  ArrowRight,
-  ArrowLeft
+  Layers,
+  ArrowRight, 
+  ArrowLeft,
+  Calendar,
+  Box,
+  Cpu
 } from 'lucide-react';
 import MaskedContact from '@/components/shared/MaskedContact';
 
@@ -34,274 +31,218 @@ export default function ExporterShowroomPage() {
   const companyProducts = fallbackProducts.filter((p) => p.company_id === company.id);
 
   return (
-    <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+    <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 bg-[#eee8dc]">
       {/* Top Breadcrumb */}
-      <div className="flex items-center gap-2 text-xs text-brand-dim">
-        <Link href="/exporters" className="hover:text-white transition-colors">
-          {t('navShowrooms')}
+      <div className="flex items-center gap-2 text-xs text-[#70695f] uppercase tracking-wider font-semibold">
+        <Link href="/exporters" className="hover:text-[#9b452f] transition-colors">
+          EXPORTER DIRECTORY
         </Link>
         <span>/</span>
-        <span className="text-brand-gold font-medium">{company.company_name_en}</span>
+        <span className="text-[#202522]">{company.company_name_en}</span>
       </div>
 
-      {/* Hero Showroom Header Banner */}
-      <div className="relative glass-panel rounded-3xl overflow-hidden border-brand-border">
-        {company.cover_banner_url && (
-          <div className="h-64 sm:h-80 w-full relative">
-            <img
-              src={company.cover_banner_url}
-              alt={company.company_name_en}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/70 to-transparent"></div>
-          </div>
-        )}
+      {/* Showroom Header */}
+      <div className="border-b border-[#202522] pb-8">
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6">
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="tag tag-olive">OFFICIALLY VERIFIED EXPORTER</span>
+              <span className="tag tag-amber">ELITE PACKHOUSE</span>
+              <span className="tag tag-muted font-mono">CR: {company.cr_number}</span>
+            </div>
 
-        {/* Floating Identity Card */}
-        <div className="p-6 sm:p-8 -mt-20 relative z-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-5">
-            {company.logo_url && (
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-brand-surface p-2 border-2 border-brand-gold shadow-2xl flex-shrink-0">
-                <img
-                  src={company.logo_url}
-                  alt={company.company_name_en}
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </div>
-            )}
+            <h1 className="font-serif text-4xl sm:text-6xl text-[#202522] font-normal leading-tight">
+              {language === 'ar' ? (company.company_name_ar || company.company_name_en) : company.company_name_en}
+            </h1>
 
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-brand-emeraldDark/90 border border-brand-emeraldLight/40 text-brand-emeraldLight text-xs font-bold flex items-center gap-1.5 shadow-sm">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>{language === 'ar' ? 'مصدّر معتمد رسمياً' : 'Officially Verified Exporter'}</span>
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-white/10 text-brand-text text-xs font-mono border border-brand-border">
-                  CR: {company.cr_number}
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-white/10 text-brand-text text-xs font-mono border border-brand-border">
-                  Tax ID: {company.tax_id}
-                </span>
-              </div>
-
-              <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-                {language === 'ar' ? (company.company_name_ar || company.company_name_en) : company.company_name_en}
-              </h1>
-
-              <div className="flex flex-wrap items-center gap-4 text-xs text-brand-muted">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-brand-gold" />
-                  <span>{company.governorate}, Egypt</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <Anchor className="w-3.5 h-3.5 text-brand-cyan" />
-                  <span>Ports: {company.export_port_history}</span>
-                </span>
-              </div>
+            <div className="flex flex-wrap items-center gap-4 text-xs text-[#565047]">
+              <span className="flex items-center gap-1">
+                <MapPin className="w-3.5 h-3.5 text-[#9b452f]" />
+                <span>{company.governorate}, Egypt</span>
+              </span>
+              <span>·</span>
+              <span className="flex items-center gap-1">
+                <Anchor className="w-3.5 h-3.5 text-[#596348]" />
+                <span>Ports: {company.export_port_history}</span>
+              </span>
             </div>
           </div>
 
-          {/* Masked Contact & Reveal Trigger */}
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="w-full lg:w-auto">
             <MaskedContact
               phone={company.company_phone}
               whatsapp={company.company_phone}
               email={company.company_email}
               companyName={company.company_name_en}
-              variant="button"
+              variant="card"
             />
           </div>
         </div>
       </div>
 
-      {/* Main Content Grid: Specs, Tour & Products */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Left Column (2 Cols): About, 4K Factory Tour, Products */}
-        <div className="lg:col-span-2 space-y-10">
-          {/* About Section */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8">
-            <h3 className="text-lg font-bold text-white mb-3">
-              {language === 'ar' ? 'نبذة عن الشركة والمنشأة' : 'Company & Packhouse Overview'}
+      {/* Facility Specs Matrix matching Replit */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-[#202522]">
+        <div className="bg-[#e4dac9] border border-[#b9aa95] p-5">
+          <div className="text-[10px] uppercase font-bold tracking-[0.16em] text-[#70695f] mb-1">
+            OPTICAL SORTING MACHINERY
+          </div>
+          <div className="font-serif text-2xl text-[#202522]">
+            {company.sorting_machinery || 'Aweta InVision 6-Lane'}
+          </div>
+          <p className="text-xs text-[#565047] mt-1">High-speed blemish & color calibration</p>
+        </div>
+
+        <div className="bg-[#e4dac9] border border-[#b9aa95] p-5">
+          <div className="text-[10px] uppercase font-bold tracking-[0.16em] text-[#70695f] mb-1">
+            COLD STORAGE CAPACITY
+          </div>
+          <div className="font-serif text-2xl text-[#202522]">
+            {company.cold_storage_capacity_ml ? `${company.cold_storage_capacity_ml.toLocaleString()} MT` : '12,000 MT'}
+          </div>
+          <p className="text-xs text-[#565047] mt-1">Controlled atmosphere & pre-cooling</p>
+        </div>
+
+        <div className="bg-[#e4dac9] border border-[#b9aa95] p-5">
+          <div className="text-[10px] uppercase font-bold tracking-[0.16em] text-[#70695f] mb-1">
+            ANNUAL EXPORT CAPACITY
+          </div>
+          <div className="font-serif text-2xl text-[#202522]">
+            {company.annual_capacity_ml ? `${company.annual_capacity_ml.toLocaleString()} MT` : '45,000 MT'}
+          </div>
+          <p className="text-xs text-[#565047] mt-1">Direct port dispatch capability</p>
+        </div>
+
+        <div className="bg-[#e4dac9] border border-[#b9aa95] p-5">
+          <div className="text-[10px] uppercase font-bold tracking-[0.16em] text-[#70695f] mb-1">
+            PRIMARY EXPORT ROUTES
+          </div>
+          <div className="font-serif text-2xl text-[#202522]">
+            Rotterdam · Jeddah · Hamburg
+          </div>
+          <p className="text-xs text-[#565047] mt-1">Direct sea container lines</p>
+        </div>
+      </div>
+
+      {/* Main Content: About & 4K Tour Embed */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="lg:col-span-7 space-y-6">
+          <div className="space-y-3">
+            <h3 className="font-serif text-2xl text-[#202522] font-normal">
+              Facility profile & operations
             </h3>
-            <p className="text-xs sm:text-sm text-brand-muted leading-relaxed">
+            <p className="text-sm text-[#565047] leading-relaxed">
               {language === 'ar' ? (company.about_ar || company.about_en) : company.about_en}
             </p>
           </div>
 
-          {/* 4K YouTube Factory Tour Embed */}
+          {/* 4K YouTube Video Tour Embed */}
           {company.youtube_video_id && (
-            <div className="glass-panel rounded-3xl p-6 sm:p-8 border-brand-goldBorder/40">
-              <div className="flex items-center gap-2 mb-4">
-                <Video className="w-5 h-5 text-red-500" />
-                <h3 className="text-lg font-bold text-white">
-                  {language === 'ar' ? 'جولة تفقدية في المصنع ومحطة الفرز' : '4K Optical Sorting & Packhouse Tour'}
-                </h3>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#9b452f]">
+                <Video className="w-4 h-4" />
+                <span>4K Facility & Packing House Walkthrough</span>
               </div>
-              <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl">
+              <div className="aspect-[16/9] w-full overflow-hidden bg-[#202522] border border-[#b9aa95]">
                 <iframe
+                  src={`https://www.youtube.com/embed/${company.youtube_video_id}?rel=0`}
+                  title="Facility Tour"
                   className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${company.youtube_video_id}`}
-                  title={`${company.company_name_en} Video Tour`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
             </div>
           )}
+        </div>
 
-          {/* Published Products Grid */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-bold text-white">
-                {language === 'ar' ? 'المنتجات والمحاصيل المتاحة للتصدير' : 'Export Commodities & Harvests'}
-              </h3>
-              <span className="text-xs text-brand-gold font-bold">
-                {companyProducts.length} {language === 'ar' ? 'محاصيل' : 'Products'}
+        {/* Right Column: Certificate Vault */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="bg-[#e4dac9] border border-[#b9aa95] p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#b9aa95]">
+              <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#202522] flex items-center gap-1.5">
+                <Award className="w-4 h-4 text-[#9b452f]" />
+                <span>Accreditation & Quality Vault</span>
               </span>
+              <span className="tag tag-olive">AUDITED</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {companyProducts.map((prod) => (
-                <div
-                  key={prod.id}
-                  className="glass-panel rounded-2xl overflow-hidden hover:border-brand-gold/40 transition-all flex flex-col justify-between group"
-                >
-                  <div className="h-44 bg-brand-navy relative overflow-hidden">
-                    {prod.images && prod.images[0] && (
-                      <img
-                        src={prod.images[0]}
-                        alt={prod.title_en || 'Product'}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    )}
-                    <div className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-black/60 text-white border border-white/20">
-                      HS {prod.hs_code}
-                    </div>
+            <p className="text-xs text-[#565047]">
+              All certificates have been validated against official Egyptian accreditation councils and international audit bodies.
+            </p>
+
+            <div className="space-y-2.5 pt-2">
+              {(company.quality_iso ? company.quality_iso.split(',') : ['GlobalG.A.P.', 'ISO 22000', 'BRCGS Food', 'SMETA Sedex', 'Halal']).map((cert, idx) => (
+                <div key={idx} className="flex items-center justify-between p-3 bg-[#eee8dc] border border-[#b9aa95]/80 text-xs">
+                  <div className="flex items-center gap-2 font-medium text-[#202522]">
+                    <ShieldCheck className="w-4 h-4 text-[#596348]" />
+                    <span>{cert.trim()}</span>
                   </div>
-
-                  <div className="p-5 flex flex-col flex-grow justify-between">
-                    <div>
-                      <h4 className="text-sm font-bold text-white group-hover:text-brand-gold transition-colors line-clamp-1 mb-2">
-                        {language === 'ar' ? prod.title_ar : prod.title_en}
-                      </h4>
-                      <p className="text-xs text-brand-dim line-clamp-2 leading-relaxed mb-4">
-                        {language === 'ar' ? prod.body_ar : prod.body_en}
-                      </p>
-
-                      <div className="grid grid-cols-2 gap-2 text-[11px] p-2.5 rounded-lg bg-white/5 border border-brand-border mb-4">
-                        <div>
-                          <span className="text-brand-dim block">MOQ:</span>
-                          <strong className="text-white">{prod.minimum_order_quantity} MT</strong>
-                        </div>
-                        <div>
-                          <span className="text-brand-dim block">Season:</span>
-                          <strong className="text-brand-gold">{prod.harvest_season_from} - {prod.harvest_season_to}</strong>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-3 border-t border-brand-border/60">
-                      <div className="text-base font-extrabold text-white">
-                        ${prod.price} <span className="text-[10px] font-normal text-brand-dim">/ MT</span>
-                      </div>
-                      <Link
-                        href={`/products`}
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-gold/10 text-brand-gold hover:bg-brand-gold hover:text-brand-dark transition-all"
-                      >
-                        {t('viewProductDetails')}
-                      </Link>
-                    </div>
-                  </div>
+                  <span className="text-[10px] font-mono text-[#70695f] uppercase">Valid 2026/27</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Right Column (1 Col): Technical Specs & Certificate Vault */}
-        <div className="space-y-8">
-          {/* Facility Specs Box */}
-          <div className="glass-panel rounded-3xl p-6 space-y-4">
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider border-b border-brand-border/60 pb-3">
-              {language === 'ar' ? 'القدرات الفنية والتخزينية' : 'Packhouse & Cold Storage Specs'}
-            </h4>
-
-            <div className="space-y-3 text-xs">
-              <div className="flex items-start gap-3">
-                <Warehouse className="w-4 h-4 text-brand-cyan flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-brand-dim block">Cold Storage Capacity:</span>
-                  <span className="font-bold text-white">
-                    {company.cold_storage_capacity_ml?.toLocaleString()} MT (Controlled Atmosphere)
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Cpu className="w-4 h-4 text-brand-gold flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-brand-dim block">Optical Sorting Machinery:</span>
-                  <span className="font-bold text-white">{company.sorting_machinery}</span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Package className="w-4 h-4 text-brand-emeraldLight flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-brand-dim block">Annual Output:</span>
-                  <span className="font-bold text-white">
-                    {company.annual_capacity_ml?.toLocaleString()} Metric Tons / Year
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-brand-dim flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-brand-dim block">Factory Address:</span>
-                  <span className="text-white">
-                    {language === 'ar' ? (company.factory_address_ar || company.factory_address_en) : company.factory_address_en}
-                  </span>
-                </div>
-              </div>
-            </div>
+      {/* Published Commodities Catalog Grid */}
+      <div className="pt-8 border-t border-[#b9aa95] space-y-6">
+        <div className="flex items-end justify-between">
+          <div>
+            <div className="kicker mb-1">EXPORT CATALOG</div>
+            <h3 className="font-serif text-3xl text-[#202522]">
+              Listed commodities & packing specs
+            </h3>
           </div>
+          <Link
+            href="/products"
+            className="text-xs font-bold uppercase tracking-[0.14em] text-[#9b452f] hover:underline flex items-center gap-1"
+          >
+            <span>View All Products</span>
+            <ArrowIcon className="w-3.5 h-3.5" />
+          </Link>
+        </div>
 
-          {/* Compliance & Quality Certificate Vault */}
-          <div className="glass-panel-gold rounded-3xl p-6 space-y-4">
-            <div className="flex items-center gap-2 border-b border-brand-goldBorder/40 pb-3">
-              <Award className="w-4 h-4 text-brand-gold" />
-              <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-                {language === 'ar' ? 'خزينة الشهادات والاعتمادات' : 'Compliance Certificate Vault'}
-              </h4>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {companyProducts.map((prod) => (
+            <Link
+              key={prod.id}
+              href={`/products/${prod.slug}`}
+              className="group bg-[#e4dac9] border border-[#b9aa95] overflow-hidden hover:border-[#9b452f] transition-all flex flex-col justify-between"
+            >
+              <div className="aspect-[16/10] overflow-hidden bg-[#eee8dc]">
+                <img
+                  src={prod.images?.[0] || 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=800&auto=format&fit=crop&q=80'}
+                  alt={prod.title_en || 'Commodity'}
+                  className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
+                />
+              </div>
 
-            <div className="space-y-2.5">
-              {company.quality_iso?.split(',').map((cert, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-brand-border text-xs"
-                >
-                  <div className="flex items-center gap-2 font-bold text-brand-text">
-                    <ShieldCheck className="w-4 h-4 text-brand-emeraldLight" />
-                    <span>{cert.trim()}</span>
+              <div className="p-5 space-y-3">
+                <div className="flex items-center justify-between text-[10px] font-mono text-[#70695f]">
+                  <span>HS {prod.hs_code}</span>
+                  <span className="tag tag-muted">{prod.harvest_season_from} - {prod.harvest_season_to}</span>
+                </div>
+
+                <h4 className="font-serif text-xl text-[#202522] group-hover:text-[#9b452f] transition-colors line-clamp-1">
+                  {prod.title_en}
+                </h4>
+
+                <p className="text-xs text-[#565047] line-clamp-2">
+                  {prod.body_en}
+                </p>
+
+                <div className="pt-3 border-t border-[#b9aa95] flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] text-[#70695f] block uppercase">Indicative FOB</span>
+                    <span className="text-base font-bold text-[#9b452f]">${prod.price} <span className="text-xs font-normal text-[#70695f]">/ MT</span></span>
                   </div>
-                  <span className="text-[10px] font-bold text-brand-emeraldLight bg-brand-emerald/10 px-2 py-0.5 rounded border border-brand-emeraldLight/30">
-                    VERIFIED
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#202522] group-hover:text-[#9b452f]">
+                    View Specs →
                   </span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Official Masked Contact Card */}
-          <MaskedContact
-            phone={company.company_phone}
-            whatsapp={company.company_phone}
-            email={company.company_email}
-            companyName={company.company_name_en}
-            variant="card"
-          />
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

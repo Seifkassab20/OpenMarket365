@@ -1,96 +1,154 @@
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-primary: #080c14;
-  --bg-secondary: #0f172a;
-  --bg-card: #131a27;
-  --bg-card-hover: #182234;
-  --gold-primary: #e5b842;
-  --gold-hover: #f5c84c;
-  --emerald-primary: #059669;
-  --emerald-light: #10b981;
+  --background: 39 31% 89%; /* #eee8dc */
+  --foreground: 150 8% 14%; /* #202522 */
+  --border: 32 22% 66%; /* #b9aa95 */
+  --primary: 12 54% 42%; /* #9b452f */
+  --secondary: 42 24% 82%; /* #e4dac9 */
+  --accent: 42 53% 51%; /* #c38b40 */
+  --muted-foreground: 31 12% 40%; /* #70695f */
+  --app-font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --app-font-serif: "Instrument Serif", Georgia, serif;
 }
 
 body {
-  background-color: #080c14;
-  color: #f8fafc;
+  background-color: #eee8dc;
+  color: #202522;
+  font-family: var(--app-font-sans);
   overflow-x: hidden;
-  selection-background-color: #e5b842;
-  selection-color: #080c14;
+  selection-background-color: #9b452f;
+  selection-color: #ffffff;
 }
 
-/* Glassmorphism Classes */
+/* Typography Rules matching Replit Market 365 */
+h1, h2, h3, .font-serif, .display-title {
+  font-family: var(--app-font-serif);
+  font-weight: 400;
+}
+
+.ar {
+  font-family: "Cairo", sans-serif;
+}
+
+/* Grain texture overlay matching Replit */
+.grain {
+  position: relative;
+}
+
+.grain::after {
+  content: "";
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+  position: fixed;
+  inset: 0;
+}
+
+/* Replit Editorial Surfaces & Classes */
+.soft-surface {
+  background-color: #e4dac9;
+}
+
+.paper-surface {
+  background-color: #eee8dc;
+}
+
+.ink-surface {
+  color: #eee8dc;
+  background-color: #202522;
+}
+
+.olive-surface {
+  color: #eee8dc;
+  background-color: #596348;
+}
+
+.rust {
+  color: #9b452f;
+}
+
+.muted-copy {
+  color: #70695f;
+}
+
+.rule {
+  border-color: #b9aa95;
+}
+
+/* Editorial Kickers & Tags */
+.kicker {
+  color: #9b452f;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.tag {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+}
+
+.tag-olive {
+  color: #f4efe5;
+  background-color: #596348;
+}
+
+.tag-rust {
+  color: #f4efe5;
+  background-color: #9b452f;
+}
+
+.tag-amber {
+  color: #202522;
+  background-color: #c38b40;
+}
+
+.tag-muted {
+  color: #565047;
+  background-color: #d9cebd;
+}
+
+/* Backward-compatible panel classes mapped to warm editorial surfaces */
 .glass-panel {
-  background: rgba(19, 26, 39, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #e4dac9;
+  border: 1px solid #b9aa95;
 }
 
 .glass-panel-gold {
-  background: rgba(19, 26, 39, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(229, 184, 66, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(229, 184, 66, 0.08);
+  background: #eee8dc;
+  border: 1px solid #c38b40;
 }
 
 .glass-panel-emerald {
-  background: rgba(19, 26, 39, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.08);
+  background: #e4dac9;
+  border: 1px solid #596348;
 }
 
-/* Gold Gradient Text */
-.text-gold-gradient {
-  background: linear-gradient(135deg, #ffffff 20%, #f5c84c 60%, #e5b842 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.text-emerald-gradient {
-  background: linear-gradient(135deg, #ffffff 20%, #34d399 60%, #059669 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Subtle Animated Glow */
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-.animate-glow {
-  animation: pulseGlow 6s ease-in-out infinite;
-}
-
-/* Custom Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #080c14;
+  background: #eee8dc;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: #b9aa95;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #e5b842;
+  background: #9b452f;
 }

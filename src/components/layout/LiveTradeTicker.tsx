@@ -2,59 +2,53 @@
 
 import React from 'react';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { TrendingUp, ShieldCheck, Flame, Globe2, AlertCircle } from 'lucide-react';
+import { TrendingUp, ShieldCheck, Flame, Globe2 } from 'lucide-react';
 
 export default function LiveTradeTicker() {
   const { language, t } = useLanguage();
 
   return (
-    <div className="bg-brand-dark/95 border-b border-brand-goldBorder/30 py-2 px-4 text-xs overflow-hidden relative z-50">
+    <div className="bg-[#e4dac9] border-b border-[#b9aa95] py-1.5 px-4 text-xs overflow-hidden relative z-50 text-[#202522]">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        {/* Live Badge */}
+        {/* Live Indicator */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-gold"></span>
-          </span>
-          <span className="font-bold tracking-wider text-brand-gold uppercase text-[10px]">
-            {t('tickerLive')}
+          <span className="w-2 h-2 rounded-full bg-[#9b452f] animate-pulse"></span>
+          <span className="font-bold tracking-[0.18em] text-[#9b452f] uppercase text-[9px]">
+            {language === 'ar' ? 'البث التجاري المباشر' : 'LIVE TRADE INDEX'}
           </span>
         </div>
 
         {/* Marquee ticker content */}
-        <div className="flex items-center gap-8 overflow-x-auto no-scrollbar whitespace-nowrap text-brand-muted">
-          <div className="flex items-center gap-1.5 text-brand-text">
-            <ShieldCheck className="w-3.5 h-3.5 text-brand-emeraldLight" />
-            <span>{t('tickerVerifiedExporters')}</span>
+        <div className="flex items-center gap-8 overflow-x-auto no-scrollbar whitespace-nowrap text-xs text-[#565047]">
+          <div className="flex items-center gap-1.5 font-medium">
+            <span className="w-1.5 h-1.5 bg-[#596348] rounded-full"></span>
+            <span>{language === 'ar' ? 'موسم تصدير البرتقال الفالنسيا مفتوح بكافة الموانئ' : 'Valencia Citrus Season Active · 2,480+ Verified Exporters'}</span>
           </div>
 
-          <span className="text-brand-dim">•</span>
+          <span className="text-[#b9aa95]">/</span>
 
-          <div className="flex items-center gap-1.5 text-brand-text">
-            <TrendingUp className="w-3.5 h-3.5 text-brand-cyan" />
-            <span>{t('tickerActiveRfqs')}</span>
+          <div className="flex items-center gap-1.5 font-medium text-[#9b452f]">
+            <span>{language === 'ar' ? 'مناقصات فورية: روتردام، هامبورغ، جدة' : 'Immediate Buyer RFQs: Rotterdam, Hamburg, Jeddah'}</span>
           </div>
 
-          <span className="text-brand-dim">•</span>
+          <span className="text-[#b9aa95]">/</span>
 
-          <div className="flex items-center gap-1.5 text-brand-amber">
-            <Flame className="w-3.5 h-3.5 text-brand-amber animate-pulse" />
-            <span>{t('tickerDistressedDeals')}</span>
+          <div className="flex items-center gap-1.5 font-medium">
+            <span>{language === 'ar' ? 'ميناء الإسكندرية ودمياط: حركة الشحن منتظمة' : 'Ports Operating: Alexandria, Damietta, Sokhna'}</span>
           </div>
 
-          <span className="text-brand-dim">•</span>
+          <span className="text-[#b9aa95]">/</span>
 
-          <div className="flex items-center gap-2 text-brand-muted">
-            <Globe2 className="w-3.5 h-3.5 text-brand-gold" />
-            <span>USD/EGP: ~48.50</span>
-            <span className="text-brand-dim">|</span>
-            <span>EUR/EGP: ~52.80</span>
+          <div className="flex items-center gap-2 text-[11px] font-mono text-[#70695f]">
+            <span>USD/EGP ~48.60</span>
+            <span className="text-[#b9aa95]">|</span>
+            <span>EUR/EGP ~52.80</span>
           </div>
         </div>
 
-        {/* Quick status */}
-        <div className="hidden md:flex items-center gap-2 text-[11px] text-brand-dim flex-shrink-0">
-          <span>Official Egyptian Trade Network</span>
+        {/* Right Status */}
+        <div className="hidden md:flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-[#70695f] font-semibold flex-shrink-0">
+          <span>0% BROKERAGE MARKUP</span>
         </div>
       </div>
     </div>

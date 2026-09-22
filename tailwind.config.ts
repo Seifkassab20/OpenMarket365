@@ -10,43 +10,50 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        paper: "#eee8dc",
+        surface: "#e4dac9",
+        ink: "#202522",
+        inkLight: "#2d342f",
+        olive: "#596348",
+        oliveLight: "#707c5b",
+        rust: "#9b452f",
+        rustHover: "#843926",
+        amber: "#c38b40",
+        rule: "#b9aa95",
+        muted: "#70695f",
+        stoneDark: "#565047",
+        cream: "#f4efe5",
+        // Map brand to exact replit palette for seamless component backward compatibility
         brand: {
-          dark: "#080C14",
-          surface: "#0B0F17",
-          navy: "#0F172A",
-          card: "#131A27",
-          cardHover: "#182234",
-          border: "rgba(255, 255, 255, 0.08)",
-          goldBorder: "rgba(229, 184, 66, 0.3)",
-          gold: "#E5B842",
-          goldLight: "#F5C84C",
-          goldDark: "#D4AF37",
-          emerald: "#059669",
-          emeraldLight: "#10B981",
-          emeraldDark: "#047857",
-          amber: "#F59E0B",
-          cyan: "#38BDF8",
-          text: "#F8FAFC",
-          muted: "#94A3B8",
-          dim: "#64748B",
+          dark: "#eee8dc", // paper background
+          surface: "#e4dac9", // soft surface
+          navy: "#202522", // ink
+          card: "#e4dac9", // soft surface
+          cardHover: "#dcd1bf",
+          border: "#b9aa95", // rule
+          goldBorder: "#c38b40",
+          gold: "#c38b40", // antique gold
+          goldLight: "#d8a452",
+          goldDark: "#9b452f", // rust
+          emerald: "#596348", // olive
+          emeraldLight: "#596348",
+          emeraldDark: "#434b36",
+          amber: "#c38b40",
+          cyan: "#596348",
+          text: "#202522",
+          muted: "#70695f",
+          dim: "#70695f",
         },
       },
       fontFamily: {
-        arabic: ["var(--font-cairo)", "Cairo", "sans-serif"],
-        latin: ["var(--font-outfit)", "Outfit", "Inter", "sans-serif"],
+        sans: ['"DM Sans"', "sans-serif"],
+        serif: ['"Instrument Serif"', "Georgia", "serif"],
+        arabic: ["Cairo", "sans-serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
-      boxShadow: {
-        gold: "0 4px 20px -2px rgba(229, 184, 66, 0.2)",
-        goldGlow: "0 0 30px rgba(229, 184, 66, 0.25)",
-        emerald: "0 4px 20px -2px rgba(16, 185, 129, 0.2)",
-        card: "0 10px 30px -10px rgba(0, 0, 0, 0.5)",
-      },
-      backgroundImage: {
-        "gold-gradient": "linear-gradient(135deg, #F59E0B 0%, #E5B842 50%, #D4AF37 100%)",
-        "gold-gradient-hover": "linear-gradient(135deg, #FBBF24 0%, #F5C84C 50%, #E5B842 100%)",
-        "emerald-gradient": "linear-gradient(135deg, #059669 0%, #10B981 100%)",
-        "radial-glow": "radial-gradient(circle at 50% 0%, rgba(229, 184, 66, 0.12) 0%, transparent 70%)",
-        "radial-emerald": "radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12) 0%, transparent 70%)",
+      letterSpacing: {
+        kicker: "0.22em",
+        tag: "0.16em",
       },
     },
   },

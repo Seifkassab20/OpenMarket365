@@ -17,7 +17,6 @@ import {
   PlusCircle, 
   LogIn, 
   LogOut,
-  Sparkles,
   ArrowRight,
   ArrowLeft,
   ShieldAlert,
@@ -34,126 +33,109 @@ export default function Navbar() {
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-brand-border backdrop-blur-xl bg-brand-surface/85">
+    <header className="sticky top-0 z-40 w-full bg-[#eee8dc]/95 backdrop-blur-md border-b border-[#b9aa95] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Brand Logo */}
+          {/* Brand Logo - Exact Replit Styling */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-amber via-brand-gold to-brand-goldDark flex items-center justify-center shadow-gold group-hover:scale-105 transition-transform duration-300">
-              <span className="font-bold text-brand-dark text-xl tracking-tighter">365</span>
+            <div className="w-10 h-10 bg-[#9b452f] text-white flex items-center justify-center font-bold text-lg shadow-sm">
+              <span className="font-serif">٣٦٥</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                OpenMarket<span className="text-brand-gold">365</span>
-              </span>
-              <span className="text-[10px] uppercase font-mono tracking-widest text-brand-emeraldLight font-semibold">
-                Egypt Trade Desk
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm font-bold tracking-[0.14em] text-[#202522] uppercase">
+                  MARKET <span className="text-[#9b452f]">365</span>
+                </span>
+              </div>
+              <span className="text-[9px] uppercase tracking-[0.22em] text-[#70695f] font-semibold">
+                EGYPT EXPORT GATEWAY
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1">
+          {/* Desktop Navigation Links - Exact Replit Uppercase Tracking */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <Link 
+              href="/" 
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
+            >
+              {language === 'ar' ? 'الرئيسية' : 'HOME'}
+            </Link>
+
             <Link 
               href="/exporters" 
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
             >
-              <Building2 className="w-4 h-4 text-brand-gold" />
-              <span>{t('navShowrooms')}</span>
+              {language === 'ar' ? 'دليل المصدرين' : 'DIRECTORY'}
             </Link>
 
             <Link 
               href="/products" 
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
             >
-              <Package className="w-4 h-4 text-brand-cyan" />
-              <span>{t('navProducts')}</span>
-            </Link>
-
-            <Link 
-              href="/rfqs" 
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
-            >
-              <FileSpreadsheet className="w-4 h-4 text-brand-emeraldLight" />
-              <span>{t('navRfqs')}</span>
+              {language === 'ar' ? 'المنتجات' : 'PRODUCTS'}
             </Link>
 
             <Link 
               href="/market" 
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
             >
-              <Flame className="w-4 h-4 text-orange-400" />
-              <span>{t('navMarket')}</span>
+              {language === 'ar' ? 'بورصة التوريدات' : 'MARKET BOARDS'}
+            </Link>
+
+            <Link 
+              href="/rfqs" 
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
+            >
+              {language === 'ar' ? 'مكتب المستورد' : 'IMPORTER DESK'}
+            </Link>
+
+            <Link 
+              href="/dashboard/exporter" 
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#202522] hover:text-[#9b452f] transition-colors"
+            >
+              {language === 'ar' ? 'مكتب المصدر' : 'EXPORTER DESK'}
             </Link>
 
             <Link 
               href="/media" 
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#70695f] hover:text-[#9b452f] transition-colors"
             >
-              <Tv className="w-4 h-4 text-purple-400" />
-              <span>{t('navMedia')}</span>
+              {language === 'ar' ? 'الإعلام' : 'MEDIA'}
             </Link>
 
             <Link 
-              href="/pricing" 
-              className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
+              href="/dashboard/admin" 
+              className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#70695f] hover:text-[#9b452f] transition-colors"
             >
-              <CreditCard className="w-4 h-4 text-brand-gold" />
-              <span>{t('navPricing')}</span>
+              {language === 'ar' ? 'الرقابة' : 'GOVERNANCE'}
             </Link>
-
-            {/* Role-Adaptive Workspace Link */}
-            {currentUser.role === 'ADMIN' ? (
-              <Link 
-                href="/dashboard/admin" 
-                className="px-3 py-2 rounded-lg text-sm font-medium text-purple-300 hover:bg-purple-950/40 transition-colors flex items-center gap-1.5 border border-purple-500/30"
-              >
-                <ShieldAlert className="w-4 h-4 text-purple-400" />
-                <span>{language === 'ar' ? 'الرقابة والإدارة' : 'Admin Audit'}</span>
-              </Link>
-            ) : currentUser.role === 'EXPORTER' ? (
-              <Link 
-                href="/dashboard/exporter" 
-                className="px-3 py-2 rounded-lg text-sm font-medium text-brand-gold hover:bg-brand-gold/10 transition-colors flex items-center gap-1.5 border border-brand-goldBorder"
-              >
-                <Building2 className="w-4 h-4 text-brand-gold" />
-                <span>{language === 'ar' ? 'لوحة المصدر' : 'Exporter Desk'}</span>
-              </Link>
-            ) : (
-              <Link 
-                href="/dashboard" 
-                className="px-3 py-2 rounded-lg text-sm font-medium text-brand-muted hover:text-white hover:bg-white/5 transition-colors flex items-center gap-1.5"
-              >
-                <UserCheck className="w-4 h-4 text-brand-cyan" />
-                <span>{language === 'ar' ? 'البوابات' : 'Portals'}</span>
-              </Link>
-            )}
           </nav>
 
           {/* Right Action CTAs */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-4">
             {/* Language Switcher */}
             <button
               onClick={toggleLanguage}
-              className="px-3 py-1.5 rounded-lg border border-brand-border bg-white/5 text-xs font-semibold text-brand-text hover:border-brand-gold/50 hover:bg-brand-gold/10 transition-all flex items-center gap-1.5"
+              className="px-2.5 py-1 text-xs font-semibold text-[#202522] hover:text-[#9b452f] transition-colors flex items-center gap-1"
               title="Toggle Language"
             >
-              <Globe className="w-3.5 h-3.5 text-brand-gold" />
-              <span>{language === 'en' ? 'العربية' : 'English'}</span>
+              <Globe className="w-3.5 h-3.5 text-[#70695f]" />
+              <span>{language === 'en' ? 'عربي' : 'EN'}</span>
             </button>
 
-            {/* Post RFQ Button */}
+            {/* Post RFQ Button - Sharp Dark Replit Button */}
             <Link
               href="/rfqs/create"
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-brand-emerald hover:bg-brand-emeraldLight text-white shadow-emerald transition-all flex items-center gap-1.5 hover:scale-102 active:scale-98"
+              className="px-5 py-2.5 bg-[#202522] hover:bg-[#9b452f] text-white text-xs font-bold tracking-[0.12em] uppercase transition-all flex items-center gap-2 shadow-sm"
             >
-              <PlusCircle className="w-4 h-4" />
-              <span>{t('navPostRfq')}</span>
+              <span>{language === 'ar' ? 'طرح طلب توريد' : 'POST AN RFQ'}</span>
+              <ArrowIcon className="w-3.5 h-3.5" />
             </Link>
 
-            {/* User Account / Sign In State */}
+            {/* User Account State */}
             {currentUser.isLoggedIn ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-brand-border/60">
+              <div className="flex items-center gap-2 pl-2 border-l border-[#b9aa95]">
                 <Link
                   href={
                     currentUser.role === 'ADMIN'
@@ -162,58 +144,51 @@ export default function Navbar() {
                       ? '/dashboard/exporter'
                       : '/rfqs'
                   }
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-brand-border transition-all"
+                  className="flex items-center gap-1.5 px-2.5 py-1 bg-[#e4dac9] border border-[#b9aa95] text-[#202522] hover:border-[#9b452f] transition-all"
                 >
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                  <span className={`px-1.5 py-0.5 text-[9px] font-bold uppercase ${
                     currentUser.role === 'ADMIN'
-                      ? 'bg-purple-950 text-purple-300 border border-purple-500/30'
+                      ? 'bg-[#596348] text-[#f4efe5]'
                       : currentUser.role === 'EXPORTER'
-                      ? 'bg-brand-gold/10 text-brand-gold border border-brand-goldBorder'
-                      : 'bg-brand-emeraldDark text-brand-emeraldLight border border-brand-emeraldLight/30'
+                      ? 'bg-[#c38b40] text-[#202522]'
+                      : 'bg-[#9b452f] text-white'
                   }`}>
                     {currentUser.role}
                   </span>
-                  <span className="text-xs font-bold text-white max-w-[120px] truncate">
+                  <span className="text-xs font-semibold max-w-[100px] truncate">
                     {currentUser.name}
                   </span>
                 </Link>
 
                 <button
                   onClick={logout}
-                  title={language === 'ar' ? 'تسجيل الخروج أو تبديل الحساب' : 'Switch Role or Sign Out'}
-                  className="p-2 rounded-xl text-brand-dim hover:text-red-400 hover:bg-white/5 transition-all"
+                  title={language === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}
+                  className="p-1.5 text-[#70695f] hover:text-[#9b452f] transition-all"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
-                <span className="hidden xl:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 text-[11px] font-semibold border border-blue-500/20">
-                  <Eye className="w-3 h-3" />
-                  <span>Visitor Mode</span>
-                </span>
-                <Link
-                  href="/auth/login"
-                  className="px-4 py-2 rounded-xl text-xs font-bold border border-brand-goldBorder bg-brand-gold/10 text-brand-gold hover:bg-brand-gold hover:text-brand-dark transition-all flex items-center gap-1.5 hover:scale-102 active:scale-98 shadow-gold"
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span>{t('navSignIn')}</span>
-                </Link>
-              </div>
+              <Link
+                href="/auth/login"
+                className="text-xs font-bold text-[#70695f] hover:text-[#9b452f] transition-colors uppercase tracking-[0.12em]"
+              >
+                {language === 'ar' ? 'دخول' : 'SIGN IN'}
+              </Link>
             )}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-3">
             <button
               onClick={toggleLanguage}
-              className="px-2.5 py-1 rounded-md border border-brand-border text-xs font-semibold text-brand-gold"
+              className="px-2 py-1 text-xs font-bold text-[#202522]"
             >
               {language === 'en' ? 'عربي' : 'EN'}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-brand-muted hover:text-white hover:bg-white/5 focus:outline-none"
+              className="p-2 text-[#202522] hover:text-[#9b452f]"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -223,70 +198,70 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-brand-border bg-brand-surface/98 px-4 pt-3 pb-6 space-y-3">
+        <div className="lg:hidden border-t border-[#b9aa95] bg-[#e4dac9] px-4 pt-4 pb-6 space-y-3">
+          <Link
+            href="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
+          >
+            HOME
+          </Link>
           <Link
             href="/exporters"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-brand-text hover:bg-white/5"
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
           >
-            <Building2 className="w-5 h-5 text-brand-gold" />
-            <span>{t('navShowrooms')}</span>
+            DIRECTORY
           </Link>
           <Link
             href="/products"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-brand-text hover:bg-white/5"
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
           >
-            <Package className="w-5 h-5 text-brand-cyan" />
-            <span>{t('navProducts')}</span>
-          </Link>
-          <Link
-            href="/rfqs"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-brand-text hover:bg-white/5"
-          >
-            <FileSpreadsheet className="w-5 h-5 text-brand-emeraldLight" />
-            <span>{t('navRfqs')}</span>
+            PRODUCTS
           </Link>
           <Link
             href="/market"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-brand-text hover:bg-white/5"
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
           >
-            <Flame className="w-5 h-5 text-brand-amber" />
-            <span>{t('navMarket')}</span>
+            MARKET BOARDS
           </Link>
           <Link
-            href="/media"
+            href="/rfqs"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-brand-text hover:bg-white/5"
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
           >
-            <Tv className="w-5 h-5 text-purple-400" />
-            <span>{t('navMedia')}</span>
+            IMPORTER DESK
+          </Link>
+          <Link
+            href="/dashboard/exporter"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
+          >
+            EXPORTER DESK
           </Link>
           <Link
             href="/pricing"
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-brand-text hover:bg-white/5"
+            className="block text-xs font-bold tracking-[0.14em] uppercase text-[#202522] py-1.5"
           >
-            <CreditCard className="w-5 h-5 text-brand-gold" />
-            <span>{t('navPricing')}</span>
+            PRICING & TIERS
           </Link>
-          
-          <div className="pt-3 border-t border-brand-border flex flex-col gap-2">
+          <div className="pt-3 border-t border-[#b9aa95] flex flex-col gap-2">
             <Link
               href="/rfqs/create"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-2.5 rounded-xl font-bold bg-brand-emerald text-white text-sm"
+              className="w-full text-center py-2.5 bg-[#202522] text-white text-xs font-bold uppercase tracking-[0.12em]"
             >
-              {t('navPostRfq')}
+              POST AN RFQ
             </Link>
             <Link
               href="/auth/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full text-center py-2.5 rounded-xl font-bold border border-brand-goldBorder text-brand-gold bg-brand-gold/10 text-sm"
+              className="w-full text-center py-2 border border-[#202522] text-[#202522] text-xs font-bold uppercase tracking-[0.12em]"
             >
-              {t('navSignIn')}
+              SIGN IN
             </Link>
           </div>
         </div>

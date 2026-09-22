@@ -3,117 +3,77 @@
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { fallbackContentItems } from '@/lib/data/fallbackData';
-import { Tv, Play, FileText, ArrowRight, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 export default function MediaSpotlight() {
-  const { language, direction, t } = useLanguage();
-  const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
-
-  const tvEpisode = fallbackContentItems.find((c) => c.content_type === 'TV_EPISODE');
-  const newsArticle = fallbackContentItems.find((c) => c.content_type === 'ARTICLE');
+  const { language } = useLanguage();
 
   return (
-    <section className="py-20 bg-brand-dark">
+    <section className="py-20 bg-[#eee8dc] border-b border-[#b9aa95]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-          <div>
-            <div className="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Tv className="w-3.5 h-3.5" />
-              <span>{language === 'ar' ? 'الإعلام والتغطيات الميدانية' : 'National Broadcast & Intelligence'}</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-              {t('sectionTvMedia')}
-            </h2>
-          </div>
-          <Link
-            href="/media"
-            className="text-xs sm:text-sm font-semibold text-brand-gold hover:text-brand-goldLight flex items-center gap-1 group"
-          >
-            <span>{t('viewAll')}</span>
-            <ArrowIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
+        <div className="kicker mb-6">
+          {language === 'ar' ? '٠٣ / تقارير الميدان وبرنامج هنقدر' : '03 / FIELD NOTES'}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main TV Episode Video Embed Card (Takes 2 Columns) */}
-          {tvEpisode && (
-            <div className="lg:col-span-2 glass-panel rounded-2xl overflow-hidden border-brand-border/60 hover:border-purple-500/40 transition-all flex flex-col justify-between">
-              {/* Responsive Video Container */}
-              <div className="relative w-full aspect-video bg-black">
-                <iframe
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${tvEpisode.youtube_video_id || 'dQw4w9WgXcQ'}`}
-                  title={tvEpisode.title_en || 'TV Episode'}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">
-                    HENEQDAR TV (هنقدر)
-                  </span>
-                  <span className="text-xs text-brand-dim">Episode #12</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Left Column: Video Feature Card */}
+          <div className="lg:col-span-7 space-y-3">
+            <Link href="/media" className="group block relative aspect-[16/9] overflow-hidden bg-[#202522] border border-[#b9aa95]">
+              <img
+                src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=1000&auto=format&fit=crop&q=80"
+                alt="Inside the Nile Harvest packing line"
+                className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-700 opacity-90"
+              />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-white/90 text-[#202522] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#9b452f] group-hover:text-white transition-all shadow-md">
+                  <Play className="w-6 h-6 fill-current ml-0.5" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
-                  {language === 'ar' ? tvEpisode.title_ar : tvEpisode.title_en}
-                </h3>
-                <p className="text-xs sm:text-sm text-brand-dim leading-relaxed">
-                  {language === 'ar' ? tvEpisode.body_ar : tvEpisode.body_en}
-                </p>
               </div>
+            </Link>
+
+            <div className="flex items-center gap-2 text-xs text-[#565047] font-medium pt-1">
+              <span className="text-[#9b452f]">▷</span>
+              <Link href="/media" className="hover:text-[#9b452f] transition-colors">
+                {language === 'ar' 
+                  ? 'شاهد: جولة داخل محطة فرز وتعبئة الحاصلات · برنامج هنقدر التلفزيوني (03:42)'
+                  : 'Watch: Inside the Nile Harvest packing line · National TV Feature (03:42)'
+                }
+              </Link>
             </div>
-          )}
+          </div>
 
-          {/* Trade Intelligence Article Spotlight */}
-          {newsArticle && (
-            <div className="glass-panel rounded-2xl overflow-hidden border-brand-border/60 flex flex-col justify-between p-6">
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="px-2.5 py-0.5 rounded text-[10px] font-bold bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30 flex items-center gap-1">
-                    <FileText className="w-3 h-3" />
-                    <span>TRADE PLAYBOOK</span>
-                  </span>
-                </div>
+          {/* Right Column: Editorial Text & Link */}
+          <div className="lg:col-span-5 space-y-5">
+            <h2 className="font-serif text-4xl sm:text-6xl text-[#202522] leading-[1.08] font-normal">
+              {language === 'ar' ? (
+                <>
+                  الجهد الكامن <br />
+                  <span className="italic text-[#9b452f]">خلف كل علامة.</span>
+                </>
+              ) : (
+                <>
+                  The work behind <br />
+                  <span className="italic text-[#9b452f]">the label.</span>
+                </>
+              )}
+            </h2>
 
-                <h3 className="text-base font-bold text-white mb-3 hover:text-brand-gold transition-colors">
-                  {language === 'ar' ? newsArticle.title_ar : newsArticle.title_en}
-                </h3>
+            <p className="text-sm text-[#565047] leading-relaxed">
+              {language === 'ar'
+                ? 'جولات مصورة في المحطات، تقارير الحصاد، وإحاطات الموانئ من المنتجين الذين يجعلون جودة الصادرات المصرية واضحة وموثقة أمام العالم.'
+                : 'Factory tours, harvest reports and port briefings from the people who make Egyptian supply legible to the world.'
+              }
+            </p>
 
-                <p className="text-xs text-brand-dim leading-relaxed mb-6">
-                  {language === 'ar' ? newsArticle.body_ar : newsArticle.body_en}
-                </p>
-
-                {/* Quick Points */}
-                <div className="space-y-2 border-t border-brand-border/60 pt-4 text-xs text-brand-muted">
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
-                    <span>EU Pesticide MRL Directives 2026</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
-                    <span>Accredited Central Labs in Egypt</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
-                    <span>Pre-Harvest Interval (PHI) Calculations</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-6 border-t border-brand-border/60">
-                <Link
-                  href="/media"
-                  className="w-full py-2.5 rounded-xl text-xs font-bold border border-brand-border text-white hover:border-brand-gold hover:text-brand-gold transition-all flex items-center justify-center gap-2"
-                >
-                  <span>{language === 'ar' ? 'قراءة الدليل كاملاً' : 'Read Full Playbook'}</span>
-                  <ArrowIcon className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+            <div className="pt-2">
+              <Link
+                href="/media"
+                className="inline-block text-xs font-bold uppercase tracking-[0.18em] text-[#202522] border-b-2 border-[#9b452f] pb-1 hover:text-[#9b452f] transition-colors"
+              >
+                {language === 'ar' ? 'استعراض الحلقات وتقارير الميدان' : 'RECEIVE FIELD NOTES'}
+              </Link>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>

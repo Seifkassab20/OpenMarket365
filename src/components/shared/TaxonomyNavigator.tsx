@@ -64,7 +64,6 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
 
   const handleCountryClick = (code: string) => {
     setActiveCountry(code);
-    // Auto-align certificate if specific country selected
     let autoCert = activeCertificate;
     if (code === 'EU') autoCert = 'GlobalGAP';
     if (code === 'GCC') autoCert = 'Halal';
@@ -90,49 +89,49 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
   };
 
   return (
-    <div className="glass-panel-gold rounded-3xl p-6 sm:p-8 space-y-6 mb-10 border border-brand-goldBorder/40">
+    <div className="bg-[#e4dac9] border border-[#b9aa95] p-6 sm:p-8 space-y-6 mb-10 shadow-sm">
       {/* 4-Level Taxonomy Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-brand-border/60">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#b9aa95]">
         <div>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1.5">
+          <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b452f] flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5" />
-            <span>FR-CAT-001 • 4-LEVEL STRUCTURED TAXONOMY</span>
+            <span>01 / TAXONOMY & DESTINATION COMPLIANCE</span>
           </span>
-          <h3 className="text-lg font-bold text-white mt-1">
-            {language === 'ar' ? 'التصنيف الهرمي ومطابقة اشتراطات الدول المستوردة' : 'Hierarchical Taxonomy & Destination Market Compliance'}
+          <h3 className="text-xl sm:text-2xl font-serif text-[#202522] mt-1">
+            {language === 'ar' ? 'التصنيف الهرمي ومطابقة اشتراطات الدول المستوردة' : 'Origin Taxonomy & Market Compliance'}
           </h3>
         </div>
 
         {/* Visual Level Path */}
-        <div className="flex items-center gap-1.5 text-xs text-brand-dim font-mono overflow-x-auto no-scrollbar">
-          <span className={`px-2 py-0.5 rounded ${activeSector !== 'ALL' ? 'bg-brand-gold/20 text-brand-gold font-bold' : ''}`}>
+        <div className="flex items-center gap-1.5 text-xs text-[#70695f] font-mono overflow-x-auto no-scrollbar">
+          <span className={`px-2 py-0.5 border ${activeSector !== 'ALL' ? 'bg-[#9b452f] text-white border-[#9b452f] font-bold' : 'border-[#b9aa95] bg-[#eee8dc]'}`}>
             L1: Sector
           </span>
-          <Chevron className="w-3 h-3 text-brand-dim" />
-          <span className={`px-2 py-0.5 rounded ${activeCountry !== 'ALL' ? 'bg-brand-cyan/20 text-brand-cyan font-bold' : ''}`}>
+          <Chevron className="w-3 h-3 text-[#70695f]" />
+          <span className={`px-2 py-0.5 border ${activeCountry !== 'ALL' ? 'bg-[#596348] text-white border-[#596348] font-bold' : 'border-[#b9aa95] bg-[#eee8dc]'}`}>
             L2: Market
           </span>
-          <Chevron className="w-3 h-3 text-brand-dim" />
-          <span className={`px-2 py-0.5 rounded ${activeCertificate !== 'ALL' ? 'bg-brand-emerald/20 text-brand-emeraldLight font-bold' : ''}`}>
+          <Chevron className="w-3 h-3 text-[#70695f]" />
+          <span className={`px-2 py-0.5 border ${activeCertificate !== 'ALL' ? 'bg-[#202522] text-[#eee8dc] border-[#202522] font-bold' : 'border-[#b9aa95] bg-[#eee8dc]'}`}>
             L3: Cert
           </span>
-          <Chevron className="w-3 h-3 text-brand-dim" />
-          <span className="text-white font-bold">L4: Exporters</span>
+          <Chevron className="w-3 h-3 text-[#70695f]" />
+          <span className="text-[#202522] font-bold">L4: Exporters</span>
         </div>
       </div>
 
       {/* Level 1: Sectors */}
       <div>
-        <label className="block text-[11px] font-bold text-brand-muted uppercase tracking-wider mb-2">
+        <label className="block text-[10px] font-bold text-[#70695f] uppercase tracking-[0.2em] mb-2">
           {language === 'ar' ? 'المستوى 1: القطاع التصديري الرئيسي' : 'Level 1: Main Export Sector'}
         </label>
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
           <button
             onClick={() => handleSectorClick('ALL')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+            className={`px-3.5 py-1.5 text-xs font-bold whitespace-nowrap transition-all border ${
               activeSector === 'ALL'
-                ? 'bg-brand-gold text-brand-dark shadow-sm'
-                : 'bg-white/5 border border-brand-border text-brand-muted hover:text-white'
+                ? 'bg-[#202522] text-[#eee8dc] border-[#202522]'
+                : 'bg-[#eee8dc] border-[#b9aa95] text-[#565047] hover:border-[#202522]'
             }`}
           >
             {language === 'ar' ? 'جميع القطاعات' : 'All Sectors'}
@@ -141,10 +140,10 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
             <button
               key={cat.id}
               onClick={() => handleSectorClick(cat.code || '')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-bold whitespace-nowrap transition-all border ${
                 activeSector === cat.code
-                  ? 'bg-brand-gold text-brand-dark shadow-sm'
-                  : 'bg-white/5 border border-brand-border text-brand-muted hover:text-white'
+                  ? 'bg-[#202522] text-[#eee8dc] border-[#202522]'
+                  : 'bg-[#eee8dc] border-[#b9aa95] text-[#565047] hover:border-[#202522]'
               }`}
             >
               {language === 'ar' ? cat.name_ar : cat.name_en}
@@ -157,8 +156,8 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
         {/* Destination Country / Market */}
         <div>
-          <label className="block text-[11px] font-bold text-brand-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <Globe className="w-3.5 h-3.5 text-brand-cyan" />
+          <label className="block text-[10px] font-bold text-[#70695f] uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5">
+            <Globe className="w-3.5 h-3.5 text-[#596348]" />
             <span>{language === 'ar' ? 'المستوى 2: سوق الوصول المستهدف' : 'Level 2: Destination Port / Market'}</span>
           </label>
           <div className="grid grid-cols-2 gap-2">
@@ -166,15 +165,17 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
               <button
                 key={c.code}
                 onClick={() => handleCountryClick(c.code)}
-                className={`p-2.5 rounded-xl text-xs text-left transition-all border ${
+                className={`p-2.5 text-xs text-left transition-all border ${
                   activeCountry === c.code
-                    ? 'bg-brand-cyan/15 border-brand-cyan text-white shadow-sm'
-                    : 'bg-white/5 border-brand-border text-brand-muted hover:text-white'
+                    ? 'bg-[#596348] text-white border-[#596348] shadow-sm'
+                    : 'bg-[#eee8dc] border-[#b9aa95] text-[#565047] hover:border-[#596348]'
                 }`}
               >
                 <div className="font-bold truncate">{language === 'ar' ? c.nameAr : c.nameEn}</div>
                 {c.reqCert && (
-                  <div className="text-[10px] text-brand-cyan mt-0.5 font-mono">Req: {c.reqCert}</div>
+                  <div className={`text-[10px] mt-0.5 font-mono ${activeCountry === c.code ? 'text-[#eee8dc]' : 'text-[#70695f]'}`}>
+                    Req: {c.reqCert}
+                  </div>
                 )}
               </button>
             ))}
@@ -183,8 +184,8 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
 
         {/* Level 3: Mandatory Certification */}
         <div>
-          <label className="block text-[11px] font-bold text-brand-muted uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <Award className="w-3.5 h-3.5 text-brand-emeraldLight" />
+          <label className="block text-[10px] font-bold text-[#70695f] uppercase tracking-[0.2em] mb-2 flex items-center gap-1.5">
+            <Award className="w-3.5 h-3.5 text-[#9b452f]" />
             <span>{language === 'ar' ? 'المستوى 3: شهادة الجودة الإلزامية' : 'Level 3: Mandatory Quality Accreditation'}</span>
           </label>
           <div className="flex flex-wrap gap-2">
@@ -192,10 +193,10 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
               <button
                 key={cert}
                 onClick={() => handleCertClick(cert)}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all border flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 text-xs font-semibold transition-all border flex items-center gap-1.5 ${
                   activeCertificate === cert
-                    ? 'bg-brand-emeraldDark border-brand-emeraldLight text-brand-emeraldLight shadow-emerald'
-                    : 'bg-white/5 border-brand-border text-brand-muted hover:text-white'
+                    ? 'bg-[#9b452f] border-[#9b452f] text-white shadow-sm'
+                    : 'bg-[#eee8dc] border-[#b9aa95] text-[#565047] hover:border-[#9b452f]'
                 }`}
               >
                 {activeCertificate === cert && <CheckCircle2 className="w-3.5 h-3.5" />}
@@ -208,3 +209,4 @@ export default function TaxonomyNavigator({ onFilterChange }: TaxonomyNavigatorP
     </div>
   );
 }
+

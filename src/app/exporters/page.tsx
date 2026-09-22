@@ -5,23 +5,19 @@ import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { fallbackCompanies } from '@/lib/data/fallbackData';
 import { 
-  Building2, 
-  ShieldCheck, 
-  MapPin, 
   Search, 
-  Award, 
-  Video, 
-  ArrowRight, 
-  ArrowLeft,
-  SlidersHorizontal
+  MapPin, 
+  ShieldCheck, 
+  ArrowUpRight, 
+  SlidersHorizontal,
+  ChevronDown
 } from 'lucide-react';
+import MaskedContact from '@/components/shared/MaskedContact';
 
 export default function ExportersDirectoryPage() {
   const { language, direction, t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGov, setSelectedGov] = useState<string>('ALL');
-
-  const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
 
   const filteredCompanies = fallbackCompanies.filter((company) => {
     const matchesSearch = 
@@ -35,147 +31,187 @@ export default function ExportersDirectoryPage() {
   });
 
   const governorates = ['ALL', 'Al-Beheira', 'Al-Sharkia', 'Beni Suef', 'Alexandria', 'Ismailia'];
+  const tierBadges: Record<number, string> = { 0: 'ELITE', 1: 'PREMIUM', 2: 'PLUS', 3: 'STANDARD' };
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="mb-10">
-        <div className="text-xs font-bold text-brand-emeraldLight uppercase tracking-wider mb-2">
-          {language === 'ar' ? 'الدليل الوطني للمصدرين' : 'National Exporter Directory'}
+    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
+      {/* Header matching Replit Directory */}
+      <div className="space-y-3">
+        <div className="kicker">
+          {language === 'ar' ? 'سجل المصدرين الوطني · الدليل ٠٢' : 'EXPORTER DIRECTORY · REGISTRY 02'}
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          {t('sectionShowrooms')}
+        <h1 className="font-serif text-5xl sm:text-6xl text-[#202522] leading-tight font-normal">
+          {language === 'ar' ? (
+            <>
+              الشركات <br />
+              <span className="italic text-[#9b452f]">خلف كل منشأ.</span>
+            </>
+          ) : (
+            <>
+              The companies <br />
+              <span className="italic text-[#9b452f]">behind origin.</span>
+            </>
+          )}
         </h1>
-        <p className="text-sm text-brand-muted mt-2 max-w-2xl">
-          {language === 'ar' 
-            ? 'تصفح كبرى محطات التعبئة والمصانع وسلاسل التبريد المصرية المعتمدة بالسجل التجاري وشهادات الجودة الدولية.'
-            : 'Browse Egypt’s accredited agricultural packing stations, food processing complexes, and cold chain export facilities.'
+        <p className="text-sm text-[#70695f] max-w-xl leading-relaxed">
+          {language === 'ar'
+            ? 'فهرس عملي للشركات ومحطات التعبئة المصرية المعتمدة والمطابقة لمحادثات التوريد بالجملة الدولية.'
+            : 'A working index of Egyptian producers cleared for international wholesale conversations.'
           }
         </p>
       </div>
 
-      {/* Search & Filters Bar */}
-      <div className="glass-panel rounded-2xl p-4 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-brand-dim absolute left-3 top-3.5" />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder={language === 'ar' ? 'بحث باسم الشركة أو المحصول...' : 'Search by exporter name or crop...'}
-            className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-white/5 border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none"
-          />
+      {/* Search & Filter Bar matching Replit */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row items-stretch gap-2 border-t border-[#b9aa95] pt-6">
+          <div className="relative flex-grow">
+            <Search className="w-4 h-4 text-[#70695f] absolute left-3.5 top-3.5" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search company, commodity, destination"
+              className="w-full pl-10 pr-4 py-3 bg-[#e4dac9] border border-[#b9aa95] text-xs text-[#202522] placeholder-[#70695f] focus:outline-none focus:border-[#9b452f]"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <select
+                value={selectedGov}
+                onChange={(e) => setSelectedGov(e.target.value)}
+                className="appearance-none px-4 py-3 bg-[#e4dac9] border border-[#b9aa95] text-xs font-bold uppercase tracking-[0.12em] text-[#202522] pr-8 focus:outline-none focus:border-[#9b452f] cursor-pointer"
+              >
+                <option value="ALL">ALL SECTORS & GOVERNORATES</option>
+                {governorates.filter(g => g !== 'ALL').map((gov) => (
+                  <option key={gov} value={gov}>{gov.toUpperCase()}</option>
+                ))}
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-[#70695f] absolute right-2.5 top-3.5 pointer-events-none" />
+            </div>
+
+            <button
+              onClick={() => { setSearchTerm(''); setSelectedGov('ALL'); }}
+              className="px-4 py-3 border border-[#202522] bg-transparent hover:bg-[#202522] hover:text-white text-xs font-bold uppercase tracking-[0.14em] transition-colors flex items-center gap-1.5"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span>FILTERS</span>
+            </button>
+          </div>
         </div>
 
-        {/* Governorate Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full md:w-auto">
-          <SlidersHorizontal className="w-4 h-4 text-brand-gold flex-shrink-0" />
-          {governorates.map((gov) => (
-            <button
-              key={gov}
-              onClick={() => setSelectedGov(gov)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
-                selectedGov === gov
-                  ? 'bg-brand-gold text-brand-dark shadow-sm'
-                  : 'bg-white/5 border border-brand-border text-brand-muted hover:text-white'
-              }`}
-            >
-              {gov === 'ALL' ? (language === 'ar' ? 'جميع المحافظات' : 'All Governorates') : gov}
-            </button>
-          ))}
+        {/* Filter Pills matching Replit */}
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="tag tag-olive">64 DESTINATIONS</span>
+            <span className="tag tag-muted">HACCP & ISO CHECKED</span>
+            <span className="tag tag-muted">ALEXANDRIA · DAMIETTA · SUEZ</span>
+            <span className="tag tag-amber">AWETA OPTICAL SORTING</span>
+          </div>
+          <span className="text-[11px] font-mono text-[#70695f]">
+            {filteredCompanies.length} verified records
+          </span>
         </div>
       </div>
 
-      {/* Exporter Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredCompanies.map((company) => (
-          <div
-            key={company.id}
-            className="glass-panel rounded-2xl overflow-hidden hover:border-brand-gold/40 transition-all flex flex-col justify-between group shadow-card"
-          >
-            <div className="relative h-44 w-full bg-brand-navy overflow-hidden">
-              {company.cover_banner_url && (
-                <img
-                  src={company.cover_banner_url}
-                  alt={company.company_name_en}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-black/30"></div>
+      {/* Directory Table matching Replit */}
+      <div className="border-t border-[#202522]">
+        {/* Table Header */}
+        <div className="hidden md:grid grid-cols-12 gap-4 py-3 text-[10px] font-bold uppercase tracking-[0.18em] text-[#70695f] border-b border-[#b9aa95]">
+          <div className="col-span-4">COMPANY</div>
+          <div className="col-span-3">SPECIALISM</div>
+          <div className="col-span-2">ORIGIN</div>
+          <div className="col-span-1">TIER</div>
+          <div className="col-span-2 text-right">PRIMARY ROUTES</div>
+        </div>
 
-              <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-emeraldDark/90 border border-brand-emeraldLight/40 text-brand-emeraldLight text-[11px] font-bold shadow-lg backdrop-blur-md">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>{t('verifiedBadge')}</span>
-              </div>
-
-              {company.youtube_video_id && (
-                <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 border border-white/20 text-white text-[10px] font-semibold backdrop-blur-md">
-                  <Video className="w-3 h-3 text-red-500" />
-                  <span>{language === 'ar' ? 'فيديو المعرض' : '4K Tour'}</span>
-                </div>
-              )}
-
-              <div className="absolute bottom-3 left-3 flex items-center gap-1 text-[11px] text-brand-muted bg-brand-dark/80 px-2 py-0.5 rounded-md backdrop-blur-sm border border-brand-border">
-                <MapPin className="w-3 h-3 text-brand-gold" />
-                <span>{company.governorate}, Egypt</span>
-              </div>
-            </div>
-
-            <div className="p-6 flex flex-col flex-grow justify-between">
-              <div>
-                <h3 className="text-lg font-bold text-white group-hover:text-brand-gold transition-colors line-clamp-1 mb-2">
-                  {language === 'ar' ? (company.company_name_ar || company.company_name_en) : company.company_name_en}
-                </h3>
-                <p className="text-xs text-brand-dim line-clamp-2 leading-relaxed mb-4">
-                  {language === 'ar' ? (company.about_ar || company.about_en) : company.about_en}
-                </p>
-
-                <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-white/5 border border-brand-border/60 text-xs mb-4">
-                  <div>
-                    <span className="text-[10px] text-brand-dim uppercase block">
-                      {language === 'ar' ? 'الطاقة السنوية' : 'Annual Capacity'}
+        {/* Table Rows */}
+        <div className="divide-y divide-[#b9aa95]">
+          {filteredCompanies.map((company, idx) => (
+            <div key={company.id} className="py-6 group hover:bg-[#e4dac9]/30 transition-colors px-2">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                {/* Company Name & Verification */}
+                <div className="col-span-4 space-y-1">
+                  <Link
+                    href={`/exporters/${company.slug}`}
+                    className="font-serif text-2xl text-[#202522] group-hover:text-[#9b452f] transition-colors inline-block"
+                  >
+                    {language === 'ar' ? (company.company_name_ar || company.company_name_en) : company.company_name_en}
+                  </Link>
+                  <div className="flex items-center gap-2 text-[11px] text-[#70695f]">
+                    <span className="flex items-center gap-1 text-[#596348] font-bold uppercase tracking-wider text-[10px]">
+                      <ShieldCheck className="w-3 h-3 text-[#596348]" />
+                      <span>VERIFIED</span>
                     </span>
-                    <span className="font-bold text-white">
-                      {company.annual_capacity_ml ? `${company.annual_capacity_ml.toLocaleString()} MT` : 'N/A'}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-brand-dim uppercase block">
-                      {language === 'ar' ? 'سعة التبريد' : 'Cold Storage'}
-                    </span>
-                    <span className="font-bold text-brand-cyan">
-                      {company.cold_storage_capacity_ml ? `${company.cold_storage_capacity_ml.toLocaleString()} MT` : 'Ambient'}
-                    </span>
+                    <span>·</span>
+                    <span className="font-mono">Registry {company.cr_number}</span>
                   </div>
                 </div>
 
-                {company.quality_iso && (
-                  <div className="flex flex-wrap items-center gap-1.5 mb-4">
-                    {company.quality_iso.split(',').slice(0, 3).map((cert, idx) => (
-                      <span 
-                        key={idx}
-                        className="px-2 py-0.5 rounded text-[10px] font-semibold bg-brand-gold/10 text-brand-gold border border-brand-goldBorder/40 flex items-center gap-1"
-                      >
-                        <Award className="w-2.5 h-2.5" />
-                        <span>{cert.trim()}</span>
-                      </span>
-                    ))}
-                  </div>
-                )}
+                {/* Specialism */}
+                <div className="col-span-3 text-xs text-[#565047]">
+                  {company.about_en?.split('.')[0] || 'Citrus · Dates · IQF Frozen Strawberries'}
+                </div>
+
+                {/* Origin */}
+                <div className="col-span-2 flex items-center gap-1.5 text-xs text-[#202522]">
+                  <MapPin className="w-3.5 h-3.5 text-[#9b452f] flex-shrink-0" />
+                  <span>{company.governorate}, Egypt</span>
+                </div>
+
+                {/* Tier */}
+                <div className="col-span-1">
+                  <span className={`px-2 py-0.5 text-[9px] font-bold tracking-[0.16em] uppercase ${
+                    idx === 0 ? 'bg-[#c38b40] text-[#202522]' : 'bg-[#596348] text-[#f4efe5]'
+                  }`}>
+                    {tierBadges[idx] || 'STANDARD'}
+                  </span>
+                </div>
+
+                {/* Primary Routes & Showroom link */}
+                <div className="col-span-2 flex items-center justify-end gap-2 text-xs">
+                  <span className="text-[#565047] font-medium">EU / GCC / NA</span>
+                  <Link
+                    href={`/exporters/${company.slug}`}
+                    className="p-1 text-[#202522] hover:text-[#9b452f] transition-colors"
+                    title="View Showroom"
+                  >
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+                </div>
               </div>
 
-              <div className="pt-4 border-t border-brand-border/60">
-                <Link
-                  href={`/exporters/${company.slug}`}
-                  className="w-full py-2.5 rounded-xl text-xs font-bold border border-brand-goldBorder text-brand-gold bg-brand-gold/10 hover:bg-brand-gold hover:text-brand-dark transition-all flex items-center justify-center gap-2"
-                >
-                  <span>{t('viewShowroom')}</span>
-                  <ArrowIcon className="w-3.5 h-3.5" />
-                </Link>
+              {/* Sub-row: Direct Contact Masked Gate matching Replit */}
+              <div className="mt-3 pt-3 border-t border-[#b9aa95]/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-[#70695f]">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-[#70695f]">Direct Contact:</span>
+                  <span className="font-mono text-xs text-[#b9aa95]">
+                    {company.company_email ? `${company.company_email.slice(0, 4)}••••@••••••.com` : 'info••••@••••••.com'}
+                  </span>
+                  <span className="font-mono text-xs text-[#b9aa95]">
+                    {company.company_phone ? `${company.company_phone.slice(0, 6)} ••• ••••` : '+20 ••• ••• ••••'}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <MaskedContact
+                    phone={company.company_phone}
+                    whatsapp={company.company_phone}
+                    email={company.company_email}
+                    companyName={company.company_name_en}
+                    variant="inline"
+                  />
+                  <Link
+                    href={`/exporters/${company.slug}`}
+                    className="text-xs font-bold text-[#9b452f] hover:underline uppercase tracking-wider"
+                  >
+                    View Full Showroom →
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -33,3 +33,8 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Temporary inspection files
+replit_bundle.js
+replit_style.css
+scratch/
