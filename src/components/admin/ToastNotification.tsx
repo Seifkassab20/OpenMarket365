@@ -12,9 +12,18 @@ export interface Toast {
   type: ToastType;
 }
 
+export interface ToastOptions {
+  title: string;
+  message?: string;
+  type?: ToastType;
+}
+
 interface ToastContextType {
   toasts: Toast[];
-  showToast: (title: string, message?: string, type?: ToastType) => void;
+  showToast: {
+    (title: string, message?: string, type?: ToastType): void;
+    (options: ToastOptions): void;
+  };
   addToast: (type: ToastType, message: string, title?: string) => void;
   removeToast: (id: string) => void;
 }
@@ -28,9 +37,25 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const showToast = useCallback((title: string, message?: string, type: ToastType = 'success') => {
+  const showToast = useCallback((
+    titleOrOptions: string | ToastOptions,
+    message?: string,
+    type: ToastType = 'success'
+  ) => {
     const id = Math.random().toString(36).substring(2, 9);
-    setToasts((prev) => [...prev, { id, title, message, type }]);
+    let finalTitle = '';
+    let finalMessage: string | undefined = message;
+    let finalType: ToastType = type;
+
+    if (typeof titleOrOptions === 'object' && titleOrOptions !== null) {
+      finalTitle = titleOrOptions.title;
+      finalMessage = titleOrOptions.message;
+      finalType = titleOrOptions.type || 'success';
+    } else {
+      finalTitle = titleOrOptions;
+    }
+
+    setToasts((prev) => [...prev, { id, title: finalTitle, message: finalMessage, type: finalType }]);
 
     setTimeout(() => {
       removeToast(id);

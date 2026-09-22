@@ -8,8 +8,9 @@ import Footer from '@/components/layout/Footer';
 export default function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
+  const isExporter = pathname?.startsWith('/exporter');
 
-  if (isAdmin) {
+  if (isAdmin || isExporter) {
     return <div className="min-h-screen w-full">{children}</div>;
   }
 
