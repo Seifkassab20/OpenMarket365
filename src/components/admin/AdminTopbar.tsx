@@ -102,11 +102,6 @@ export default function AdminTopbar({
 
       {/* Right Area: System Status, Notifications, Admin Profile */}
       <div className="flex items-center gap-3">
-        {/* Supabase status badge */}
-        <div className="hidden md:flex items-center gap-2 rounded-full border border-[#b9aa95] bg-[#e4dac9] px-3 py-1 text-[11px] text-[#202522]">
-          <span className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
-          <span className="text-[#202522] font-mono font-medium">Supabase: Connected</span>
-        </div>
 
         {/* Notifications Dropdown */}
         <div className="relative" ref={notifRef}>

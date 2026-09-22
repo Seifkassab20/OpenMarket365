@@ -66,7 +66,7 @@ export default function Footer() {
               {language === 'ar' ? 'المؤسسة والرقابة' : 'INSTITUTION'}
             </h4>
             <ul className="space-y-2 text-xs text-[#dcd1bf]">
-              <li><Link href="/dashboard/admin" className="hover:text-white transition-colors">{language === 'ar' ? 'لوحة التدقيق والرقابة' : 'Audit & Verification'}</Link></li>
+              <li><Link href="/admin" className="hover:text-white transition-colors">{language === 'ar' ? 'لوحة التدقيق والرقابة' : 'Audit & Verification'}</Link></li>
               <li><Link href="/media" className="hover:text-white transition-colors">{language === 'ar' ? 'الهيئات والموانئ المصرية' : 'Port authorities'}</Link></li>
               <li><Link href="/auth/login" className="hover:text-white transition-colors">{language === 'ar' ? 'بوابة الدخول الموحدة' : 'Unified Login'}</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">{language === 'ar' ? 'التحويل البنكي وفوري' : 'Offline Payment'}</Link></li>

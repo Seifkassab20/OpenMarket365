@@ -112,7 +112,7 @@ export default function Navbar() {
             </Link>
 
             <Link 
-              href="/dashboard/admin" 
+              href="/admin" 
               className="text-[11px] font-bold tracking-[0.14em] uppercase text-[#70695f] hover:text-[#9b452f] transition-colors"
             >
               {language === 'ar' ? 'الرقابة' : 'GOVERNANCE'}
@@ -156,7 +156,7 @@ export default function Navbar() {
                 <Link
                   href={
                     currentUser.role === 'ADMIN'
-                      ? '/dashboard/admin'
+                      ? '/admin'
                       : currentUser.role === 'EXPORTER'
                       ? '/dashboard/exporter'
                       : '/rfqs'

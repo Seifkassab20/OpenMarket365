@@ -129,25 +129,6 @@ export default function LoginPage() {
             {language === 'ar' ? 'بيانات مخصصة (البريد وكلمة السر)' : 'Custom Credentials'}
           </button>
         </div>
-
-        {/* Dedicated Admin Portal Direct Action Bar */}
-        <div className="mt-4 flex flex-col sm:flex-row items-center justify-between p-3.5 bg-[#e4dac9] border border-[#9b452f]/50 text-xs gap-3">
-          <div className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#9b452f] animate-pulse shrink-0" />
-            <span className="font-bold text-[#202522]">
-              {language === 'ar' ? 'لوحة الإدارة والرقابة المركزية:' : 'System Administrator & Governance Desk:'}
-            </span>
-            <span className="text-[#70695f] hidden sm:inline">
-              {language === 'ar' ? 'الوصول المباشر للوحة التحكم والتدقيق (/admin)' : 'Direct access to verified control desk (/admin)'}
-            </span>
-          </div>
-          <button
-            onClick={() => handleQuickLogin('ADMIN', '/admin')}
-            className="px-4 py-1.5 bg-[#9b452f] hover:bg-[#833824] text-white font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-colors shadow-sm"
-          >
-            <span>{language === 'ar' ? 'دخول لوحة الإدارة →' : 'Access Admin Panel (/admin) →'}</span>
-          </button>
-        </div>
       </div>
 
       {activeTab === 'quick' ? (
@@ -346,20 +327,14 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="pt-6 mt-6 border-t border-[#b9aa95] space-y-2">
+            <div className="pt-6 mt-6 border-t border-[#b9aa95]">
               <button
                 onClick={() => handleQuickLogin('ADMIN', '/admin')}
                 className="w-full py-2.5 text-xs font-bold uppercase tracking-wider bg-[#9b452f] hover:bg-[#833824] text-white transition-colors flex items-center justify-center gap-1.5 shadow-sm"
               >
-                <span>{language === 'ar' ? 'الدخول كمسؤول (لوحة الإدارة)' : 'Login as Admin (/admin)'}</span>
+                <span>{language === 'ar' ? 'الدخول كمسؤول' : 'Login as Admin'}</span>
                 <ArrowIcon className="w-3.5 h-3.5" />
               </button>
-              <Link
-                href="/admin"
-                className="block text-center text-[11px] font-mono text-[#70695f] hover:text-[#9b452f] underline"
-              >
-                Direct Link: /admin
-              </Link>
             </div>
           </div>
         </div>
