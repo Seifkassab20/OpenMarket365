@@ -9,8 +9,9 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
   const isExporter = pathname?.startsWith('/exporter');
+  const isImporter = pathname === '/importer' || pathname?.startsWith('/importer/');
 
-  if (isAdmin || isExporter) {
+  if (isAdmin || isExporter || isImporter) {
     return <div className="min-h-screen w-full">{children}</div>;
   }
 

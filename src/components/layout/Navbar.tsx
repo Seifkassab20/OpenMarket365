@@ -35,8 +35,13 @@ export default function Navbar() {
   const pathname = usePathname() ?? '';
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Exclude Navbar from all admin routes so the Admin Dashboard has its own dedicated shell
-  if (pathname.startsWith('/admin')) {
+  // Exclude Navbar from all admin, exporter, and importer portal routes so they have dedicated shells
+  if (
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/exporter') ||
+    pathname === '/importer' ||
+    pathname.startsWith('/importer/')
+  ) {
     return null;
   }
 
@@ -47,7 +52,9 @@ export default function Navbar() {
     ? '/admin'
     : currentUser.role === 'EXPORTER'
       ? '/dashboard/exporter'
-      : '/rfqs';
+      : currentUser.role === 'IMPORTER'
+        ? '/importer'
+        : '/rfqs';
 
   return (
     <header dir={direction} className="sticky top-0 z-40 w-full border-b border-[#b9aa95] bg-[#eee8dc]/95 backdrop-blur-md">

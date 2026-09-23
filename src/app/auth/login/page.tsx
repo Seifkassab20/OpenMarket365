@@ -60,7 +60,7 @@ export default function LoginPage() {
         } else if (selectedRoleForLogin === 'EXPORTER') {
           router.push('/dashboard/exporter');
         } else if (selectedRoleForLogin === 'IMPORTER') {
-          router.push('/rfqs');
+          router.push('/importer');
         } else {
           router.push('/products');
         }
@@ -70,6 +70,8 @@ export default function LoginPage() {
           router.push('/admin');
         } else if (selectedRoleForLogin === 'EXPORTER') {
           router.push('/dashboard/exporter');
+        } else if (selectedRoleForLogin === 'IMPORTER') {
+          router.push('/importer');
         } else {
           router.push('/products');
         }
@@ -270,14 +272,18 @@ export default function LoginPage() {
                 </div>
                 <div className="flex items-center gap-1.5 text-[#202522] font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#596348]" />
-                  <span>Receive Sealed Bids</span>
+                  <span>Importer Operations Desk</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[#202522] font-semibold">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#596348]" />
+                  <span>Sealed Bids & Quotes Matrix</span>
                 </div>
               </div>
             </div>
 
             <div className="pt-6 mt-6 border-t border-[#b9aa95]">
               <button
-                onClick={() => handleQuickLogin('IMPORTER', '/rfqs')}
+                onClick={() => handleQuickLogin('IMPORTER', '/importer')}
                 className="w-full py-2.5 text-xs font-bold uppercase tracking-wider bg-[#596348] hover:bg-[#48503a] text-white transition-colors flex items-center justify-center gap-1.5 shadow-sm"
               >
                 <span>{language === 'ar' ? 'الدخول كمستورد دولي' : 'Login as Importer'}</span>

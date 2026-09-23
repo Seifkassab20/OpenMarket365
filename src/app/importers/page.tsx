@@ -278,6 +278,26 @@ export default function ImportersExperiencePage() {
     <div className="bg-[#eee8dc]">
       <style>{`@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}@keyframes quoteIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.quote-in{animation:quoteIn .5s ease both}`}</style>
 
+      {/* ================= TOP OPERATIONS DESK BANNER ================= */}
+      <div className="bg-[#e4dac9] border-b border-[#b9aa95] py-2.5 px-4">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 bg-[#596348] text-white text-[9px] font-mono font-bold uppercase rounded-xs">
+              IMPORTER DESK ACTIVE
+            </span>
+            <span className="text-[#202522] font-medium">
+              Review sealed exporter quotations, reefer telemetry, and active RFQs in your private workspace.
+            </span>
+          </div>
+          <Link
+            href="/importer"
+            className="text-[11px] font-bold uppercase tracking-wider text-[#9b452f] hover:underline flex items-center gap-1 font-mono"
+          >
+            <span>Launch Importer Operations Desk →</span>
+          </Link>
+        </div>
+      </div>
+
       {/* ================= HERO ================= */}
       <section className="border-b border-[#b9aa95]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -294,6 +314,13 @@ export default function ImportersExperiencePage() {
               commission. Final negotiation stays between you and the exporter.
             </p>
             <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href="/importer"
+                className="px-6 py-3.5 bg-[#596348] hover:bg-[#48503a] text-white text-xs font-bold tracking-[0.14em] uppercase transition-colors flex items-center gap-2 shadow-sm"
+              >
+                <Ship className="w-4 h-4" />
+                <span>Open Importer Desk</span>
+              </Link>
               <Link
                 href="/rfqs/create"
                 className="px-6 py-3.5 bg-[#9b452f] hover:bg-[#833824] text-white text-xs font-bold tracking-[0.14em] uppercase transition-colors flex items-center gap-2"
