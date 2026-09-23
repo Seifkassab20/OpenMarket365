@@ -7,6 +7,8 @@ import { importerService, SealedQuotation, formatPrice } from '@/lib/services/im
 import EnquiryButton from '@/components/importer/EnquiryButton';
 import UnlockedContactModal, { AcceptQuoteButton, useQuoteAcceptance } from '@/components/importer/UnlockedContactModal';
 import { MapPin } from 'lucide-react';
+import ScrollReveal from '@/components/admin/ScrollReveal';
+import AnimatedCounter from '@/components/admin/AnimatedCounter';
 
 export default function ImporterQuotesPage() {
   const { language } = useLanguage();
@@ -26,6 +28,7 @@ export default function ImporterQuotesPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
+      <ScrollReveal direction="down" delayMs={0}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#b9aa95]">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -51,13 +54,12 @@ export default function ImporterQuotesPage() {
           <span>{language === 'ar' ? 'العودة للوحة المشتريات' : 'Back to Procurement Desk'}</span>
         </Link>
       </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {quotes.map((q) => (
-          <div
-            key={q.id}
-            className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 flex flex-col justify-between hover:border-[#202522] transition-all shadow-sm space-y-4 relative"
-          >
+        {quotes.map((q, idx) => (
+          <ScrollReveal key={q.id} delayMs={idx * 80} direction="up" className="h-full">
+          <div className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 flex flex-col justify-between hover:border-[#202522] transition-all shadow-sm space-y-4 relative h-full">
             {q.highlight_badge && (
               <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#9b452f] text-white text-[10px] font-bold uppercase tracking-wider shadow-sm rounded-xs">
                 {q.highlight_badge}
@@ -98,7 +100,9 @@ export default function ImporterQuotesPage() {
               <div className="space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-[#70695f]">Lead Time:</span>
-                  <span className="font-bold text-[#202522]">{q.lead_time_days} days to vessel</span>
+                  <span className="font-bold text-[#202522]">
+                    <AnimatedCounter end={q.lead_time_days} duration={900} /> days to vessel
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-[#70695f]">Packaging:</span>
@@ -152,6 +156,7 @@ export default function ImporterQuotesPage() {
               />
             </div>
           </div>
+          </ScrollReveal>
         ))}
       </div>
 

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { importerService, ImporterRfqItem } from '@/lib/services/importerService';
 import RfqStatusBadge, { ModerationNote, isBroadcast } from '@/components/importer/RfqStatusBadge';
+import ScrollReveal from '@/components/admin/ScrollReveal';
+import AnimatedCounter from '@/components/admin/AnimatedCounter';
 import { Plus, Anchor, Scale } from 'lucide-react';
 
 export default function ImporterRfqsPage() {
@@ -17,6 +19,7 @@ export default function ImporterRfqsPage() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
+      <ScrollReveal direction="down" delayMs={0}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#b9aa95]">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -43,13 +46,12 @@ export default function ImporterRfqsPage() {
           <span>{language === 'ar' ? 'طرح طلب توريد جديد' : 'New Sourcing RFQ'}</span>
         </Link>
       </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 gap-4">
-        {rfqs.map((rfq) => (
-          <div
-            key={rfq.id}
-            className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 hover:border-[#202522] transition-all shadow-sm space-y-4"
-          >
+        {rfqs.map((rfq, idx) => (
+          <ScrollReveal key={rfq.id} delayMs={idx * 80} direction="up">
+          <div className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 hover:border-[#202522] transition-all shadow-sm space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#b9aa95]/60 pb-3">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-xs font-bold text-[#9b452f] bg-[#9b452f]/10 px-2 py-0.5 rounded">
@@ -68,7 +70,7 @@ export default function ImporterRfqsPage() {
                   {language === 'ar' ? rfq.commodity_ar : rfq.commodity_en}
                 </h3>
                 <p className="text-xs text-[#565047] font-mono">
-                  {rfq.variety} · {rfq.quantity_mt} Metric Tons
+                  {rfq.variety} · <AnimatedCounter end={rfq.quantity_mt} /> Metric Tons
                 </p>
                 <p className="text-xs text-[#70695f]">{rfq.packaging_spec}</p>
                 <div className="flex flex-wrap gap-1 pt-1">
@@ -96,7 +98,9 @@ export default function ImporterRfqsPage() {
                 {isBroadcast(rfq) ? (
                   <>
                     <div className="text-center sm:text-right">
-                      <span className="text-2xl font-serif font-bold text-[#202522]">{rfq.bids_count}</span>
+                      <span className="text-2xl font-serif font-bold text-[#202522]">
+                        <AnimatedCounter end={rfq.bids_count} />
+                      </span>
                       <span className="text-xs text-[#70695f] block font-mono">sealed bids submitted</span>
                     </div>
 
@@ -114,6 +118,7 @@ export default function ImporterRfqsPage() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
         ))}
       </div>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { useScrollTrigger } from '@/lib/hooks/useScrollTrigger';
 
 interface AnimatedCounterProps {
   value?: number;
@@ -11,6 +12,7 @@ interface AnimatedCounterProps {
   suffix?: string;
   separator?: string;
   className?: string;
+  scrollTrigger?: boolean;
 }
 
 export default function AnimatedCounter({
@@ -22,14 +24,27 @@ export default function AnimatedCounter({
   suffix = '',
   separator = ',',
   className = '',
+  scrollTrigger = true,
 }: AnimatedCounterProps) {
   const target = end !== undefined ? end : value !== undefined ? value : 0;
   const [displayValue, setDisplayValue] = useState<number>(0);
   const startTimeRef = useRef<number | null>(null);
   const startValueRef = useRef<number>(0);
   const frameRef = useRef<number | null>(null);
+  const hasTriggeredRef = useRef(false);
+
+  const { ref, isVisible } = useScrollTrigger<HTMLSpanElement>({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
 
   useEffect(() => {
+    // If scroll-trigger is active, wait until element scrolls into view
+    if (scrollTrigger && !isVisible && !hasTriggeredRef.current) {
+      return;
+    }
+    hasTriggeredRef.current = true;
+
     startValueRef.current = displayValue;
     startTimeRef.current = null;
 
@@ -56,7 +71,7 @@ export default function AnimatedCounter({
     return () => {
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
-  }, [target, duration]);
+  }, [target, duration, isVisible, scrollTrigger]);
 
   const formatNumber = (num: number): string => {
     const fixed = num.toFixed(decimals);
@@ -66,7 +81,7 @@ export default function AnimatedCounter({
   };
 
   return (
-    <span className={`inline-block font-mono tracking-tight ${className}`}>
+    <span ref={ref} className={`inline-block font-mono tracking-tight ${className}`}>
       {prefix}
       {formatNumber(displayValue)}
       {suffix}

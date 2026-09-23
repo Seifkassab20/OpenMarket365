@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { useToast } from '@/components/admin/ToastNotification';
+import ScrollReveal from '@/components/admin/ScrollReveal';
+import AnimatedCounter from '@/components/admin/AnimatedCounter';
 import {
   importerService,
   ImporterTelemetry,
@@ -85,6 +87,7 @@ export default function ImporterOverviewPage() {
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
       {/* Page Header */}
+      <ScrollReveal direction="down" delayMs={0}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-[#b9aa95]">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -122,11 +125,13 @@ export default function ImporterOverviewPage() {
           </Link>
         </div>
       </div>
+      </ScrollReveal>
 
       {/* KPI Metric Cards */}
       <div className={`grid grid-cols-1 sm:grid-cols-3 gap-4${loading ? ' animate-pulse opacity-50' : ''}`}>
         {/* Metric 1: Active RFQs */}
-        <div className="rounded-xl border border-[#b9aa95] bg-[#e4dac9] p-4 shadow-sm space-y-1">
+        <ScrollReveal delayMs={0} direction="up" className="h-full">
+        <div className="rounded-xl border border-[#b9aa95] bg-[#e4dac9] p-4 shadow-sm space-y-1 hover:border-[#202522] transition-colors h-full">
           <div className="flex items-center justify-between text-[#70695f]">
             <span className="text-[10px] font-bold uppercase tracking-wider">
               {language === 'ar' ? 'طلبات التوريد النشطة' : 'Active Sourcing RFQs'}
@@ -134,16 +139,18 @@ export default function ImporterOverviewPage() {
             <FileSpreadsheet className="w-3.5 h-3.5 text-[#9b452f]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.active_rfqs_count ?? 0}
+            <AnimatedCounter end={telemetry?.active_rfqs_count ?? 0} duration={1200} />
           </div>
           <div className="flex items-center gap-1 text-[10px] text-[#2d7a58] font-bold">
             <TrendingUp className="w-3 h-3" />
             <span>+2 this month</span>
           </div>
         </div>
+        </ScrollReveal>
 
         {/* Metric 2: Sealed Quotes */}
-        <div className="rounded-xl border border-[#b9aa95] bg-[#e4dac9] p-4 shadow-sm space-y-1">
+        <ScrollReveal delayMs={60} direction="up" className="h-full">
+        <div className="rounded-xl border border-[#b9aa95] bg-[#e4dac9] p-4 shadow-sm space-y-1 hover:border-[#202522] transition-colors h-full">
           <div className="flex items-center justify-between text-[#70695f]">
             <span className="text-[10px] font-bold uppercase tracking-wider">
               {language === 'ar' ? 'العروض المستلمة' : 'Sealed Bids Received'}
@@ -151,15 +158,17 @@ export default function ImporterOverviewPage() {
             <Scale className="w-3.5 h-3.5 text-[#596348]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.sealed_quotes_received ?? 0}
+            <AnimatedCounter end={telemetry?.sealed_quotes_received ?? 0} duration={1300} />
           </div>
           <div className="text-[10px] text-[#70695f] font-mono">
             {language === 'ar' ? '100% عروض مغلقة' : '100% Sealed bids'}
           </div>
         </div>
+        </ScrollReveal>
 
         {/* Metric 3: Bid Velocity */}
-        <div className="rounded-xl border border-[#b9aa95] bg-[#e4dac9] p-4 shadow-sm space-y-1">
+        <ScrollReveal delayMs={120} direction="up" className="h-full">
+        <div className="rounded-xl border border-[#b9aa95] bg-[#e4dac9] p-4 shadow-sm space-y-1 hover:border-[#202522] transition-colors h-full">
           <div className="flex items-center justify-between text-[#70695f]">
             <span className="text-[10px] font-bold uppercase tracking-wider">
               {language === 'ar' ? 'متوسط سرعة الرد' : 'Avg Bid Response'}
@@ -167,15 +176,17 @@ export default function ImporterOverviewPage() {
             <Clock className="w-3.5 h-3.5 text-[#596348]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.avg_bid_response_hours ?? 0} <span className="text-xs font-normal font-sans">hrs</span>
+            <AnimatedCounter end={telemetry?.avg_bid_response_hours ?? 0} /> <span className="text-xs font-normal font-sans">hrs</span>
           </div>
           <div className="text-[10px] text-[#2d7a58] font-bold">
             High responsiveness
           </div>
         </div>
+        </ScrollReveal>
       </div>
 
       {/* Navigation Desk Tabs */}
+      <ScrollReveal delayMs={100} direction="up">
       <div className="flex items-center gap-2 border-b border-[#b9aa95] overflow-x-auto pb-px">
         {([
           { id: 'rfqs', labelEn: 'Active RFQs & Demands', labelAr: 'طلبات التوريد المفتوحة', count: rfqs.length },
@@ -199,12 +210,13 @@ export default function ImporterOverviewPage() {
                     : 'bg-[#b9aa95]/40 text-[#202522]'
                 }`}
               >
-                {tab.count}
+                <AnimatedCounter end={tab.count} duration={800} />
               </span>
             )}
           </button>
         ))}
       </div>
+      </ScrollReveal>
 
       {loading && (
         <div className="space-y-4 animate-pulse">
@@ -237,11 +249,9 @@ export default function ImporterOverviewPage() {
           )}
 
           <div className="grid grid-cols-1 gap-4">
-            {rfqs.map((rfq) => (
-              <div
-                key={rfq.id}
-                className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 hover:border-[#202522] transition-all shadow-sm space-y-4"
-              >
+            {rfqs.map((rfq, idx) => (
+              <ScrollReveal key={rfq.id} delayMs={idx * 70} direction="up">
+              <div className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 hover:border-[#202522] transition-all shadow-sm space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#b9aa95]/60 pb-3">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs font-bold text-[#9b452f] bg-[#9b452f]/10 px-2 py-0.5 rounded">
@@ -262,7 +272,7 @@ export default function ImporterOverviewPage() {
                       {language === 'ar' ? rfq.commodity_ar : rfq.commodity_en}
                     </h3>
                     <p className="text-xs text-[#565047] font-mono">
-                      {rfq.variety} · {rfq.quantity_mt} MT Required
+                      {rfq.variety} · <AnimatedCounter end={rfq.quantity_mt} /> MT Required
                     </p>
                     <p className="text-xs text-[#70695f]">{rfq.packaging_spec}</p>
 
@@ -296,7 +306,7 @@ export default function ImporterOverviewPage() {
                       <>
                         <div className="text-center sm:text-right">
                           <span className="text-2xl font-serif font-bold text-[#202522]">
-                            {rfq.bids_count}
+                            <AnimatedCounter end={rfq.bids_count} />
                           </span>
                           <span className="text-xs text-[#70695f] block font-mono">
                             {language === 'ar' ? 'عطاءات مغلقة مستلمة' : 'sealed bids arrived'}
@@ -317,6 +327,7 @@ export default function ImporterOverviewPage() {
                   </div>
                 </div>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -332,7 +343,7 @@ export default function ImporterOverviewPage() {
                 : 'Side-by-side comparison of private sealed quotations submitted by qualified Egyptian exporters:'}
             </div>
             <span className="text-xs font-mono font-bold text-[#596348] bg-[#596348]/10 px-2.5 py-1 rounded">
-              {quotes.length} SEALED BIDS
+              <AnimatedCounter end={quotes.length} /> SEALED BIDS
             </span>
           </div>
 
@@ -341,11 +352,9 @@ export default function ImporterOverviewPage() {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {quotes.map((q) => (
-              <div
-                key={q.id}
-                className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 flex flex-col justify-between hover:border-[#202522] transition-all shadow-sm space-y-4 relative"
-              >
+            {quotes.map((q, idx) => (
+              <ScrollReveal key={q.id} delayMs={idx * 80} direction="up" className="h-full">
+              <div className="bg-[#e4dac9] border border-[#b9aa95] rounded-xl p-5 flex flex-col justify-between hover:border-[#202522] transition-all shadow-sm space-y-4 relative h-full">
                 {q.highlight_badge && (
                   <div className="absolute -top-3 right-4 px-2.5 py-0.5 bg-[#9b452f] text-white text-[10px] font-bold uppercase tracking-wider shadow-sm rounded-xs">
                     {q.highlight_badge}
@@ -386,7 +395,9 @@ export default function ImporterOverviewPage() {
                   <div className="space-y-2 text-xs">
                     <div className="flex items-center justify-between">
                       <span className="text-[#70695f]">Lead Time:</span>
-                      <span className="font-bold text-[#202522]">{q.lead_time_days} days to vessel</span>
+                      <span className="font-bold text-[#202522]">
+                        <AnimatedCounter end={q.lead_time_days} /> days to vessel
+                      </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-[#70695f]">Packaging:</span>
@@ -440,6 +451,7 @@ export default function ImporterOverviewPage() {
                   />
                 </div>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
