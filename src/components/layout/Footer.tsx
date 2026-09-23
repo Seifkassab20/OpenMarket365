@@ -41,6 +41,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-xs text-[#dcd1bf]">
               <li><Link href="/exporters" className="hover:text-white transition-colors">{language === 'ar' ? 'دليل المصدرين' : 'Find exporters'}</Link></li>
+              <li><Link href="/importers" className="hover:text-white transition-colors">{language === 'ar' ? 'دليل المستوردين' : 'Find buyers'}</Link></li>
               <li><Link href="/products" className="hover:text-white transition-colors">{language === 'ar' ? 'كتالوج السلع' : 'Commodity index'}</Link></li>
               <li><Link href="/market" className="hover:text-white transition-colors">{language === 'ar' ? 'بورصة البضائع' : 'Market Boards'}</Link></li>
               <li><Link href="/rfqs/create" className="hover:text-white transition-colors">{language === 'ar' ? 'طرح مناقصة' : 'Request a quote'}</Link></li>

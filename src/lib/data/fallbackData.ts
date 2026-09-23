@@ -1,11 +1,12 @@
-import { 
-  Category, 
-  Company, 
-  Product, 
-  Rfq, 
-  MarketListing, 
-  SubscriptionPlan, 
-  ContentItem 
+import {
+  Category,
+  Company,
+  Product,
+  Rfq,
+  MarketListing,
+  SubscriptionPlan,
+  ContentItem,
+  VerificationStatus,
 } from '../types/database.types';
 
 export const fallbackCategories: Category[] = [
@@ -408,6 +409,142 @@ export const fallbackMarketListings: MarketListing[] = [
     created_at: '2026-03-18T10:00:00Z',
     company: fallbackCompanies[1],
     category: fallbackCategories[2],
+  },
+];
+
+export interface FallbackImporter {
+  id: string;
+  slug: string;
+  company_name_en: string;
+  company_name_ar: string | null;
+  country_code: string;
+  country_en: string;
+  hub_port: string;
+  sourcing_focus_en: string;
+  sourcing_focus_ar: string | null;
+  about_en: string | null;
+  about_ar: string | null;
+  annual_volume_mt: number;
+  preferred_incoterms: string;
+  payment_terms: string | null;
+  company_phone: string | null;
+  company_email: string | null;
+  verification_status: VerificationStatus;
+  tier: string;
+  active_rfqs: number;
+  member_since: string;
+}
+
+export const fallbackImporters: FallbackImporter[] = [
+  {
+    id: 'req-euro-trade',
+    slug: 'van-dijk-food-group',
+    company_name_en: 'Van Dijk Food Group Netherlands',
+    company_name_ar: 'مجموعة فان دايك الغذائية الهولندية',
+    country_code: 'NLD',
+    country_en: 'Netherlands',
+    hub_port: 'Port of Rotterdam',
+    sourcing_focus_en: 'Valencia Oranges Grade A · Citrus Calibers 56-80',
+    sourcing_focus_ar: 'برتقال فالنسيا فرز أول · معايرة حمضيات 56-80',
+    about_en: 'Rotterdam-based wholesale distributor supplying Benelux retail chains with Egyptian citrus under year-round programs. Requires GlobalGAP and Brix 11.5% minimum.',
+    about_ar: 'موزع جملة مقره روتردام يورد لسلاسل التجزئة في البنلوكس الحمضيات المصرية عبر برامج توريد سنوية. يشترط شهادة GlobalGAP وحد أدنى للسكريات Brix 11.5%.',
+    annual_volume_mt: 2400,
+    preferred_incoterms: 'CIF Rotterdam',
+    payment_terms: '100% Irrevocable L/C at sight',
+    company_phone: '+31 10 492 8810',
+    company_email: 'procurement@vandijk-foods.nl',
+    verification_status: 'VERIFIED',
+    tier: 'ELITE',
+    active_rfqs: 3,
+    member_since: '2025-06-14',
+  },
+  {
+    id: 'req-gulf-fresh',
+    slug: 'al-madina-fmcg-saudi',
+    company_name_en: 'Al-Madina FMCG Saudi Arabia',
+    company_name_ar: 'شركة المدينة للسلع الغذائية السعودية',
+    country_code: 'SAU',
+    country_en: 'Saudi Arabia',
+    hub_port: 'Jeddah Islamic Port',
+    sourcing_focus_en: 'IQF Frozen Strawberries · Festival / Fortuna 25-35mm',
+    sourcing_focus_ar: 'فراولة مجمدة IQF · فيستيفال / فورتونا 25-35 مم',
+    about_en: 'Jeddah FMCG importer and cold-chain distributor serving KSA retail and HORECA. SFDA-compliant sourcing with 30% advance against BL issuance.',
+    about_ar: 'مستورد وموزع سلاسل تبريد مقره جدة يخدم التجزئة والضيافة في المملكة. توريد متوافق مع SFDA بدفعة مقدمة 30% مقابل إصدار بوليصة الشحن.',
+    annual_volume_mt: 1200,
+    preferred_incoterms: 'CFR Jeddah',
+    payment_terms: '30% Advance, 70% against documents',
+    company_phone: '+966 12 650 1190',
+    company_email: 'sourcing@almadina-fmcg.sa',
+    verification_status: 'VERIFIED',
+    tier: 'PREMIUM',
+    active_rfqs: 2,
+    member_since: '2025-09-02',
+  },
+  {
+    id: 'req-germany-pharma',
+    slug: 'bavaria-botanicals-nuremberg',
+    company_name_en: 'Bavaria Botanicals Nuremberg',
+    company_name_ar: 'بافاريا للخلاصات النباتية نورمبرج',
+    country_code: 'DEU',
+    country_en: 'Germany',
+    hub_port: 'Port of Hamburg',
+    sourcing_focus_en: 'Organic Chamomile Flowers · PA-tested Herbs & Spices',
+    sourcing_focus_ar: 'أزهار بابونج عضوي · أعشاب مختبرة PA',
+    about_en: 'Nuremberg botanical extracts buyer for pharma-grade chamomile and medicinal herbs. Requires EU Organic and PA <400 µg/kg lab analysis.',
+    about_ar: 'مشترٍ للمستخلصات النباتية بمعايير دوائية للبابونج والأعشاب الطبية. يشترط العضوية الأوروبية وتحليل PA أقل من 400 ميكروجرام/كجم.',
+    annual_volume_mt: 480,
+    preferred_incoterms: 'FOB Alexandria',
+    payment_terms: 'CAD via Commerzbank',
+    company_phone: '+49 89 203 9100',
+    company_email: 'buying@bavaria-botanicals.de',
+    verification_status: 'VERIFIED',
+    tier: 'ELITE',
+    active_rfqs: 1,
+    member_since: '2025-11-20',
+  },
+  {
+    id: 'req-uk-fresh',
+    slug: 'thames-fresh-produce-uk',
+    company_name_en: 'Thames Fresh Produce Ltd',
+    company_name_ar: 'تيمز للمنتجات الطازجة بريطانيا',
+    country_code: 'GBR',
+    country_en: 'United Kingdom',
+    hub_port: 'Port of Felixstowe',
+    sourcing_focus_en: 'Golden & Red Onions · Sweet Potatoes 60-80mm',
+    sourcing_focus_ar: 'بصل ذهبي وأحمر · بطاطا حلوة 60-80 مم',
+    about_en: 'UK wholesale terminal market supplier sourcing cured onions and sweet potatoes for Midlands packhouses. BRCGS and SMETA supply chain required.',
+    about_ar: 'مورد لسوق الجملة البريطاني يورّد البصل الجاف والبطاطا الحلوة لمحطات التعبئة. يشترط سلسلة توريد معتمدة BRCGS وSMETA.',
+    annual_volume_mt: 1800,
+    preferred_incoterms: 'CIF Felixstowe',
+    payment_terms: '60 days CAD against phytosanitary docs',
+    company_phone: '+44 20 7946 0810',
+    company_email: 'trade@thamesfresh.co.uk',
+    verification_status: 'VERIFIED',
+    tier: 'PLUS',
+    active_rfqs: 2,
+    member_since: '2026-01-08',
+  },
+  {
+    id: 'req-uae-gourmet',
+    slug: 'emirates-gourmet-hub',
+    company_name_en: 'Emirates Gourmet Hub Dubai',
+    company_name_ar: 'مركز الإمارات للمنتجات الفاخرة دبي',
+    country_code: 'ARE',
+    country_en: 'United Arab Emirates',
+    hub_port: 'Jebel Ali Port',
+    sourcing_focus_en: 'Table Olives · Cold-Pressed Olive Oil · Dates',
+    sourcing_focus_ar: 'زيتون مائدة · زيت زيتون بكر · تمور',
+    about_en: 'Dubai gourmet retail and re-export hub sourcing premium olive oil and table olives for GCC private label programs.',
+    about_ar: 'مركز تجزئة وإعادة تصدير فاخر في دبي يورّد زيت الزيتون وزيتون المائدة لبرامج العلامات الخاصة الخليجية.',
+    annual_volume_mt: 650,
+    preferred_incoterms: 'CFR Jebel Ali',
+    payment_terms: 'T/T 50% advance, 50% on arrival',
+    company_phone: '+971 4 552 7310',
+    company_email: 'buy@emiratesgourmet.ae',
+    verification_status: 'PENDING',
+    tier: 'STANDARD',
+    active_rfqs: 1,
+    member_since: '2026-02-11',
   },
 ];
 
