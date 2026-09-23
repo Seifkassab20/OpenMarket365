@@ -305,6 +305,35 @@ export default function ExporterShowroomPage() {
               />
             </div>
           </div>
+
+          <div className="pt-3 border-t border-[#b9aa95]/40 space-y-2">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-[#202522]">
+                  {language === 'ar' ? 'رابط فيديو المحطة على YouTube (تضمين فقط)' : 'YouTube Packhouse Tour (Embed Only)'}
+                </label>
+                <span className="text-[10px] font-mono font-bold text-[#9b452f] bg-[#9b452f]/10 px-2 py-0.5 rounded">
+                  {language === 'ar' ? 'يمنع رفع ملفات الفيديو المباشرة' : 'Zero Video File Uploads'}
+                </span>
+              </div>
+              <input
+                type="text"
+                value={formData.youtube_video_id || ''}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  const match = val.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                  handleChange('youtube_video_id', match ? match[1] : val.trim());
+                }}
+                placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ or dQw4w9WgXcQ"
+                className="w-full px-3 py-2 bg-[#eee8dc] border border-[#b9aa95] text-[#202522] rounded-sm focus:border-[#9b452f] focus:outline-none font-mono text-xs"
+              />
+              <p className="mt-1 text-[10px] text-[#70695f]">
+                {language === 'ar'
+                  ? 'يمنع رفع ملفات الفيديو نهائياً لتفادي استهلاك مساحات التخزين والباندويث. يتم نشر الفيديو على YouTube ووضع الرابط هنا ليتم تضمينه بدقة 4K.'
+                  : 'Direct video file uploads (MP4, MOV) are prohibited to eliminate storage exhaustion. Videos must be hosted on YouTube and embedded via URL.'}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Save Bar */}

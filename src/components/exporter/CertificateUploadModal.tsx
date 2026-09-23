@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { X, UploadCloud, FileCheck, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { X, UploadCloud, FileCheck, ShieldAlert, CheckCircle2, Sparkles, FileText, Loader2 } from 'lucide-react';
+import { compressImageToWebP, formatFileSize, CompressionResult } from '@/lib/utils/imageCompressor';
 
 interface CertificateUploadModalProps {
   isOpen: boolean;
@@ -27,10 +28,35 @@ export default function CertificateUploadModal({
   const [certNumber, setCertNumber] = useState('');
   const [validFrom, setValidFrom] = useState('2025-01-01');
   const [validTo, setValidTo] = useState('2027-01-01');
+  const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
+  const [isCompressing, setIsCompressing] = useState(false);
+  const [compressionResult, setCompressionResult] = useState<CompressionResult | null>(null);
   const [uploading, setUploading] = useState(false);
 
   if (!isOpen) return null;
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (!selected) return;
+
+    setFileName(selected.name);
+    setFile(selected);
+    setCompressionResult(null);
+
+    if (selected.type.startsWith('image/')) {
+      setIsCompressing(true);
+      try {
+        const result = await compressImageToWebP(selected, 1920, 1920, 0.82);
+        setCompressionResult(result);
+        setFile(result.file);
+      } catch (err) {
+        console.error('Image compression failed', err);
+      } finally {
+        setIsCompressing(false);
+      }
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +69,7 @@ export default function CertificateUploadModal({
         certificate_number: certNumber,
         valid_from: validFrom,
         valid_to: validTo,
-        document_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1200',
+        document_url: compressionResult ? compressionResult.dataUrl : 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1200',
       });
       setUploading(false);
       onClose();
@@ -137,24 +163,20 @@ export default function CertificateUploadModal({
           {/* Document Upload Area */}
           <div>
             <label className="block text-[11px] font-bold uppercase tracking-wider text-[#202522] mb-1">
-              {language === 'ar' ? 'ملف الشهادة (PDF / Scan)' : 'Certificate Document (PDF / Scan)'}
+              {language === 'ar' ? 'ملف الشهادة (PDF / Scan / Image)' : 'Certificate Document (PDF / Scan / Image)'}
             </label>
-            <div className="border-2 border-dashed border-[#b9aa95] bg-[#eee8dc] rounded-lg p-4 text-center space-y-2 hover:border-[#9b452f] transition-colors cursor-pointer">
+            <div className="border-2 border-dashed border-[#b9aa95] bg-[#eee8dc] rounded-lg p-4 text-center space-y-2 hover:border-[#9b452f] transition-colors cursor-pointer relative">
               <UploadCloud className="w-7 h-7 text-[#9b452f] mx-auto" />
               <div className="text-xs text-[#202522] font-semibold">
-                {fileName || (language === 'ar' ? 'انقر لاختيار مستند الشهادة' : 'Click to select or drag PDF certificate')}
+                {fileName || (language === 'ar' ? 'انقر لاختيار مستند الشهادة أو صورة الفحص' : 'Click to select or drag PDF / Image certificate')}
               </div>
               <p className="text-[10px] text-[#70695f]">
-                {language === 'ar' ? 'الحد الأقصى 15 ميجابايت • يتم حفظه في الخزينة المشفرة' : 'Max 15MB PDF • Stored in encrypted compliance vault'}
+                {language === 'ar' ? 'الحد الأقصى 15 ميجابايت • يتم ضغط الصور تلقائياً إلى WebP لتوفير 80% من الباندويث' : 'Max 15MB • Images auto-compressed to WebP (SRS FR-MED-001)'}
               </p>
               <input
                 type="file"
-                accept=".pdf,.jpg,.jpeg,.png"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    setFileName(e.target.files[0].name);
-                  }
-                }}
+                accept=".pdf,.jpg,.jpeg,.png,.webp"
+                onChange={handleFileChange}
                 className="hidden"
                 id="cert-file-input"
               />
@@ -164,6 +186,37 @@ export default function CertificateUploadModal({
               >
                 {language === 'ar' ? 'تصفح الملفات' : 'Browse File'}
               </label>
+
+              {/* Compression in Progress */}
+              {isCompressing && (
+                <div className="mt-3 p-2 bg-[#dfd4c1] border border-[#b9aa95] rounded text-xs text-[#202522] flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-[#9b452f]" />
+                  <span>{language === 'ar' ? 'جارِ معالجة وضغط الصورة إلى WebP داخل المتصفح...' : 'Compressing image into WebP format...'}</span>
+                </div>
+              )}
+
+              {/* WebP Compression Savings Result */}
+              {compressionResult && (
+                <div className="mt-3 p-2.5 bg-[#2d7a58]/10 border border-[#2d7a58]/30 rounded-lg text-xs text-[#2d7a58] flex flex-col sm:flex-row items-center justify-between gap-2 text-start">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#2d7a58] shrink-0" />
+                    <span className="font-semibold text-[11px]">
+                      {language === 'ar' ? '✓ تم ضغط الصورة إلى WebP بنجاح (FR-MED-001)' : '✓ WebP In-Browser Optimized (FR-MED-001)'}
+                    </span>
+                  </div>
+                  <div className="font-mono text-[10px] bg-[#2d7a58]/20 px-2 py-0.5 rounded">
+                    {formatFileSize(compressionResult.originalSize)} → {formatFileSize(compressionResult.compressedSize)} (-{compressionResult.savingsPercent}%)
+                  </div>
+                </div>
+              )}
+
+              {/* PDF Document Indicator */}
+              {file && !compressionResult && !isCompressing && (
+                <div className="mt-3 p-2 bg-[#eee8dc] border border-[#b9aa95] rounded text-xs text-[#565047] flex items-center justify-center gap-2 font-mono text-[11px]">
+                  <FileText className="w-4 h-4 text-[#9b452f]" />
+                  <span>{fileName} ({formatFileSize(file.size)})</span>
+                </div>
+              )}
             </div>
           </div>
 

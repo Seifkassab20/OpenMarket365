@@ -526,7 +526,7 @@ export default function ImportersExperiencePage() {
                 <div className="bg-[#202522] text-[#eee8dc] p-4 h-40 flex flex-col justify-between col-span-2 sm:col-span-1">
                   <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-[#c38b40] font-bold flex items-center gap-1.5"><Video className="w-3.5 h-3.5" /> FACTORY VIDEO</span>
                   <p className="text-xs leading-relaxed">Walkthrough available on the full showroom. Request a live video verification before contracting.</p>
-                  <span className="text-[11px] font-mono text-[#d4c7b5]">MP4 · 4K · 03:42</span>
+                  <span className="text-[11px] font-mono text-[#d4c7b5]">YouTube Embed · 4K · 03:42</span>
                 </div>
               </div>
               <div className="p-6 space-y-4">
