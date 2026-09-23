@@ -38,3 +38,7 @@ next-env.d.ts
 replit_bundle.js
 replit_style.css
 scratch/
+
+*.docx
+*.pdf
+*.txt
