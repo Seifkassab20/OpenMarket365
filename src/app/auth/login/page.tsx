@@ -56,7 +56,7 @@ export default function LoginPage() {
         // Fallback for demo credentials or unseeded accounts
         loginAs(selectedRoleForLogin, email);
         if (selectedRoleForLogin === 'ADMIN') {
-          router.push('/dashboard/admin');
+          router.push('/admin');
         } else if (selectedRoleForLogin === 'EXPORTER') {
           router.push('/dashboard/exporter');
         } else if (selectedRoleForLogin === 'IMPORTER') {
@@ -67,7 +67,7 @@ export default function LoginPage() {
       } else {
         loginAs(selectedRoleForLogin, email);
         if (selectedRoleForLogin === 'ADMIN') {
-          router.push('/dashboard/admin');
+          router.push('/admin');
         } else if (selectedRoleForLogin === 'EXPORTER') {
           router.push('/dashboard/exporter');
         } else {
@@ -329,10 +329,10 @@ export default function LoginPage() {
 
             <div className="pt-6 mt-6 border-t border-[#b9aa95]">
               <button
-                onClick={() => handleQuickLogin('ADMIN', '/dashboard/admin')}
-                className="w-full py-2.5 text-xs font-bold uppercase tracking-wider bg-[#202522] hover:bg-black text-[#eee8dc] transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                onClick={() => handleQuickLogin('ADMIN', '/admin')}
+                className="w-full py-2.5 text-xs font-bold uppercase tracking-wider bg-[#9b452f] hover:bg-[#833824] text-white transition-colors flex items-center justify-center gap-1.5 shadow-sm"
               >
-                <span>{language === 'ar' ? 'الدخول كمسؤول رقابي' : 'Login as Admin'}</span>
+                <span>{language === 'ar' ? 'الدخول كمسؤول' : 'Login as Admin'}</span>
                 <ArrowIcon className="w-3.5 h-3.5" />
               </button>
             </div>

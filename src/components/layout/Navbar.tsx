@@ -24,7 +24,7 @@ const navigation = [
   { href: '/rfqs', en: 'Importer desk', ar: 'مكتب المستورد' },
   { href: '/dashboard/exporter', en: 'Exporter desk', ar: 'مكتب المصدر' },
   { href: '/media', en: 'Media', ar: 'الإعلام' },
-  { href: '/dashboard/admin', en: 'Governance', ar: 'الرقابة' },
+  { href: '/admin', en: 'Governance', ar: 'الرقابة' },
 ];
 
 const focusStyle = 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b452f]';
@@ -34,11 +34,17 @@ export default function Navbar() {
   const { currentUser, logout } = useAuth();
   const pathname = usePathname() ?? '';
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Exclude Navbar from all admin routes so the Admin Dashboard has its own dedicated shell
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
   const isArabic = language === 'ar';
 
   const accountHref = currentUser.role === 'ADMIN'
-    ? '/dashboard/admin'
+    ? '/admin'
     : currentUser.role === 'EXPORTER'
       ? '/dashboard/exporter'
       : '/rfqs';
@@ -112,8 +118,17 @@ export default function Navbar() {
             </Link>
             {currentUser.isLoggedIn ? (
               <div className="flex items-center gap-1 border-s border-[#b9aa95] ps-2">
-                <Link href={accountHref} className={`max-w-36 truncate whitespace-nowrap px-2 text-xs font-semibold text-[#202522] hover:text-[#9b452f] ${focusStyle}`}>
-                  {currentUser.name}
+                <Link href={accountHref} className={`flex items-center gap-1.5 whitespace-nowrap px-2 text-xs font-semibold text-[#202522] hover:text-[#9b452f] ${focusStyle}`}>
+                  <span className={`px-1.5 py-0.5 text-[9px] font-bold uppercase ${
+                    currentUser.role === 'ADMIN'
+                      ? 'bg-[#596348] text-[#f4efe5]'
+                      : currentUser.role === 'EXPORTER'
+                        ? 'bg-[#c38b40] text-[#202522]'
+                        : 'bg-[#9b452f] text-white'
+                  }`}>
+                    {currentUser.role}
+                  </span>
+                  <span className="max-w-36 truncate">{currentUser.name}</span>
                 </Link>
                 <button type="button" onClick={logout} aria-label={isArabic ? 'تسجيل الخروج' : 'Sign out'} className={`flex h-10 w-10 items-center justify-center text-[#70695f] hover:text-[#9b452f] ${focusStyle}`}>
                   <LogOut className="h-4 w-4" aria-hidden="true" />

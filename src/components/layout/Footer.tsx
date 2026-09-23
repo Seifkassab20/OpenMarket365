@@ -2,10 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/lib/context/LanguageContext';
 
 export default function Footer() {
+  const pathname = usePathname();
   const { language } = useLanguage();
+
+  // Exclude Footer from all admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-[#202522] text-[#eee8dc] text-sm pt-16 pb-12 border-t border-[#363e39]">
@@ -60,7 +67,7 @@ export default function Footer() {
               {language === 'ar' ? 'المؤسسة والرقابة' : 'INSTITUTION'}
             </h4>
             <ul className="space-y-2 text-xs text-[#dcd1bf]">
-              <li><Link href="/dashboard/admin" className="hover:text-white transition-colors">{language === 'ar' ? 'لوحة التدقيق والرقابة' : 'Audit & Verification'}</Link></li>
+              <li><Link href="/admin" className="hover:text-white transition-colors">{language === 'ar' ? 'لوحة التدقيق والرقابة' : 'Audit & Verification'}</Link></li>
               <li><Link href="/media" className="hover:text-white transition-colors">{language === 'ar' ? 'الهيئات والموانئ المصرية' : 'Port authorities'}</Link></li>
               <li><Link href="/auth/login" className="hover:text-white transition-colors">{language === 'ar' ? 'بوابة الدخول الموحدة' : 'Unified Login'}</Link></li>
               <li><Link href="/pricing" className="hover:text-white transition-colors">{language === 'ar' ? 'التحويل البنكي وفوري' : 'Offline Payment'}</Link></li>
