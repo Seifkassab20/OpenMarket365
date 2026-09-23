@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Check } from 'lucide-react';
 
 export default function Hero() {
   const { language, direction } = useLanguage();
@@ -42,7 +42,22 @@ export default function Hero() {
               }
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="space-y-3 pt-2">
+              {[
+                { en: 'Direct access to Egyptian Valencia oranges, Navel, and IQF strawberries', ar: 'تواصل مباشر مع مزارع برتقال فالنسيا وبسرة والفراولة المجمدة' },
+                { en: 'Direct maritime trade lanes to Rotterdam, Hamburg, Jeddah, and Jebel Ali', ar: 'خطوط شحن بحري مبردة إلى روتردام، هامبورغ، جدة، وجبل علي' },
+                { en: 'Indicative FOB & CFR price transparency updated with harvest cycles', ar: 'شفافية أسعار FOB و CFR الاسترشادية حسب مواسم الجني' },
+              ].map((pt, i) => (
+                <div key={i} className="flex items-start gap-3 text-sm text-[#202522]">
+                  <div className="w-5 h-5 rounded-full bg-[#596348]/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <Check className="w-3.5 h-3.5 text-[#596348]" />
+                  </div>
+                  <span>{language === 'ar' ? pt.ar : pt.en}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4 pt-4">
               <Link
                 href="/exporters"
                 className="px-6 py-3.5 bg-[#9b452f] hover:bg-[#833824] text-white text-xs font-bold tracking-[0.14em] uppercase transition-all flex items-center gap-2 shadow-sm"

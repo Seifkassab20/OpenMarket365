@@ -6,6 +6,7 @@ import MediaSpotlight from '@/components/home/MediaSpotlight';
 import ProductsCatalogPage from '@/app/products/page';
 import ExportersDirectoryPage from '@/app/exporters/page';
 import ScrollReveal from '@/components/shared/ScrollReveal';
+import StoryAndRolesScroll from '@/components/home/StoryAndRolesScroll';
 
 export default function VisitorDashboard() {
   return (
@@ -13,7 +14,12 @@ export default function VisitorDashboard() {
       {/* 1. Hero Section (Immediate Load) */}
       <Hero />
 
-      {/* 2. Products Tab Merged */}
+      {/* 2. Story and Roles Section */}
+      <div id="story">
+        <StoryAndRolesScroll />
+      </div>
+
+      {/* 3. Products Tab Merged */}
       <ScrollReveal id="products">
         <div className="py-12 border-t-8 border-[#202522]">
           <div className="text-center mb-4">

@@ -52,7 +52,7 @@ export default function Navbar() {
       { rootMargin: '-40% 0px -60% 0px' }
     );
 
-    const sectionIds = ['products', 'directory', 'media'];
+    const sectionIds = ['story', 'products', 'directory', 'media'];
     sectionIds.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -153,8 +153,12 @@ export default function Navbar() {
 
           <div className="hidden shrink-0 items-center gap-2 min-[1800px]:flex">
             <Link
-              href="/welcome"
-              className={`inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded border border-[#b9aa95] px-3 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9b452f] transition-colors hover:border-[#9b452f] ${focusStyle}`}
+              href={isVisitor ? "/#story" : "/welcome"}
+              className={`inline-flex h-10 items-center gap-1.5 whitespace-nowrap rounded border border-[#b9aa95] px-3 text-[10px] font-bold uppercase tracking-[0.08em] transition-colors ${focusStyle} ${
+                activeSection === 'story'
+                  ? 'bg-[#9b452f] text-white border-[#9b452f]'
+                  : 'text-[#9b452f] hover:border-[#9b452f]'
+              }`}
             >
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
               {isArabic ? 'قصة المنصة والأدوار' : 'Story & roles'}
@@ -264,7 +268,7 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="mx-auto mt-4 flex max-w-[1600px] flex-wrap items-center gap-2 border-t border-[#b9aa95] pt-4">
-            <Link href="/welcome" onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center gap-2 border border-[#b9aa95] px-4 text-xs font-bold text-[#9b452f] ${focusStyle}`}>
+            <Link href={isVisitor ? "/#story" : "/welcome"} onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center gap-2 border border-[#b9aa95] px-4 text-xs font-bold text-[#9b452f] ${focusStyle} ${activeSection === 'story' ? 'bg-[#9b452f] text-white border-[#9b452f]' : ''}`}>
               <Sparkles className="h-4 w-4" aria-hidden="true" />
               {isArabic ? 'قصة المنصة والأدوار' : 'Story & roles'}
             </Link>
