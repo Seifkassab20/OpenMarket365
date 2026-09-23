@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { importerService, ImporterRfqItem } from '@/lib/services/importerService';
-import { Plus, FileSpreadsheet, Anchor, Scale, ArrowLeft, ArrowRight } from 'lucide-react';
+import RfqStatusBadge, { ModerationNote, isBroadcast } from '@/components/importer/RfqStatusBadge';
+import { Plus, Anchor, Scale } from 'lucide-react';
 
 export default function ImporterRfqsPage() {
-  const { language, direction } = useLanguage();
+  const { language } = useLanguage();
   const [rfqs, setRfqs] = useState<ImporterRfqItem[]>([]);
-  const isRtl = direction === 'rtl';
 
   useEffect(() => {
     importerService.getActiveRfqs().then(setRfqs);
@@ -31,7 +31,7 @@ export default function ImporterRfqsPage() {
           <p className="mt-1 text-xs text-[#70695f]">
             {language === 'ar'
               ? 'متابعة طلبات الشراء المطروحة لموردي الحاصلات الزراعية المصريين والعطاءات المستلمة.'
-              : 'Manage international procurement requirements published to Egyptian packhouses and track incoming sealed bids.'}
+              : 'Manage international procurement requirements published to Egyptian exporters and track incoming sealed bids.'}
           </p>
         </div>
 
@@ -55,17 +55,7 @@ export default function ImporterRfqsPage() {
                 <span className="font-mono text-xs font-bold text-[#9b452f] bg-[#9b452f]/10 px-2 py-0.5 rounded">
                   {rfq.rfq_number}
                 </span>
-                <span
-                  className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-xs ${
-                    rfq.status === 'RECEIVING_QUOTES'
-                      ? 'bg-[#596348] text-white'
-                      : rfq.status === 'UNDER_EVALUATION'
-                      ? 'bg-[#c38b40] text-[#202522]'
-                      : 'bg-[#202522] text-[#eee8dc]'
-                  }`}
-                >
-                  {rfq.status.replace('_', ' ')}
-                </span>
+                <RfqStatusBadge status={rfq.status} />
               </div>
               <div className="text-xs font-mono text-[#70695f]">
                 Published {rfq.published_at} • <strong className="text-[#9b452f]">Deadline: {rfq.deadline_date}</strong>
@@ -103,18 +93,24 @@ export default function ImporterRfqsPage() {
               </div>
 
               <div className="md:col-span-3 flex flex-col sm:items-end justify-center gap-2">
-                <div className="text-center sm:text-right">
-                  <span className="text-2xl font-serif font-bold text-[#202522]">{rfq.bids_count}</span>
-                  <span className="text-xs text-[#70695f] block font-mono">sealed bids submitted</span>
-                </div>
+                {isBroadcast(rfq) ? (
+                  <>
+                    <div className="text-center sm:text-right">
+                      <span className="text-2xl font-serif font-bold text-[#202522]">{rfq.bids_count}</span>
+                      <span className="text-xs text-[#70695f] block font-mono">sealed bids submitted</span>
+                    </div>
 
-                <Link
-                  href="/importer/quotes"
-                  className="px-3.5 py-2 bg-[#202522] hover:bg-[#9b452f] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors flex items-center gap-1.5"
-                >
-                  <Scale className="w-3.5 h-3.5" />
-                  <span>View Sealed Quotes</span>
-                </Link>
+                    <Link
+                      href="/importer/quotes"
+                      className="px-3.5 py-2 bg-[#202522] hover:bg-[#9b452f] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors flex items-center gap-1.5"
+                    >
+                      <Scale className="w-3.5 h-3.5" />
+                      <span>View Sealed Quotes</span>
+                    </Link>
+                  </>
+                ) : (
+                  <ModerationNote rfq={rfq} />
+                )}
               </div>
             </div>
           </div>

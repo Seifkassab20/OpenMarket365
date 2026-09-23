@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
-import { useToast } from '@/components/admin/ToastNotification';
-import { importerService, SealedQuotation } from '@/lib/services/importerService';
-import { Scale, MapPin, CheckCircle2, MessageSquare, ArrowLeft, ArrowRight, ShieldCheck } from 'lucide-react';
+import { importerService, SealedQuotation, formatPrice } from '@/lib/services/importerService';
+import EnquiryButton from '@/components/importer/EnquiryButton';
+import UnlockedContactModal, { AcceptQuoteButton, useQuoteAcceptance } from '@/components/importer/UnlockedContactModal';
+import { MapPin } from 'lucide-react';
 
 export default function ImporterQuotesPage() {
-  const { language, direction } = useLanguage();
-  const { addToast } = useToast();
+  const { language } = useLanguage();
   const [quotes, setQuotes] = useState<SealedQuotation[]>([]);
   const [selectedQuote, setSelectedQuote] = useState<SealedQuotation | null>(null);
 
@@ -17,14 +17,11 @@ export default function ImporterQuotesPage() {
     importerService.getSealedQuotes().then(setQuotes);
   }, []);
 
+  const { accept, unlocked, closeUnlocked } = useQuoteAcceptance(setQuotes);
+
   const handleAccept = (quote: SealedQuotation) => {
-    addToast(
-      'success',
-      language === 'ar'
-        ? `تم قبول عرض سعر ${quote.supplier_name} بنجاح! تم إرسال إشعار للمصدّر لبدء مسودة العقد.`
-        : `Accepted quote from ${quote.supplier_name}! Supplier notified to initiate proforma invoice.`
-    );
     setSelectedQuote(null);
+    accept(quote);
   };
 
   return (
@@ -86,7 +83,7 @@ export default function ImporterQuotesPage() {
               <div className="p-3 bg-[#eee8dc] border border-[#b9aa95] rounded-lg">
                 <div className="flex items-baseline justify-between">
                   <span className="text-2xl font-serif font-bold text-[#202522]">
-                    ${q.price_per_mt_usd}
+                    {formatPrice(q)}
                   </span>
                   <span className="text-xs font-mono font-bold text-[#596348]">
                     / MT · {q.incoterm}
@@ -148,12 +145,11 @@ export default function ImporterQuotesPage() {
                 Inspect Specs
               </button>
 
-              <button
-                onClick={() => handleAccept(q)}
-                className="px-3.5 py-2 bg-[#596348] hover:bg-[#48503a] text-white text-xs font-bold uppercase tracking-wider rounded transition-colors"
-              >
-                ✓ Accept
-              </button>
+              <AcceptQuoteButton
+                quote={q}
+                onAccept={handleAccept}
+                className="px-3.5 py-2 text-xs font-bold uppercase tracking-wider rounded transition-colors"
+              />
             </div>
           </div>
         ))}
@@ -187,7 +183,7 @@ export default function ImporterQuotesPage() {
               <div className="flex items-baseline justify-between border-b border-[#b9aa95]/40 pb-2">
                 <span className="text-xs text-[#70695f]">Quoted Price:</span>
                 <span className="text-2xl font-serif font-bold text-[#202522]">
-                  ${selectedQuote.price_per_mt_usd} / MT
+                  {formatPrice(selectedQuote)} / MT
                 </span>
               </div>
               <div className="space-y-1.5 text-[#565047]">
@@ -219,12 +215,12 @@ export default function ImporterQuotesPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => handleAccept(selectedQuote)}
-                className="flex-1 py-3 bg-[#9b452f] hover:bg-[#833824] text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-colors shadow-sm"
-              >
-                Accept & Initiate Proforma
-              </button>
+              <AcceptQuoteButton
+                quote={selectedQuote}
+                onAccept={handleAccept}
+                className="flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors shadow-sm"
+              />
+              <EnquiryButton supplierId={selectedQuote.supplier_id} supplierName={selectedQuote.supplier_name} />
               <button
                 onClick={() => setSelectedQuote(null)}
                 className="px-4 py-3 bg-[#eee8dc] border border-[#b9aa95] text-[#202522] text-xs font-bold uppercase tracking-wider rounded-lg"
@@ -234,6 +230,10 @@ export default function ImporterQuotesPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {unlocked && (
+        <UnlockedContactModal quote={unlocked.quote} contact={unlocked.contact} onClose={closeUnlocked} />
       )}
     </div>
   );
