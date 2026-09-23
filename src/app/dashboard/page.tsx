@@ -119,8 +119,8 @@ export default function DashboardPortalPage() {
               </h2>
               <p className="text-xs text-[#202522]/70 mt-2 leading-relaxed">
                 {language === 'ar'
-                  ? 'طرح طلبات الشراء RFQ، مقارنة العروض الرسمية المغلقة، تتبع الحاويات المبردة، والتواصل المباشر مع محطات التعبئة.'
-                  : 'Publish international RFQs, compare sealed exporter quotations side-by-side, track reefer shipments, and unlock direct contacts.'
+                  ? 'طرح طلبات الشراء RFQ، مقارنة العروض الرسمية المغلقة، والتواصل المباشر مع المصدرين.'
+                  : 'Publish international RFQs, compare sealed exporter quotations side-by-side, and unlock direct contacts.'
                 }
               </p>
             </div>

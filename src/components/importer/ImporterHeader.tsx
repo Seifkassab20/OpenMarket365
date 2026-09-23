@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { useAuth } from '@/lib/context/AuthContext';
+import { importerService, ImporterNotification } from '@/lib/services/importerService';
 import {
   Globe,
   Bell,
   User,
-  ShieldCheck,
   LogOut,
   ChevronDown,
   Menu,
@@ -26,7 +26,6 @@ interface ImporterHeaderProps {
   setIsMobileOpen: (open: boolean) => void;
   buyerName?: string;
   hubLocation?: string;
-  isVerified?: boolean;
 }
 
 export default function ImporterHeader({
@@ -34,7 +33,6 @@ export default function ImporterHeader({
   setIsMobileOpen,
   buyerName = 'EuroFresh Logistics GmbH (Germany)',
   hubLocation = 'Rotterdam / Hamburg Gateway',
-  isVerified = true,
 }: ImporterHeaderProps) {
   const router = useRouter();
   const { language, direction, toggleLanguage } = useLanguage();
@@ -65,35 +63,12 @@ export default function ImporterHeader({
     router.push('/auth/login');
   };
 
-  const sampleNotifications = [
-    {
-      id: 'notif-1',
-      titleEn: 'Sealed Commercial Quote Received',
-      titleAr: 'وصول عرض أسعار رسمي مغلق',
-      descEn: 'Nile Agro Export submitted $685/MT CIF Rotterdam for RFQ-EG-2026-0805.',
-      descAr: 'قدمت شركة نيل أجرو 685$/طن سيف روتردام على طلب فالنسيا.',
-      time: '10m ago',
-      unread: true,
-    },
-    {
-      id: 'notif-2',
-      titleEn: 'Phytosanitary Clearance Uploaded',
-      titleAr: 'رفع شهادة الحجر الزراعي والمطابقة',
-      descEn: 'Central Administration of Plant Quarantine issued clearance for Lot #EG-90412.',
-      descAr: 'أصدر الحجر الزراعي المصري شهادة الصحة النباتية للشحنة.',
-      time: '1h ago',
-      unread: true,
-    },
-    {
-      id: 'notif-3',
-      titleEn: 'Container Reefer Telemetry Update',
-      titleAr: 'تحديث درجة حرارة الحاوية المبردة',
-      descEn: 'Container MSCU 482910-3 steady at 4.0°C aboard MSC Gülsün.',
-      descAr: 'الحاوية المبردة مستقرة عند 4 درجات مئوية على متن السفينة.',
-      time: '4h ago',
-      unread: false,
-    },
-  ];
+  // FR-NOT-001: quote arrivals and RFQ moderation outcomes.
+  const [notifications, setNotifications] = useState<ImporterNotification[]>([]);
+  useEffect(() => {
+    importerService.getNotifications().then(setNotifications).catch(() => setNotifications([]));
+  }, []);
+  const unreadCount = notifications.filter((n) => n.unread).length;
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-[#b9aa95] bg-[#eee8dc]/95 px-4 sm:px-6 backdrop-blur-md">
@@ -117,14 +92,6 @@ export default function ImporterHeader({
             </span>
           </div>
 
-          {isVerified && (
-            <div className="flex items-center gap-1 rounded-full bg-[#596348]/15 border border-[#596348]/30 px-2 py-0.5 text-[10px] font-bold text-[#596348]">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="hidden md:inline font-mono">
-                {language === 'ar' ? 'مشتري دولي معتمد' : 'VERIFIED BUYER'}
-              </span>
-            </div>
-          )}
         </div>
       </div>
 
@@ -154,9 +121,10 @@ export default function ImporterHeader({
             onClick={() => setNotifOpen(!notifOpen)}
             className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-[#b9aa95] bg-[#e4dac9] text-[#202522] hover:bg-[#dfd4c1] transition-colors"
             title="Sourcing Notifications"
+            aria-label={language === 'ar' ? `التنبيهات (${unreadCount} جديدة)` : `Notifications (${unreadCount} new)`}
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#9b452f]" />
+            {unreadCount > 0 && <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#9b452f]" />}
           </button>
 
           {notifOpen && (
@@ -167,33 +135,39 @@ export default function ImporterHeader({
             >
               <div className="flex items-center justify-between border-b border-[#b9aa95]/60 pb-2 mb-2">
                 <span className="text-xs font-serif font-bold text-[#202522]">
-                  {language === 'ar' ? 'تنبيهات المشتريات والعروض' : 'Procurement Telemetry'}
+                  {language === 'ar' ? 'تنبيهات المشتريات والعروض' : 'Notifications'}
                 </span>
-                <span className="text-[10px] font-mono text-[#9b452f] font-bold">2 NEW</span>
+                {unreadCount > 0 && (
+                  <span className="text-[10px] font-mono text-[#9b452f] font-bold">
+                    {unreadCount} {language === 'ar' ? 'جديد' : 'NEW'}
+                  </span>
+                )}
               </div>
 
               <div className="space-y-2 max-h-72 overflow-y-auto">
-                {sampleNotifications.map((notif) => (
-                  <div
+                {notifications.length === 0 && (
+                  <p className="p-2.5 text-[11px] text-[#70695f]">
+                    {language === 'ar' ? 'لا توجد تنبيهات.' : 'No notifications yet.'}
+                  </p>
+                )}
+                {notifications.map((notif) => (
+                  <Link
                     key={notif.id}
-                    className={`p-2.5 rounded-lg border text-xs transition-colors ${
+                    href={notif.href}
+                    onClick={() => setNotifOpen(false)}
+                    className={`block p-2.5 rounded-lg border text-xs transition-colors hover:border-[#202522] ${
                       notif.unread
                         ? 'bg-[#eee8dc] border-[#9b452f]/40 text-[#202522]'
                         : 'bg-[#e4dac9]/60 border-transparent text-[#70695f]'
                     }`}
                   >
-                    <div className="flex items-center justify-between font-bold mb-0.5">
-                      <span className="truncate">
-                        {language === 'ar' ? notif.titleAr : notif.titleEn}
-                      </span>
-                      <span className="text-[9px] font-mono text-[#70695f] shrink-0">
-                        {notif.time}
-                      </span>
+                    <div className="font-bold mb-0.5 truncate">
+                      {language === 'ar' ? notif.titleAr : notif.titleEn}
                     </div>
                     <p className="text-[11px] leading-relaxed text-[#565047]">
                       {language === 'ar' ? notif.descAr : notif.descEn}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
