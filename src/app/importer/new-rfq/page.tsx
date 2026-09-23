@@ -29,15 +29,15 @@ export default function CreateRfqPage() {
     e.preventDefault();
     setSubmitted(true);
     setTimeout(() => {
-      router.push('/rfqs');
+      router.push('/importer/rfqs');
     }, 2000);
   };
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8">
       {/* Back button */}
       <Link
-        href="/rfqs"
+        href="/importer/rfqs"
         className="inline-flex items-center gap-2 text-xs font-bold text-[#9b452f] hover:underline transition-colors uppercase tracking-[0.16em]"
       >
         <ArrowIcon className="w-4 h-4" />

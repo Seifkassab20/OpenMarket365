@@ -132,7 +132,7 @@ export default function ImporterHeader({
       <div className="flex items-center gap-2 sm:gap-3">
         {/* Post RFQ quick CTA button */}
         <Link
-          href="/rfqs/create"
+          href="/importer/new-rfq"
           className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#9b452f] hover:bg-[#833824] text-white text-xs font-bold tracking-wider uppercase transition-colors shadow-sm"
         >
           <span>{language === 'ar' ? '+ طلب توريد' : '+ Post RFQ'}</span>

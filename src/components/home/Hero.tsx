@@ -52,7 +52,7 @@ export default function Hero() {
               </Link>
 
               <Link
-                href="/rfqs/create"
+                href="/importer/new-rfq"
                 className="px-6 py-3.5 border border-[#202522] hover:bg-[#202522] hover:text-white text-[#202522] text-xs font-bold tracking-[0.14em] uppercase transition-all"
               >
                 <span>{language === 'ar' ? 'طرح طلب توريد (RFQ)' : 'ISSUE AN RFQ'}</span>

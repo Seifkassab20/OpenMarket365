@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   FileSpreadsheet,
   Scale,
-  Building2,
   Ship,
   FileCheck2,
   BarChart3,
@@ -16,7 +15,6 @@ import {
   ChevronLeft,
   ArrowRight,
   ArrowLeft,
-  ExternalLink,
   ShieldCheck,
   Globe,
   PlusCircle,
@@ -85,7 +83,7 @@ export default function ImporterSidebar({
         {
           labelEn: 'Post New RFQ Demand',
           labelAr: 'طرح طلب توريد جديد',
-          href: '/rfqs/create',
+          href: '/importer/new-rfq',
           icon: <PlusCircle className="w-4 h-4" />,
         },
         {
@@ -101,12 +99,6 @@ export default function ImporterSidebar({
       titleEn: 'ORIGIN & SUPPLIERS',
       titleAr: 'المصانع والموردين',
       items: [
-        {
-          labelEn: 'Verified Packhouses',
-          labelAr: 'محطات التعبئة المعتمدة',
-          href: '/importers',
-          icon: <Building2 className="w-4 h-4" />,
-        },
         {
           labelEn: 'Compliance & Certs',
           labelAr: 'فحص مطابقة الشهادات',
@@ -166,7 +158,11 @@ export default function ImporterSidebar({
         } ${isCollapsed ? 'w-20' : 'w-64'}`}
       >
         {/* Brand & Importer Badge Header */}
-        <div className="flex h-16 items-center justify-between px-4 border-b border-[#363e39]">
+        <div
+          className={`flex h-16 items-center border-b border-[#363e39] ${
+            isCollapsed ? 'justify-center' : 'px-4'
+          }`}
+        >
           <Link
             href="/importer"
             className="flex items-center gap-3 overflow-hidden text-decoration-none"
@@ -194,10 +190,12 @@ export default function ImporterSidebar({
             )}
           </Link>
 
-          {/* Desktop Collapse Button */}
+          {/* Desktop Collapse Button, pinned to the sidebar edge so it never crowds the logo */}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-[#b9aa95] hover:bg-[#2c332f] hover:text-[#eee8dc] transition-colors"
+            className={`hidden lg:flex absolute top-5 z-10 h-6 w-6 items-center justify-center rounded-full border border-[#363e39] bg-[#202522] text-[#b9aa95] hover:bg-[#2c332f] hover:text-[#eee8dc] shadow-md transition-colors ${
+              isRtl ? '-left-3' : '-right-3'
+            }`}
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             <ChevronLeft
@@ -215,7 +213,11 @@ export default function ImporterSidebar({
         </div>
 
         {/* Navigation Sections */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6 scrollbar-thin scrollbar-thumb-[#363e39]">
+        <div
+          className={`flex-1 overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-thumb-[#363e39] ${
+            isCollapsed ? 'space-y-1' : 'space-y-6'
+          }`}
+        >
           {navSections.map((section, idx) => (
             <div key={idx} className="space-y-1">
               {!isCollapsed && (
@@ -283,19 +285,6 @@ export default function ImporterSidebar({
         <div className="p-3 border-t border-[#363e39] space-y-2">
           {!isCollapsed ? (
             <>
-              <Link
-                href="/importers"
-                className="flex items-center justify-between p-2 rounded-lg bg-[#2c332f] hover:bg-[#363e39] text-[#c9bda8] hover:text-[#eee8dc] text-xs transition-colors"
-              >
-                <div className="flex items-center gap-2 truncate">
-                  <Globe className="w-3.5 h-3.5 text-[#596348]" />
-                  <span className="truncate">
-                    {language === 'ar' ? 'دليل المشترين العام' : 'Public Buyer Directory'}
-                  </span>
-                </div>
-                <ExternalLink className="w-3 h-3 shrink-0" />
-              </Link>
-
               <Link
                 href="/"
                 className="flex items-center gap-2 px-2 py-1 text-[11px] text-[#70695f] hover:text-[#eee8dc] transition-colors"
