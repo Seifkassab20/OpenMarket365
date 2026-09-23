@@ -158,7 +158,11 @@ export default function ImporterSidebar({
         } ${isCollapsed ? 'w-20' : 'w-64'}`}
       >
         {/* Brand & Importer Badge Header */}
-        <div className="flex h-16 items-center justify-between px-4 border-b border-[#363e39]">
+        <div
+          className={`flex h-16 items-center border-b border-[#363e39] ${
+            isCollapsed ? 'justify-center' : 'px-4'
+          }`}
+        >
           <Link
             href="/importer"
             className="flex items-center gap-3 overflow-hidden text-decoration-none"
@@ -186,10 +190,12 @@ export default function ImporterSidebar({
             )}
           </Link>
 
-          {/* Desktop Collapse Button */}
+          {/* Desktop Collapse Button, pinned to the sidebar edge so it never crowds the logo */}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hidden lg:flex h-7 w-7 items-center justify-center rounded-md text-[#b9aa95] hover:bg-[#2c332f] hover:text-[#eee8dc] transition-colors"
+            className={`hidden lg:flex absolute top-5 z-10 h-6 w-6 items-center justify-center rounded-full border border-[#363e39] bg-[#202522] text-[#b9aa95] hover:bg-[#2c332f] hover:text-[#eee8dc] shadow-md transition-colors ${
+              isRtl ? '-left-3' : '-right-3'
+            }`}
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             <ChevronLeft
@@ -207,7 +213,11 @@ export default function ImporterSidebar({
         </div>
 
         {/* Navigation Sections */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6 scrollbar-thin scrollbar-thumb-[#363e39]">
+        <div
+          className={`flex-1 overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-thumb-[#363e39] ${
+            isCollapsed ? 'space-y-1' : 'space-y-6'
+          }`}
+        >
           {navSections.map((section, idx) => (
             <div key={idx} className="space-y-1">
               {!isCollapsed && (

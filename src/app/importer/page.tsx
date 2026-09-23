@@ -17,35 +17,32 @@ import {
   Scale,
   Building2,
   Ship,
-  FileCheck2,
   TrendingUp,
   Plus,
-  ArrowRight,
-  ArrowLeft,
   ShieldCheck,
   CheckCircle2,
   Clock,
   MapPin,
   Anchor,
-  Phone,
   MessageSquare,
-  Eye,
   Award,
-  Filter,
-  Search,
-  ChevronRight,
-  Layers,
-  Sparkles,
   Thermometer,
   Container,
 } from 'lucide-react';
-import MaskedContact from '@/components/shared/MaskedContact';
+
+type Tab = 'rfqs' | 'quotes' | 'packhouses' | 'shipments' | 'compliance';
+
+function EmptyState({ text }: { text: string }) {
+  return (
+    <div className="bg-[#e4dac9] border border-dashed border-[#b9aa95] rounded-xl p-8 text-center text-xs text-[#70695f]">
+      {text}
+    </div>
+  );
+}
 
 export default function ImporterOverviewPage() {
-  const { language, direction } = useLanguage();
+  const { language } = useLanguage();
   const { addToast } = useToast();
-  const isRtl = direction === 'rtl';
-  const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
   const [loading, setLoading] = useState(true);
   const [telemetry, setTelemetry] = useState<ImporterTelemetry | null>(null);
@@ -55,16 +52,13 @@ export default function ImporterOverviewPage() {
   const [shipments, setShipments] = useState<ShipmentTracking[]>([]);
 
   // Active view tab
-  const [activeTab, setActiveTab] = useState<'rfqs' | 'quotes' | 'packhouses' | 'shipments' | 'compliance'>('rfqs');
+  const [activeTab, setActiveTab] = useState<Tab>('rfqs');
 
   // Selected Quote for Modal Inspection
   const [selectedQuote, setSelectedQuote] = useState<SealedQuotation | null>(null);
 
   // Selected Packhouse for Direct WhatsApp Connect
   const [contactModalPackhouse, setContactModalPackhouse] = useState<VerifiedPackhouse | null>(null);
-
-  // Filters
-  const [commodityFilter, setCommodityFilter] = useState('ALL');
 
   const loadData = async () => {
     try {
@@ -151,7 +145,7 @@ export default function ImporterOverviewPage() {
       </div>
 
       {/* 6 KPI Metric Cards matching Exporter/Admin aesthetic */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4${loading ? ' animate-pulse opacity-50' : ''}`}>
         {/* Metric 1: Active RFQs */}
         <div className="rounded-xl border border-[#b9aa95] bg-[#e4dac9] p-4 shadow-sm space-y-1">
           <div className="flex items-center justify-between text-[#70695f]">
@@ -161,7 +155,7 @@ export default function ImporterOverviewPage() {
             <FileSpreadsheet className="w-3.5 h-3.5 text-[#9b452f]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.active_rfqs_count || 4}
+            {telemetry?.active_rfqs_count ?? 0}
           </div>
           <div className="flex items-center gap-1 text-[10px] text-[#2d7a58] font-bold">
             <TrendingUp className="w-3 h-3" />
@@ -178,7 +172,7 @@ export default function ImporterOverviewPage() {
             <Scale className="w-3.5 h-3.5 text-[#596348]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.sealed_quotes_received || 14}
+            {telemetry?.sealed_quotes_received ?? 0}
           </div>
           <div className="text-[10px] text-[#70695f] font-mono">
             {language === 'ar' ? '100% عروض مغلقة' : '100% Sealed bids'}
@@ -194,7 +188,7 @@ export default function ImporterOverviewPage() {
             <Building2 className="w-3.5 h-3.5 text-[#c38b40]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.evaluated_packhouses || 28}
+            {telemetry?.evaluated_packhouses ?? 0}
           </div>
           <div className="text-[10px] text-[#2d7a58] font-bold">
             <span>Aweta & GlobalGAP</span>
@@ -210,7 +204,7 @@ export default function ImporterOverviewPage() {
             <Award className="w-3.5 h-3.5 text-[#9b452f]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {(telemetry?.contracted_volume_mt || 12450).toLocaleString()} <span className="text-xs font-normal font-sans">MT</span>
+            {(telemetry?.contracted_volume_mt ?? 0).toLocaleString()} <span className="text-xs font-normal font-sans">MT</span>
           </div>
           <div className="text-[10px] text-[#70695f] font-mono">
             Citrus, Onions & Herbs
@@ -226,7 +220,7 @@ export default function ImporterOverviewPage() {
             <Clock className="w-3.5 h-3.5 text-[#596348]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.avg_bid_response_hours || 18} <span className="text-xs font-normal font-sans">hrs</span>
+            {telemetry?.avg_bid_response_hours ?? 0} <span className="text-xs font-normal font-sans">hrs</span>
           </div>
           <div className="text-[10px] text-[#2d7a58] font-bold">
             High responsiveness
@@ -242,7 +236,7 @@ export default function ImporterOverviewPage() {
             <Ship className="w-3.5 h-3.5 text-[#202522]" />
           </div>
           <div className="text-2xl font-serif font-bold text-[#202522]">
-            {telemetry?.active_reefer_shipments || 3}
+            {telemetry?.active_reefer_shipments ?? 0}
           </div>
           <div className="text-[10px] text-[#2d7a58] font-bold">
             Steady at 4.0°C
@@ -252,16 +246,16 @@ export default function ImporterOverviewPage() {
 
       {/* Navigation Desk Tabs */}
       <div className="flex items-center gap-2 border-b border-[#b9aa95] overflow-x-auto pb-px">
-        {[
+        {([
           { id: 'rfqs', labelEn: 'Active RFQs & Demands', labelAr: 'طلبات التوريد المفتوحة', count: rfqs.length },
           { id: 'quotes', labelEn: 'Sealed Quotations Matrix', labelAr: 'مقارنة عروض الأسعار المغلقة', count: quotes.length },
           { id: 'packhouses', labelEn: 'Verified Packhouse Directory', labelAr: 'دليل محطات التعبئة المعتمدة', count: packhouses.length },
           { id: 'shipments', labelEn: 'Reefer Shipments Telemetry', labelAr: 'تتبع شحنات التبريد والموانئ', count: shipments.length },
           { id: 'compliance', labelEn: 'EU MRL & Cert Compliance', labelAr: 'فحص اشتراطات الجودة والمتبقيات' },
-        ].map((tab) => (
+        ] as { id: Tab; labelEn: string; labelAr: string; count?: number }[]).map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-3 text-xs font-bold uppercase tracking-wider transition-all border-b-2 whitespace-nowrap ${
               activeTab === tab.id
                 ? 'border-[#9b452f] text-[#9b452f] bg-[#e4dac9]/60'
@@ -284,8 +278,16 @@ export default function ImporterOverviewPage() {
         ))}
       </div>
 
+      {loading && activeTab !== 'compliance' && (
+        <div className="space-y-4 animate-pulse">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-40 bg-[#e4dac9] border border-[#b9aa95] rounded-xl" />
+          ))}
+        </div>
+      )}
+
       {/* ================= TAB 1: ACTIVE RFQS ================= */}
-      {activeTab === 'rfqs' && (
+      {!loading && activeTab === 'rfqs' && (
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-[#e4dac9] border border-[#b9aa95] p-3.5 rounded-lg">
             <div className="text-xs text-[#202522] font-medium">
@@ -301,6 +303,10 @@ export default function ImporterOverviewPage() {
               <span>{language === 'ar' ? 'طرح طلب توريد' : 'Post New RFQ'}</span>
             </Link>
           </div>
+
+          {rfqs.length === 0 && (
+            <EmptyState text={language === 'ar' ? 'لا توجد طلبات توريد نشطة بعد.' : 'No active RFQs yet.'} />
+          )}
 
           <div className="grid grid-cols-1 gap-4">
             {rfqs.map((rfq) => (
@@ -322,7 +328,7 @@ export default function ImporterOverviewPage() {
                           : 'bg-[#202522] text-[#eee8dc]'
                       }`}
                     >
-                      {rfq.status.replace('_', ' ')}
+                      {rfq.status.replaceAll('_', ' ')}
                     </span>
                   </div>
                   <div className="flex items-center gap-4 text-xs font-mono text-[#70695f]">
@@ -393,7 +399,7 @@ export default function ImporterOverviewPage() {
       )}
 
       {/* ================= TAB 2: SEALED QUOTES MATRIX ================= */}
-      {activeTab === 'quotes' && (
+      {!loading && activeTab === 'quotes' && (
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#e4dac9] border border-[#b9aa95] p-3.5 rounded-lg">
             <div className="text-xs text-[#202522] font-medium">
@@ -405,6 +411,10 @@ export default function ImporterOverviewPage() {
               {quotes.length} LIVE BIDS UNLOCKED
             </span>
           </div>
+
+          {quotes.length === 0 && (
+            <EmptyState text={language === 'ar' ? 'لم تصل عروض أسعار بعد.' : 'No quotations received yet.'} />
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {quotes.map((q) => (
@@ -514,7 +524,7 @@ export default function ImporterOverviewPage() {
       )}
 
       {/* ================= TAB 3: VERIFIED PACKHOUSES ================= */}
-      {activeTab === 'packhouses' && (
+      {!loading && activeTab === 'packhouses' && (
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#e4dac9] border border-[#b9aa95] p-3.5 rounded-lg">
             <div className="text-xs text-[#202522] font-medium">
@@ -523,6 +533,10 @@ export default function ImporterOverviewPage() {
                 : 'Vetted Egyptian agricultural packhouses cleared for European Union & Gulf supermarket standards:'}
             </div>
           </div>
+
+          {packhouses.length === 0 && (
+            <EmptyState text={language === 'ar' ? 'لا توجد محطات تعبئة معتمدة بعد.' : 'No verified packhouses yet.'} />
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {packhouses.map((pack) => (
@@ -614,7 +628,7 @@ export default function ImporterOverviewPage() {
       )}
 
       {/* ================= TAB 4: REEFER SHIPMENTS TELEMETRY ================= */}
-      {activeTab === 'shipments' && (
+      {!loading && activeTab === 'shipments' && (
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#e4dac9] border border-[#b9aa95] p-3.5 rounded-lg">
             <div className="text-xs text-[#202522] font-medium">
@@ -623,9 +637,13 @@ export default function ImporterOverviewPage() {
                 : 'Live cold-chain tracking for active reefer containers departing Egyptian ports:'}
             </div>
             <span className="text-xs font-mono font-bold text-[#596348] bg-[#596348]/10 px-2 py-1 rounded">
-              3 ACTIVE VOYAGES
+              {shipments.length} ACTIVE VOYAGES
             </span>
           </div>
+
+          {shipments.length === 0 && (
+            <EmptyState text={language === 'ar' ? 'لا توجد شحنات نشطة.' : 'No active shipments.'} />
+          )}
 
           <div className="space-y-4">
             {shipments.map((ship) => (
@@ -650,7 +668,7 @@ export default function ImporterOverviewPage() {
                       Steady at {ship.set_temperature_c.toFixed(1)}°C
                     </span>
                     <span className="px-2 py-0.5 bg-[#202522] text-[#eee8dc] text-[10px] font-bold uppercase rounded-xs">
-                      {ship.status.replace('_', ' ')}
+                      {ship.status.replaceAll('_', ' ')}
                     </span>
                   </div>
                 </div>
