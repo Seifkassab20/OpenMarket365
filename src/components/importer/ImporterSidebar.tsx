@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   FileSpreadsheet,
   Scale,
-  Building2,
   Ship,
   FileCheck2,
   BarChart3,
@@ -16,7 +15,6 @@ import {
   ChevronLeft,
   ArrowRight,
   ArrowLeft,
-  ExternalLink,
   ShieldCheck,
   Globe,
   PlusCircle,
@@ -85,7 +83,7 @@ export default function ImporterSidebar({
         {
           labelEn: 'Post New RFQ Demand',
           labelAr: 'طرح طلب توريد جديد',
-          href: '/rfqs/create',
+          href: '/importer/new-rfq',
           icon: <PlusCircle className="w-4 h-4" />,
         },
         {
@@ -101,12 +99,6 @@ export default function ImporterSidebar({
       titleEn: 'ORIGIN & SUPPLIERS',
       titleAr: 'المصانع والموردين',
       items: [
-        {
-          labelEn: 'Verified Packhouses',
-          labelAr: 'محطات التعبئة المعتمدة',
-          href: '/importers',
-          icon: <Building2 className="w-4 h-4" />,
-        },
         {
           labelEn: 'Compliance & Certs',
           labelAr: 'فحص مطابقة الشهادات',
@@ -283,19 +275,6 @@ export default function ImporterSidebar({
         <div className="p-3 border-t border-[#363e39] space-y-2">
           {!isCollapsed ? (
             <>
-              <Link
-                href="/importers"
-                className="flex items-center justify-between p-2 rounded-lg bg-[#2c332f] hover:bg-[#363e39] text-[#c9bda8] hover:text-[#eee8dc] text-xs transition-colors"
-              >
-                <div className="flex items-center gap-2 truncate">
-                  <Globe className="w-3.5 h-3.5 text-[#596348]" />
-                  <span className="truncate">
-                    {language === 'ar' ? 'دليل المشترين العام' : 'Public Buyer Directory'}
-                  </span>
-                </div>
-                <ExternalLink className="w-3 h-3 shrink-0" />
-              </Link>
-
               <Link
                 href="/"
                 className="flex items-center gap-2 px-2 py-1 text-[11px] text-[#70695f] hover:text-[#eee8dc] transition-colors"

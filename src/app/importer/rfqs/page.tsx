@@ -36,7 +36,7 @@ export default function ImporterRfqsPage() {
         </div>
 
         <Link
-          href="/rfqs/create"
+          href="/importer/new-rfq"
           className="flex items-center gap-1.5 px-3.5 py-2 bg-[#9b452f] hover:bg-[#833824] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm rounded-sm"
         >
           <Plus className="w-4 h-4" />

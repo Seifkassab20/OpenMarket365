@@ -198,7 +198,7 @@ export default function ProductsCatalogPage() {
                     />
                   </div>
                   <Link
-                    href="/rfqs/create"
+                    href="/importer/new-rfq"
                     className="px-3.5 py-2 text-xs font-bold bg-[#9b452f] hover:bg-[#833824] text-white flex items-center gap-1 flex-shrink-0 transition-colors"
                   >
                     <span>RFQ →</span>

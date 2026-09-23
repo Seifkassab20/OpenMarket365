@@ -93,7 +93,7 @@ export default function RfqsBoardPage() {
         </div>
 
         <Link
-          href="/rfqs/create"
+          href="/importer/new-rfq"
           className="px-5 py-2.5 text-xs font-bold uppercase tracking-wider bg-[#9b452f] hover:bg-[#833824] text-white flex items-center gap-1.5 shadow-sm transition-colors flex-shrink-0 self-start md:self-auto"
         >
           <PlusCircle className="w-4 h-4" />

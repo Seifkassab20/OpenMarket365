@@ -22,7 +22,6 @@ import {
   Plus,
   ArrowRight,
   ArrowLeft,
-  ExternalLink,
   ShieldCheck,
   CheckCircle2,
   Clock,
@@ -142,20 +141,11 @@ export default function ImporterOverviewPage() {
         {/* Quick Action CTAs */}
         <div className="flex items-center gap-2.5">
           <Link
-            href="/rfqs/create"
+            href="/importer/new-rfq"
             className="flex items-center gap-1.5 px-3.5 py-2 bg-[#9b452f] hover:bg-[#833824] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm rounded-sm"
           >
             <Plus className="w-4 h-4" />
             <span>{language === 'ar' ? 'طرح طلب توريد جديد' : 'New Sourcing RFQ'}</span>
-          </Link>
-
-          <Link
-            href="/importers"
-            target="_blank"
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#e4dac9] border border-[#b9aa95] hover:border-[#202522] text-[#202522] text-xs font-bold uppercase tracking-wider transition-colors rounded-sm"
-          >
-            <ExternalLink className="w-3.5 h-3.5 text-[#70695f]" />
-            <span>{language === 'ar' ? 'دليل المشترين العام' : 'Public Directory'}</span>
           </Link>
         </div>
       </div>
@@ -304,7 +294,7 @@ export default function ImporterOverviewPage() {
                 : 'Current purchase requirements published to verified Egyptian agricultural packhouses:'}
             </div>
             <Link
-              href="/rfqs/create"
+              href="/importer/new-rfq"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#9b452f] text-white text-xs font-bold uppercase tracking-wider rounded-sm hover:bg-[#833824] transition-colors shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -532,13 +522,6 @@ export default function ImporterOverviewPage() {
                 ? 'فهرس محطات التعبئة والمزارع المصرية المفحوصة والمطابقة لمعايير الاستيراد الأوروبية والخليجية:'
                 : 'Vetted Egyptian agricultural packhouses cleared for European Union & Gulf supermarket standards:'}
             </div>
-            <Link
-              href="/importers"
-              className="text-xs font-bold text-[#9b452f] hover:underline flex items-center gap-1"
-            >
-              <span>Explore Public Directory</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

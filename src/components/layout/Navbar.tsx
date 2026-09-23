@@ -18,7 +18,6 @@ import { useAuth } from '@/lib/context/AuthContext';
 const navigation = [
   { href: '/', en: 'Home', ar: 'الرئيسية' },
   { href: '/exporters', en: 'Directory', ar: 'دليل المصدرين' },
-  { href: '/importers', en: 'Importers', ar: 'دليل المستوردين' },
   { href: '/products', en: 'Products', ar: 'المنتجات' },
   { href: '/market', en: 'Market boards', ar: 'بورصة التوريدات' },
   { href: '/rfqs', en: 'Importer desk', ar: 'مكتب المستورد' },
@@ -117,7 +116,7 @@ export default function Navbar() {
               {isArabic ? 'EN' : 'عربي'}
             </button>
             <Link
-              href="/rfqs/create"
+              href="/importer/new-rfq"
               className={`inline-flex h-10 items-center gap-2 whitespace-nowrap bg-[#202522] px-4 text-xs font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#9b452f] ${focusStyle}`}
             >
               {isArabic ? 'طرح طلب توريد' : 'Post an RFQ'}
@@ -209,7 +208,7 @@ export default function Navbar() {
               <Sparkles className="h-4 w-4" aria-hidden="true" />
               {isArabic ? 'قصة المنصة والأدوار' : 'Story & roles'}
             </Link>
-            <Link href="/rfqs/create" onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center bg-[#202522] px-4 text-xs font-bold text-white ${focusStyle}`}>
+            <Link href="/importer/new-rfq" onClick={() => setMenuOpen(false)} className={`inline-flex min-h-11 items-center bg-[#202522] px-4 text-xs font-bold text-white ${focusStyle}`}>
               {isArabic ? 'طرح طلب توريد' : 'Post an RFQ'}
             </Link>
             {currentUser.isLoggedIn ? (

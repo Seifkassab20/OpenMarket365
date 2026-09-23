@@ -31,9 +31,7 @@ export default function ImporterProfilePage() {
     <div className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12 bg-[#eee8dc]">
       {/* Top Breadcrumb */}
       <div className="flex items-center gap-2 text-xs text-[#70695f] uppercase tracking-wider font-semibold">
-        <Link href="/importers" className="hover:text-[#9b452f] transition-colors">
-          BUYER DIRECTORY
-        </Link>
+        <span>BUYER DIRECTORY</span>
         <span>/</span>
         <span className="text-[#202522]">{importer.company_name_en}</span>
       </div>
@@ -220,7 +218,7 @@ export default function ImporterProfilePage() {
             </div>
 
             <Link
-              href="/rfqs/create"
+              href="/importer/new-rfq"
               className="w-full py-2.5 bg-[#202522] hover:bg-black text-[#eee8dc] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"
             >
               <Package className="w-3.5 h-3.5" />
@@ -232,18 +230,9 @@ export default function ImporterProfilePage() {
 
       {/* Other buyers strip */}
       <div className="pt-8 border-t border-[#b9aa95] space-y-6">
-        <div className="flex items-end justify-between">
-          <div>
-            <div className="kicker mb-1">BUYER INDEX</div>
-            <h3 className="font-serif text-3xl text-[#202522]">Other verified buyers</h3>
-          </div>
-          <Link
-            href="/importers"
-            className="text-xs font-bold uppercase tracking-[0.14em] text-[#9b452f] hover:underline flex items-center gap-1"
-          >
-            <span>View All Buyers</span>
-            <ArrowIcon className="w-3.5 h-3.5" />
-          </Link>
+        <div>
+          <div className="kicker mb-1">BUYER INDEX</div>
+          <h3 className="font-serif text-3xl text-[#202522]">Other verified buyers</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

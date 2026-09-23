@@ -236,7 +236,7 @@ export default function ProductDetailPage() {
             </div>
 
             <Link
-              href={`/rfqs/create`}
+              href={`/importer/new-rfq`}
               className="flex-1 px-5 py-3 font-bold text-xs bg-[#9b452f] hover:bg-[#833824] text-white flex items-center justify-center gap-2 transition-all shadow-sm"
             >
               <FileSpreadsheet className="w-4 h-4" />
