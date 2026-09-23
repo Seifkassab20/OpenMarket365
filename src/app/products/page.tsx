@@ -12,13 +12,16 @@ import {
   Box, 
   Building2, 
   ArrowRight, 
-  ArrowLeft 
+  ArrowLeft,
+  Lock
 } from 'lucide-react';
 import TaxonomyNavigator from '@/components/shared/TaxonomyNavigator';
 import MaskedContact from '@/components/shared/MaskedContact';
+import { useAuth } from '@/lib/context/AuthContext';
 
 export default function ProductsCatalogPage() {
   const { language, direction, t } = useLanguage();
+  const { currentUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSector, setSelectedSector] = useState<string>('ALL');
   const [selectedCert, setSelectedCert] = useState<string>('ALL');
@@ -174,7 +177,14 @@ export default function ProductsCatalogPage() {
                   <div>
                     <span className="text-[10px] text-[#70695f] uppercase tracking-wider block">Indicative FOB</span>
                     <div className="text-xl font-serif font-bold text-[#202522]">
-                      ${product.price} <span className="text-xs font-sans font-normal text-[#70695f]">/ MT</span>
+                      {(!currentUser || currentUser.role === 'VISITOR') ? (
+                        <span className="flex items-center gap-1.5 text-[#70695f]">
+                          <Lock className="w-4 h-4 text-[#9b452f]" />
+                          $••• <span className="text-xs font-sans font-normal">/ MT</span>
+                        </span>
+                      ) : (
+                        <>${product.price} <span className="text-xs font-sans font-normal text-[#70695f]">/ MT</span></>
+                      )}
                     </div>
                   </div>
 
@@ -197,12 +207,23 @@ export default function ProductsCatalogPage() {
                       variant="button"
                     />
                   </div>
-                  <Link
-                    href="/rfqs/create"
-                    className="px-3.5 py-2 text-xs font-bold bg-[#9b452f] hover:bg-[#833824] text-white flex items-center gap-1 flex-shrink-0 transition-colors"
-                  >
-                    <span>RFQ →</span>
-                  </Link>
+                  {(!currentUser || currentUser.role === 'VISITOR') ? (
+                    <Link
+                      href="/auth/register"
+                      className="px-3.5 py-2 text-xs font-bold bg-[#eee8dc] hover:bg-[#202522] hover:text-[#eee8dc] border border-[#b9aa95] text-[#202522] flex items-center gap-1 flex-shrink-0 transition-colors"
+                      title="Register to submit RFQs"
+                    >
+                      <Lock className="w-3.5 h-3.5 text-[#9b452f]" />
+                      <span>RFQ</span>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/rfqs/create"
+                      className="px-3.5 py-2 text-xs font-bold bg-[#9b452f] hover:bg-[#833824] text-white flex items-center gap-1 flex-shrink-0 transition-colors"
+                    >
+                      <span>RFQ →</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

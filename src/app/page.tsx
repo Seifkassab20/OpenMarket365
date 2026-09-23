@@ -7,6 +7,7 @@ import FeaturedExporters from '@/components/home/FeaturedExporters';
 import LiveOpportunities from '@/components/home/LiveOpportunities';
 import MediaSpotlight from '@/components/home/MediaSpotlight';
 import BrandIntroPages from '@/components/home/BrandIntroPages';
+import VisitorDashboard from '@/components/visitor/VisitorDashboard';
 import { useAuth } from '@/lib/context/AuthContext';
 
 export default function HomePage() {
@@ -43,7 +44,12 @@ export default function HomePage() {
     );
   }
 
-  // Once visitor confirms or dismissed, show the full marketplace homepage
+  // If visitor is unregistered/guest, show visitor dashboard
+  if (!currentUser || currentUser.role === 'VISITOR') {
+    return <VisitorDashboard />;
+  }
+
+  // For logged in users, show the full marketplace homepage
   return (
     <div className="flex flex-col">
       <Hero />

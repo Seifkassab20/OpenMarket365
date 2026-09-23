@@ -14,9 +14,12 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import MaskedContact from '@/components/shared/MaskedContact';
+import { useAuth } from '@/lib/context/AuthContext';
+import VisitorGate from '@/components/visitor/VisitorGate';
 
 export default function MarketBoardPage() {
   const { language, direction } = useLanguage();
+  const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState<ListingType | 'ALL'>('ALL');
 
   const ArrowIcon = direction === 'rtl' ? ArrowLeft : ArrowRight;
@@ -25,6 +28,17 @@ export default function MarketBoardPage() {
     if (activeTab === 'ALL') return true;
     return deal.listing_type === activeTab;
   });
+
+  if (!currentUser || currentUser.role === 'VISITOR') {
+    return (
+      <VisitorGate
+        titleEn="Live Market Boards Restricted"
+        titleAr="بورصة التوريدات مغلقة"
+        descriptionEn="The live market board contains real-time wholesale offers and clearance deals. Please register to access live trades."
+        descriptionAr="بورصة التوريدات تحتوي على عروض جملة وصفقات تصفية حية. يرجى التسجيل للوصول إلى التداولات الحية."
+      />
+    );
+  }
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

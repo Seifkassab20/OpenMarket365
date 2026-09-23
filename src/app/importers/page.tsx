@@ -44,6 +44,8 @@ import {
   Phone,
 } from 'lucide-react';
 import MaskedContact from '@/components/shared/MaskedContact';
+import { useAuth } from '@/lib/context/AuthContext';
+import VisitorGate from '@/components/visitor/VisitorGate';
 
 /* ------------------------------------------------------------------ */
 /* Local mock enrichment — UI demonstration only, no backend           */
@@ -183,6 +185,18 @@ const MATCH_STEPS = [
 
 export default function ImportersExperiencePage() {
   const { language } = useLanguage();
+  const { currentUser } = useAuth();
+
+  if (!currentUser || currentUser.role === 'VISITOR') {
+    return (
+      <VisitorGate
+        titleEn="Buyer Directory Locked"
+        titleAr="دليل المشترين مغلق"
+        descriptionEn="Buyer data and procurement tools are highly sensitive. Please log in with a verified account to view this page."
+        descriptionAr="بيانات المشترين وأدوات التوريد ذات حساسية عالية. يرجى تسجيل الدخول بحساب معتمد لعرض هذه الصفحة."
+      />
+    );
+  }
 
   /* ---- preserved buyer-directory state (existing work) ---- */
   const [searchTerm, setSearchTerm] = useState('');

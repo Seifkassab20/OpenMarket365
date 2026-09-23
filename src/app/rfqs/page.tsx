@@ -15,9 +15,12 @@ import {
   ArrowLeft,
   CheckCircle2
 } from 'lucide-react';
+import { useAuth } from '@/lib/context/AuthContext';
+import VisitorGate from '@/components/visitor/VisitorGate';
 
 export default function RfqsBoardPage() {
   const { language, direction } = useLanguage();
+  const { currentUser } = useAuth();
   const [selectedRfqModal, setSelectedRfqModal] = useState<string | null>(null);
   const [quotePrice, setQuotePrice] = useState('');
   const [loadingPort, setLoadingPort] = useState('Alexandria');
@@ -72,6 +75,17 @@ export default function RfqsBoardPage() {
       status: 'FOB OPTION'
     }
   ];
+
+  if (!currentUser || currentUser.role === 'VISITOR') {
+    return (
+      <VisitorGate
+        titleEn="Trade Desk Restricted"
+        titleAr="مكتب التداول مغلق"
+        descriptionEn="The RFQ board is an active trading floor. You must be a verified Exporter or Importer to view live bids and solicitations."
+        descriptionAr="لوحة طلبات التوريد هي منصة تداول نشطة. يجب أن تكون مصدراً أو مستورداً معتمداً لعرض العطاءات المباشرة."
+      />
+    );
+  }
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
