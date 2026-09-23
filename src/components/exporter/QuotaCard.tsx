@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { AlertCircle, ArrowUpRight } from 'lucide-react';
+import AnimatedCounter from '@/components/admin/AnimatedCounter';
 
 interface QuotaCardProps {
   labelEn: string;
@@ -46,14 +47,14 @@ export default function QuotaCard({
 
       <div className="flex items-baseline justify-between">
         <div className="text-2xl sm:text-3xl font-serif font-bold text-[#202522]">
-          {current}
+          <AnimatedCounter end={current} duration={1200} />
           <span className="text-xs font-sans font-normal text-[#70695f] ml-1.5">
             / {unlimited ? (language === 'ar' ? 'غير محدود' : 'Unlimited') : `${max} ${language === 'ar' ? unitAr : unitEn}`}
           </span>
         </div>
         {!unlimited && (
           <span className={`text-xs font-mono font-bold ${isAtLimit ? 'text-rose-700' : isNearLimit ? 'text-[#c38b40]' : 'text-[#596348]'}`}>
-            {percentage}%
+            <AnimatedCounter end={percentage} suffix="%" duration={1200} />
           </span>
         )}
       </div>
