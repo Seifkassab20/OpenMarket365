@@ -99,7 +99,6 @@ export default function ImporterRootLayout({
           isCollapsed={isCollapsed}
           setIsCollapsed={setIsCollapsed}
           buyerName={currentUser.companyName || 'EuroFresh Logistics GmbH'}
-          isVerified={currentUser.isVerified}
         />
 
         {/* Content Canvas */}
@@ -120,7 +119,6 @@ export default function ImporterRootLayout({
             setIsMobileOpen={setIsMobileOpen}
             buyerName={currentUser.companyName || 'EuroFresh Logistics GmbH'}
             hubLocation="Rotterdam / Hamburg Gateway"
-            isVerified={currentUser.isVerified}
           />
 
           {/* Main Dynamic View */}

@@ -8,17 +8,12 @@ import {
   LayoutDashboard,
   FileSpreadsheet,
   Scale,
-  Ship,
-  FileCheck2,
-  BarChart3,
   Settings,
   ChevronLeft,
   ArrowRight,
   ArrowLeft,
-  ShieldCheck,
   Globe,
   PlusCircle,
-  BookmarkCheck,
 } from 'lucide-react';
 
 interface ImporterSidebarProps {
@@ -27,7 +22,6 @@ interface ImporterSidebarProps {
   isCollapsed: boolean;
   setIsCollapsed: (collapsed: boolean) => void;
   buyerName?: string;
-  isVerified?: boolean;
 }
 
 interface NavItem {
@@ -50,7 +44,6 @@ export default function ImporterSidebar({
   isCollapsed,
   setIsCollapsed,
   buyerName = 'EuroFresh Logistics GmbH',
-  isVerified = true,
 }: ImporterSidebarProps) {
   const pathname = usePathname();
   const { language, direction } = useLanguage();
@@ -92,32 +85,6 @@ export default function ImporterSidebar({
           href: '/importer/quotes',
           icon: <Scale className="w-4 h-4" />,
           badge: '14 Bids',
-        },
-      ],
-    },
-    {
-      titleEn: 'ORIGIN & SUPPLIERS',
-      titleAr: 'المصانع والموردين',
-      items: [
-        {
-          labelEn: 'Compliance & Certs',
-          labelAr: 'فحص مطابقة الشهادات',
-          href: '/importer/certificates',
-          icon: <FileCheck2 className="w-4 h-4" />,
-          badge: 'EU Standard',
-        },
-      ],
-    },
-    {
-      titleEn: 'LOGISTICS & ORDERS',
-      titleAr: 'الشحن واللوجستيات',
-      items: [
-        {
-          labelEn: 'Reefer Containers Tracking',
-          labelAr: 'تتبع شحنات التبريد',
-          href: '/importer/shipments',
-          icon: <Ship className="w-4 h-4" />,
-          badge: '3 Live',
         },
       ],
     },
@@ -180,11 +147,6 @@ export default function ImporterSidebar({
                   <span className="text-[9px] uppercase font-bold tracking-widest text-[#c38b40]">
                     {language === 'ar' ? 'بوابة المستورد الدولي' : 'IMPORTER DESK'}
                   </span>
-                  {isVerified && (
-                    <span className="flex items-center gap-0.5 text-[8px] font-bold px-1 py-0.2 bg-[#596348] text-white rounded-xs">
-                      ✓ VERIFIED
-                    </span>
-                  )}
                 </div>
               </div>
             )}
