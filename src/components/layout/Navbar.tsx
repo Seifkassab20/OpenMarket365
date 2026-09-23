@@ -15,16 +15,16 @@ import {
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { useAuth } from '@/lib/context/AuthContext';
 
-const navigation = [
-  { href: '/', en: 'Home', ar: 'الرئيسية' },
-  { href: '/exporters', en: 'Directory', ar: 'دليل المصدرين' },
-  { href: '/importers', en: 'Importers', ar: 'دليل المستوردين' },
-  { href: '/products', en: 'Products', ar: 'المنتجات' },
-  { href: '/market', en: 'Market boards', ar: 'بورصة التوريدات' },
-  { href: '/rfqs', en: 'Importer desk', ar: 'مكتب المستورد' },
-  { href: '/dashboard/exporter', en: 'Exporter desk', ar: 'مكتب المصدر' },
-  { href: '/media', en: 'Media', ar: 'الإعلام' },
-  { href: '/admin', en: 'Governance', ar: 'الرقابة' },
+const allNavigation = [
+  { href: '/', en: 'Home', ar: 'الرئيسية', restricted: false },
+  { href: '/exporters', anchor: '/#directory', en: 'Directory', ar: 'دليل المصدرين', restricted: false },
+  { href: '/importers', en: 'Importers', ar: 'دليل المستوردين', restricted: true },
+  { href: '/products', anchor: '/#products', en: 'Products', ar: 'المنتجات', restricted: false },
+  { href: '/market', en: 'Market boards', ar: 'بورصة التوريدات', restricted: true },
+  { href: '/rfqs', en: 'Importer desk', ar: 'مكتب المستورد', restricted: true },
+  { href: '/dashboard/exporter', en: 'Exporter desk', ar: 'مكتب المصدر', restricted: true },
+  { href: '/media', anchor: '/#media', en: 'Media', ar: 'الإعلام', restricted: false },
+  { href: '/admin', en: 'Governance', ar: 'الرقابة', restricted: true },
 ];
 
 const focusStyle = 'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b452f]';
@@ -34,6 +34,17 @@ export default function Navbar() {
   const { currentUser, logout } = useAuth();
   const pathname = usePathname() ?? '';
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const isVisitor = !currentUser || !currentUser.isLoggedIn || currentUser.role === 'VISITOR';
+  
+  const navigation = allNavigation
+    .filter(item => !isVisitor || !item.restricted)
+    .map(item => ({
+      href: isVisitor && item.anchor ? item.anchor : item.href,
+      originalHref: item.href,
+      en: item.en,
+      ar: item.ar
+    }));
 
   // Exclude Navbar from all admin, exporter, and importer portal routes so they have dedicated shells
   if (
@@ -80,8 +91,8 @@ export default function Navbar() {
           </Link>
 
           <nav aria-label={isArabic ? 'التنقل الرئيسي' : 'Primary navigation'} className="hidden min-w-0 items-center gap-4 min-[1800px]:flex">
-            {navigation.map(({ href, en, ar }) => {
-              const active = href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+            {navigation.map(({ href, originalHref, en, ar }) => {
+              const active = originalHref === '/' ? pathname === '/' : pathname === originalHref || pathname.startsWith(`${originalHref}/`);
               return (
                 <Link
                   key={href}
@@ -178,8 +189,8 @@ export default function Navbar() {
           className="max-h-[calc(100dvh-5rem)] overflow-y-auto border-t border-[#b9aa95] bg-[#eee8dc] px-4 py-4 sm:px-6 min-[1800px]:hidden"
         >
           <div className="mx-auto grid max-w-[1600px] gap-1 sm:grid-cols-2 lg:grid-cols-3">
-            {navigation.map(({ href, en, ar }) => {
-              const active = href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+            {navigation.map(({ href, originalHref, en, ar }) => {
+              const active = originalHref === '/' ? pathname === '/' : pathname === originalHref || pathname.startsWith(`${originalHref}/`);
               return (
                 <Link
                   key={href}
