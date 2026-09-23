@@ -14,11 +14,12 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/lib/context/LanguageContext';
 import { useAuth } from '@/lib/context/AuthContext';
+import { useEffect } from 'react';
 
 const allNavigation = [
   { href: '/', en: 'Home', ar: 'الرئيسية', restricted: false },
-  { href: '/exporters', anchor: '/#directory', en: 'Directory', ar: 'دليل المصدرين', restricted: false },
   { href: '/products', anchor: '/#products', en: 'Products', ar: 'المنتجات', restricted: false },
+  { href: '/exporters', anchor: '/#directory', en: 'Directory', ar: 'دليل المصدرين', restricted: false },
   { href: '/market', en: 'Market boards', ar: 'بورصة التوريدات', restricted: true },
   { href: '/rfqs', en: 'Importer desk', ar: 'مكتب المستورد', restricted: true },
   { href: '/dashboard/exporter', en: 'Exporter desk', ar: 'مكتب المصدر', restricted: true },
@@ -33,9 +34,43 @@ export default function Navbar() {
   const { currentUser, logout } = useAuth();
   const pathname = usePathname() ?? '';
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('');
 
   const isVisitor = !currentUser || !currentUser.isLoggedIn || currentUser.role === 'VISITOR';
   
+  useEffect(() => {
+    if (pathname !== '/' || !isVisitor) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -60% 0px' }
+    );
+
+    const sectionIds = ['products', 'directory', 'media'];
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    const handleScroll = () => {
+      if (window.scrollY < 400) {
+        setActiveSection('');
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [pathname, isVisitor]);
+
   const navigation = allNavigation
     .filter(item => !isVisitor || !item.restricted)
     .map(item => ({
@@ -91,7 +126,14 @@ export default function Navbar() {
 
           <nav aria-label={isArabic ? 'التنقل الرئيسي' : 'Primary navigation'} className="hidden min-w-0 items-center gap-4 min-[1800px]:flex">
             {navigation.map(({ href, originalHref, en, ar }) => {
-              const active = originalHref === '/' ? pathname === '/' : pathname === originalHref || pathname.startsWith(`${originalHref}/`);
+              let active = false;
+              if (isVisitor && pathname === '/') {
+                if (!activeSection && href === '/') active = true;
+                else if (activeSection && href === `/#${activeSection}`) active = true;
+              } else {
+                active = originalHref === '/' ? pathname === '/' : pathname === originalHref || pathname.startsWith(`${originalHref}/`);
+              }
+
               return (
                 <Link
                   key={href}
@@ -189,7 +231,14 @@ export default function Navbar() {
         >
           <div className="mx-auto grid max-w-[1600px] gap-1 sm:grid-cols-2 lg:grid-cols-3">
             {navigation.map(({ href, originalHref, en, ar }) => {
-              const active = originalHref === '/' ? pathname === '/' : pathname === originalHref || pathname.startsWith(`${originalHref}/`);
+              let active = false;
+              if (isVisitor && pathname === '/') {
+                if (!activeSection && href === '/') active = true;
+                else if (activeSection && href === `/#${activeSection}`) active = true;
+              } else {
+                active = originalHref === '/' ? pathname === '/' : pathname === originalHref || pathname.startsWith(`${originalHref}/`);
+              }
+
               return (
                 <Link
                   key={href}
